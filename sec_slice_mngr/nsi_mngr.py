@@ -7,26 +7,25 @@ from databases import sec_nsi as secnsi_db
 from sec_slice_mngr import slice2mspl
 
 
-
 def deploy_sec_nsi(request_json):
     print("Deploying Secured NSI...")
 
     # TODO: Prepares Sec_NSI data object structure
     sec_nsi = {}
     sec_nsi["uuid"] = str(uuid.uuid4())
+    sec_nsi["name"] = request_json["name"]
     # TODO: follow object creation...
 
     response = secnsi_db.add_sec_nsi(sec_nsi)
     if response[1] != 200:
-        config_sys.logger.error("Something failed saving the SecNSI into the DB.")
+        config_sys.logger.error(response[0])
 
     # TODO: Gets SSLA information & and maps it inot the Sec_NSI
-
     # TODO: Prepares MSPL (XML format) data request to deploy
         # calls functions in slice2mspl
-
     #TODO:  Validates policy is applied = Sec_NSI is deployed
-    pass
+
+    config_sys.logger.info(response[0])
 
 def terminate_sec_nsi(request_json):
     print("Terminating Secured NSI...")

@@ -10,6 +10,7 @@ from threading import Thread, Lock
 from config_files import config_system as config_sys
 from mappers import ssla_mngr_mapper as ssla_mngr
 from sec_slice_mngr import nsi_mngr
+from databases import nst as nst_db
 
 
 # Define inner applications
@@ -45,22 +46,39 @@ def get_ssla(ssla_uuid):
     response["error_msg"] = "The selected SSLA with UUID: " + str(ssla_uuid) + " does not exist."
     return response, 404
 
-########################################### NST API #################################################
-# NOTE: --> DO WE USE OSM or SONATA?
-#       --> Do we consider an NST at this level (E2E) a set of NSTs at Domain level? If so, do we create NSTs o I simple show a list of "domain NSTs" to be selcted when deploying a SecNSI?
+########################################### E2E NST API #################################################
+# add NST
+@app.route('/nst', methods=['POST'])
+def new_nst():
+  response = nst_db.add_nst(request.json)
+  return response[0], response[1]
 
 # gets all the NSTs
 @app.route('/nst', methods=['GET'])
 def get_all_nst():
-  print("NST list: []")
+  response = nst_db.get_nsts()
+  return response[0], response[1]
 
 # gets a specific NST
 @app.route('/nst/<nst_uuid>', methods=['GET'])
 def get_nst(nst_uuid):
-  print("NST requested with uuid: " + str(nst_uuid))
+  response = nst_db.get_nst(nst_uuid)
+  return response[0], response[1]
+
+# update NST
+@app.route('/nst/<nst_uuid>', methods=['PUT'])
+def nst_update(nst_uuid):
+  response = nst_db.update_nst(nst_uuid, request.json)
+  return response[0], response[1]
+
+# delete NST
+@app.route('/nst/<nst_uuid>', methods=['DELETE'])
+def nst_remove(nst_uuid):
+  response = nst_db.remove_nst(nst_uuid)
+  return response[0], response[1]
 
 ########################################### NSI API #################################################
-# Triggers a Secured NSI deployment
+# Triggers a Sec_NSI deployment
 @app.route('/sec_nsi', methods=['POST'])
 def deploy_sec_nsi():
   config_sys.logger.info('Request to deploy Sec NSI received.')
@@ -68,28 +86,28 @@ def deploy_sec_nsi():
   #TODO: Validate selected NST and SSLA existance
   config_sys.executor.submit(nsi_mngr.deploy_sec_nsi, incoming_request)
 
-# GETS all the secured NSI
+# GETS all the Sec_NSI
 @app.route('/sec_nsi', methods=['GET'])
 def get_all_sec_nsi():
   config_sys.logger.info('Request to get all Sec NSI received.')
   response = nsi_mngr.get_sec_nsis()
   return response[0], response[1]
 
-# GETS a specific secured NSI
+# GETS a specific Sec_NSI
 @app.route('/sec_nsi/<sec_nsi_uuid>', methods=['GET'])
 def get_sec_nsi(sec_nsi_uuid):
   config_sys.logger.info('Request to get Sec NSI received.')
   response = nsi_mngr.get_sec_nsi(sec_nsi_uuid)
   return response[0], response[1]
 
-# Deletes a specific secured NSI data object from DB
+# Deletes a specific TERMINATED Sec_NSI data object from DB
 @app.route('/sec_nsi/<sec_nsi_uuid>', methods=['DELETE'])
 def delete_sec_nsi(sec_nsi_uuid):
   config_sys.logger.info('Request to delete Sec NSI received.')
   response = nsi_mngr.remove_sec_nsi(sec_nsi_uuid)
   return response[0], response[1]
 
-# Triggers a Secured NSI termination
+# Triggers a Sec_NSI termination
 @app.route('/sec_nsi/terminate/<sec_nsi_uuid>', methods=['POST'])
 def terminate_sec_nsi(sec_nsi_uuid):
   config_sys.logger.info('Request to terminate Sec NSI received.')
@@ -111,5 +129,5 @@ if __name__ == '__main__':
   config_sys.init_thread_pool(int(os.environ.get("WORKERS")))
 
   # Run main server thread
-  config_sys.logger.info(' <-- Secure Network Slcies 4 SSLA service is READY. -->')
+  config_sys.logger.info('Secure Network Slcies 4 SSLA service READY.')
   app.run(debug=False, host='localhost', port=os.environ.get("SERVICE_PORT"))
