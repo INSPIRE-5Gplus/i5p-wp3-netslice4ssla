@@ -10,7 +10,7 @@ from threading import Thread, Lock
 from config_files import config_system as config_sys
 from mappers import ssla_mngr_mapper as ssla_mngr
 from sec_slice_mngr import nsi_mngr
-from databases import nst as nst_db
+from databases import nst_db_mngr
 
 
 # Define inner applications
@@ -50,31 +50,31 @@ def get_ssla(ssla_uuid):
 # add NST
 @app.route('/nst', methods=['POST'])
 def new_nst():
-  response = nst_db.add_nst(request.json)
+  response = nst_db_mngr.add_nst(request.json)
   return response[0], response[1]
 
 # gets all the NSTs
 @app.route('/nst', methods=['GET'])
 def get_all_nst():
-  response = nst_db.get_nsts()
+  response = nst_db_mngr.get_nsts()
   return response[0], response[1]
 
 # gets a specific NST
 @app.route('/nst/<nst_uuid>', methods=['GET'])
 def get_nst(nst_uuid):
-  response = nst_db.get_nst(nst_uuid)
+  response = nst_db_mngr.get_nst(nst_uuid)
   return response[0], response[1]
 
 # update NST
 @app.route('/nst/<nst_uuid>', methods=['PUT'])
 def nst_update(nst_uuid):
-  response = nst_db.update_nst(nst_uuid, request.json)
+  response = nst_db_mngr.update_nst(nst_uuid, request.json)
   return response[0], response[1]
 
 # delete NST
 @app.route('/nst/<nst_uuid>', methods=['DELETE'])
 def nst_remove(nst_uuid):
-  response = nst_db.remove_nst(nst_uuid)
+  response = nst_db_mngr.remove_nst(nst_uuid)
   return response[0], response[1]
 
 ########################################### NSI API #################################################
@@ -85,6 +85,10 @@ def deploy_sec_nsi():
   incoming_request =  request.json
   #TODO: Validate selected NST and SSLA existance
   config_sys.executor.submit(nsi_mngr.deploy_sec_nsi, incoming_request)
+  
+  response = {}
+  response['log'] = "Request accepted, setting up the E2E Network Slice."
+  return response, 200
 
 # GETS all the Sec_NSI
 @app.route('/sec_nsi', methods=['GET'])
@@ -113,6 +117,10 @@ def terminate_sec_nsi(sec_nsi_uuid):
   config_sys.logger.info('Request to terminate Sec NSI received.')
   #TODO: Validate uuid existance
   config_sys.executor.submit(nsi_mngr.terminate_sec_nsi, sec_nsi_uuid)
+
+  response = {}
+  response['log'] = "Request accepted, terminating the E2E Network Slice."
+  return response, 200
 
 
 ################################### MAIN SERVER FUNCTION ###################################
