@@ -3,7 +3,7 @@
 import os, sys, logging, json, argparse, time, datetime, requests, uuid
 from threading import Lock
 
-from config_files import config_system as LOG
+from config_files import config_system as config_sys
 
 # This script has the actions to manage the databe of the secured netslices objects.
 # All the information is stored in a .txt file to keep their status in case the service fales.
@@ -32,14 +32,14 @@ mutex_secnsi_db = Lock()
 
 # add element in db
 def add_sec_nsi(sec_nsi_json):
-    LOG.logger.info("Element added into the SEC_NSI DB.")
+    config_sys.logger.info("Element added into the SEC_NSI DB.")
     try:
         mutex_secnsi_db.acquire()
         # TODO: verify if element (uuid) exists before adding.
         # adds the new element into the file (creates file if it doesn't exist
         sec_nsi_element = str(sec_nsi_json["uuid"]) + " - " + json.dumps(sec_nsi_json) + "\n"
-        with open('./databases/sec_nsi_list.txt', 'a') as f:
-            f.write(sec_nsi_element)
+        with open('./databases/sec_nsi_list.txt', 'a') as sec_nsi_file:
+            sec_nsi_file.write(sec_nsi_element)
         msg = 'SEC_NSI element added and saved.'
         code = 200
     finally:
@@ -49,7 +49,7 @@ def add_sec_nsi(sec_nsi_json):
 
 # update element in db
 def update_sec_nsi(sec_nsi_id, sec_nsi_json):
-    LOG.logger.info("Updating SEC_NSI element in DB.")
+    config_sys.logger.info("Updating SEC_NSI element in DB.")
     try:
         mutex_secnsi_db.acquire()
         line_found = False
@@ -83,7 +83,7 @@ def update_sec_nsi(sec_nsi_id, sec_nsi_json):
 
 # remove element in db
 def remove_sec_nsi(sec_nsi_id):
-    LOG.logger.info("Removing SEC_NSI element from the DB.")
+    config_sys.logger.info("Removing SEC_NSI element from the DB.")
     try:
         mutex_secnsi_db.acquire()
         line_found = False
@@ -117,7 +117,7 @@ def remove_sec_nsi(sec_nsi_id):
 
 # retrieve all elements in db
 def get_sec_nsis():
-    LOG.logger.info("Retrieving SEC_NSI elements from DB.")
+    config_sys.logger.info("Retrieving SEC_NSI elements from DB.")
     sec_nsi_list = []
     with open('./databases/sec_nsi_list.txt', 'r') as sec_nsi_file:
         lines = sec_nsi_file.readlines()
@@ -126,7 +126,6 @@ def get_sec_nsis():
         nsi_string = x[1].replace("\n", " ")
         sec_nsi_list.append(json.loads(nsi_string))
     
-    print(sec_nsi_list)
     if sec_nsi_list == []:
         msg = 'No SEC_NSI element in the DB'
         code = 404
@@ -138,7 +137,7 @@ def get_sec_nsis():
 
 # retrieve element in db
 def get_sec_nsi(sec_nsi_id):
-    LOG.logger.info("Retrieveing a SEC_NSI element from the DB.")
+    config_sys.logger.info("Retrieveing a SEC_NSI element from the DB.")
     sec_nsi_element = ""
     with open('./databases/sec_nsi_list.txt', 'r') as sec_nsi_file:
         lines = sec_nsi_file.readlines()

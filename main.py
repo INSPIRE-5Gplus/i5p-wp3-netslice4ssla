@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3.4
 
-import os, sys, logging, json, argparse, time, datetime, uuid, requests
+import os, sys, logging, json, argparse, time, datetime, uuid, requests, uuid
 from flask.wrappers import Response
 from flask import Flask, request, jsonify
 from configparser import ConfigParser
@@ -47,31 +47,36 @@ def get_ssla(ssla_uuid):
     return response, 404
 
 ########################################### E2E NST API #################################################
-# add NST
+# ADDS a new NST
 @app.route('/nst', methods=['POST'])
 def new_nst():
+  config_sys.logger.info('Request to add an E2E NST.')
+  nst_json = request.json
+  nst_json["uuid"] = str(uuid.uuid4())
   response = nst_db_mngr.add_nst(request.json)
   return response[0], response[1]
 
-# gets all the NSTs
+# GETS all the NSTs
 @app.route('/nst', methods=['GET'])
 def get_all_nst():
   response = nst_db_mngr.get_nsts()
   return response[0], response[1]
 
-# gets a specific NST
+# GETS a specific NST
 @app.route('/nst/<nst_uuid>', methods=['GET'])
 def get_nst(nst_uuid):
   response = nst_db_mngr.get_nst(nst_uuid)
   return response[0], response[1]
 
-# update NST
+# UPDATES NST
+# NOTE: function not implemented, if there's a new NST. Remove the old, and add the new.
 @app.route('/nst/<nst_uuid>', methods=['PUT'])
 def nst_update(nst_uuid):
-  response = nst_db_mngr.update_nst(nst_uuid, request.json)
-  return response[0], response[1]
+  #response = nst_db_mngr.update_nst(nst_uuid, request.json)
+  #return response[0], response[1]
+  pass
 
-# delete NST
+# DELETES NST
 @app.route('/nst/<nst_uuid>', methods=['DELETE'])
 def nst_remove(nst_uuid):
   response = nst_db_mngr.remove_nst(nst_uuid)

@@ -1,8 +1,9 @@
 #!/usr/local/bin/python3.4
 
 import os, sys, logging, json, argparse, time, datetime, requests, uuid
+from threading import Lock
 
-from config_files import config_system as LOG
+from config_files import config_system as config_sys
 
 """
 Example of E2E NST
@@ -44,45 +45,131 @@ Example of E2E NST
     ]
 }
 """
-# NST DATABASE
-NST_LIST = []  #NOTE: More complex DBs are possible, maybe to keep the data in a file?
+# mutex used to ensure a single access to the DB
+mutex_nts_db = Lock()
 
 # add element in db
-def add_nst(nst_element):
-    LOG.logger.info("Element added into the NST DB.")
-    NST_LIST.append(nst_element)
-    return {'msg':'NST element added and saved.'}, 200
+def add_nst(nst_json):
+    config_sys.logger.info("Element added into the NST DB.")
+    try:
+        mutex_nts_db.acquire()
+        # TODO: verify if element (uuid) exists before adding.
+        # adds the new element into the file (creates file if it doesn't exist
+        nst_element = str(nst_json["uuid"]) + " - " + json.dumps(nst_json) + "\n"
+        with open('./databases/nst_list.txt', 'a') as nst_file:
+            nst_file.write(nst_element)
+        msg = 'E2E NST element added and saved.'
+        code = 200
+    finally:
+        mutex_nts_db.release()
+
+    return {'msg':msg}, code
 
 # update element in db
-def update_nst(nst_id, nst_element):
-    LOG.logger.info("Updating NST element in DB.")
-    for nst_item in NST_LIST:
-        if nst_item['id'] == nst_id:
-            nst_item = nst_element
-            return {'msg':'NST element updated and saved.'}, 200
+def update_nst(nst_id, nst_json):
+    config_sys.logger.info("Updating NST element in DB.")
+    try:
+        mutex_nts_db.acquire()
+        line_found = False
+        index_found = 0
+        with open('./databases/nst_list.txt', 'r') as nst_file:
+            lines = nst_file.readlines()
+        for idx, line in enumerate(lines):
+            line = line[:-1]
+            x = line.split(" - ")
+            if x[0] == nst_id:
+                line_found = True
+                index_found = idx
+                break
+        line = nst_id + " - " + json.dumps(nst_json) + "\n"
+        lines[index_found] = line
+        
+        if line_found == False:
+            msg = 'NST element not found.'
+            code = 404
+        else:
+            # saves updated data in the file
+            with open('./databases/nst_list.txt', 'w') as new_nst_file:
+                for line in lines:
+                    new_nst_file.write(line)
+            msg = 'NST element updated and saved.'
+            code = 200
+    finally:
+        mutex_nts_db.release()
     
-    return {'msg':'NST element not found.'}, 404
+    return {'msg':msg}, code
 
 # remove element in db
 def remove_nst(nst_id):
-    LOG.logger.info("Removing NST element from the DB.")
-    for nst_item in NST_LIST:
-        if nst_item['id'] == nst_id:
-            NST_LIST.remove(nst_item)
-            return {'msg':'NST element removed.'}, 200
-
-    return {'msg':'NST element not found.'}, 404       
+    config_sys.logger.info("Removing NST element from the DB.")
+    try:
+        mutex_nts_db.acquire()
+        line_found = False
+        index_found = 0
+        with open('./databases/nst_list.txt', 'r') as nst_file:
+            lines = nst_file.readlines()
+        for idx, line in enumerate(lines):
+            x = line.split(" - ")
+            if x[0] == nst_id:
+                line_found = True
+                index_found = idx
+                break
+        
+        #remove the specified line
+        del lines[index_found]
+        
+        if line_found == False:
+            msg = 'NST element not found.'
+            code = 404
+        else:
+            # saves updated data in the file
+            with open('./databases/nst_list.txt', 'w') as new_nst_file:
+                for line in lines:
+                    new_nst_file.write(line)
+            msg = 'NST element removed.'
+            code = 200  
+    finally:
+        mutex_nts_db.release()
+    
+    return {'msg':msg}, code    
 
 # retrieve all elements in db
 def get_nsts():
-    LOG.logger.info("Retrieving NST elements from DB.")
-    return NST_LIST, 200
+    config_sys.logger.info("Retrieving NST elements from DB.")
+    nst_list = []
+    with open('./databases/nst_list.txt', 'r') as nst_file:
+        lines = nst_file.readlines()
+    for line in lines:
+        x = line.split(" - ")
+        nst_string = x[1].replace("\n", " ")
+        nst_list.append(json.loads(nst_string))
+    
+    if nst_list == []:
+        msg = 'No NST element in the DB'
+        code = 404
+    else:
+        msg = nst_list
+        code = 200
+    
+    return {'msg':msg}, code
 
 # retrieve element in db
 def get_nst(nst_id):
-    LOG.logger.info("Retrieving a NST element from the DB.")
-    for nst_item in NST_LIST:
-        if nst_item['id'] == nst_id:
-            return nst_item, 200
+    config_sys.logger.info("Retrieving a NST element from the DB.")
+    nst_element = ""
+    with open('./databases/nst_list.txt', 'r') as nst_file:
+        lines = nst_file.readlines()
+    for line in lines:
+        x = line.split(" - ")
+        if x[0] == nst_id:
+            nst_element = json.loads(x[1])
+            break
 
-    return {'msg':'NST element not found.'}, 404
+    if nst_element == "":
+        msg = 'NST element not found.'
+        code = 404
+    else:
+        msg = nst_element
+        code = 200
+    
+    return {"msg": msg}, code
