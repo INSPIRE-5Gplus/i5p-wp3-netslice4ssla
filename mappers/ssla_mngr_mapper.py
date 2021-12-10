@@ -11,10 +11,6 @@ CONTENT_HEADER = {'Content-Type':'application/xml'}
 
 # Retrieve SSLA List (GET /sla)
 def get_ssla_list():
-    ssla_list = []
-
-    return ssla_list, 201
-""" CODE
     ssla_mngr_ip = os.environ.get("SSLA_IP")
     ssla_mngr_port = os.environ.get("SSLA_PORT")
     url = "http://"+ str(ssla_mngr_ip) + ":" + str(ssla_mngr_port) +"/sla"
@@ -26,18 +22,13 @@ def get_ssla_list():
         ssla_list_json = []
 
     return ssla_list_json, 201
-"""
 
 # Retrieve SSLA (GET /sla/{slaId})
 def get_ssla(ssla_id):
-    ssla = ssla_id
-
-    return ssla, 201
-""" CODE
-    #ssla_mngr_ip = os.environ.get("SSLA_IP")
-    #ssla_mngr_port = os.environ.get("SSLA_PORT")
-    #url = "http://"+ str(ssla_mngr_ip) + ":" + str(ssla_mngr_port) +"/sla/"+str(ssla_id)
-    #response = requests.get(url, headers=CONTENT_HEADER)
+    ssla_mngr_ip = os.environ.get("SSLA_IP")
+    ssla_mngr_port = os.environ.get("SSLA_PORT")
+    url = "http://"+ str(ssla_mngr_ip) + ":" + str(ssla_mngr_port) +"/sla/"+str(ssla_id)
+    response = requests.get(url, headers=CONTENT_HEADER)
     if response.status_code != 200:
         return [], response.status_code
     else:
@@ -45,4 +36,3 @@ def get_ssla(ssla_id):
         ssla_json = []
 
     return ssla_json, 201
-"""

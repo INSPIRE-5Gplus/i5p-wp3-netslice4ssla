@@ -14,14 +14,29 @@ EXAMPLE OF SECURE E2E NSI
 #TODO: to improve
 {
     "uuid": "uuid4",
-    "status": "DEPLOYING, DEPLOYED, TERMINATING, TERMINATED, ERROR"
-    "slice-subnets":[
+    "name": "sec_nsi_inspire"
+    "status": "DEPLOYING/DEPLOYED/TERMINATING/TERMINATED/ERROR"
+    "nst-ref":[
         {
-            "slice-subnet-id": "uuid4",
-            "nst-ref": "uuid4",
-            "ssla-ref": uuid4,
-            "status": "DEPLOYING, DEPLOYED, TERMINATING, TERMINATED, ERROR",
-            "slice-mngr-id": "uuid4"
+            "uuid": "uuid4",
+            "name": "nst_inspire",
+            "version": "2.4"
+        }
+    ],
+    "ssla-ref":[
+        {
+            "uuid": "uuid4",
+            "name": "ssla_inspire"
+        }
+    ],
+    "sec-mngmnt-domains-ref:[
+        {
+            "uuid": "uuid4",
+            "name": "cttc-smd"
+        },
+        {
+            "uuid": "uuid4",
+            "name": "umu-smd"
         }
     ]
 }

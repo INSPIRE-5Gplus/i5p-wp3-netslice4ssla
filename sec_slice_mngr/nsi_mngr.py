@@ -18,7 +18,7 @@ def deploy_sec_nsi(request_json):
     response = nst_db_mngr.get_nst(request_json["nst-ref"])
     nst_ref_json = response[0]["msg"]
     nst_ref = {}
-    nst_ref["uuid-ref"] = nst_ref_json["uuid"]
+    nst_ref["uuid"] = nst_ref_json["uuid"]
     nst_ref["name"] = nst_ref_json["name"]
     nst_ref["version"] = nst_ref_json["version"]
     sec_nsi["nst-ref"] = nst_ref
