@@ -53,7 +53,7 @@ def new_nst():
   config_sys.logger.info('Request to add an E2E NST.')
   nst_json = request.json
   nst_json["uuid"] = str(uuid.uuid4())
-  response = nst_db_mngr.add_nst(request.json)
+  response = nst_db_mngr.add_nst(nst_json)
   return response[0], response[1]
 
 # GETS all the NSTs
@@ -83,6 +83,11 @@ def nst_remove(nst_uuid):
   return response[0], response[1]
 
 ########################################### NSI API #################################################
+"""
+{
+  
+}
+"""
 # Triggers a Sec_NSI deployment
 @app.route('/sec_nsi', methods=['POST'])
 def deploy_sec_nsi():

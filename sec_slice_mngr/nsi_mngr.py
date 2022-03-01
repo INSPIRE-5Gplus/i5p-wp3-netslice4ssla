@@ -13,24 +13,37 @@ def deploy_sec_nsi(request_json):
 
     # TODO: Prepares Sec_NSI data object structure
     sec_nsi = {}
-    sec_nsi["uuid"] = str(uuid.uuid4())
+    sec_nsi["id"] = str(uuid.uuid4())
     sec_nsi["name"] = request_json["name"]
+    sec_nsi["short-name"] = request_json["short-name"]
+    sec_nsi["description"] = request_json["description"]
+    sec_nsi["nst-ref"] = request_json["nst-ref"]
+    location_smd = []
+    # TODO: obtain the SMDs where to apply the slice (from Data Services)
+    
+    sec_nsi["location-smd"] = location_smd
+    sec_nsi["qos"] = {}
+    # TODO: obtain the info about the QoS
+    
     response = nst_db_mngr.get_nst(request_json["nst-ref"])
-    nst_ref_json = response[0]["msg"]
-    nst_ref = {}
-    nst_ref["uuid"] = nst_ref_json["uuid"]
-    nst_ref["name"] = nst_ref_json["name"]
-    nst_ref["version"] = nst_ref_json["version"]
-    sec_nsi["nst-ref"] = nst_ref
-    # TODO: follow object creation...
+    sec_nsi["netslice-subnet"] = response[0]["msg"]["netslice-subnets"]
+    # TODO: Gets SSLA information & and maps it into the Sec_NSI
+    
+    sla_info = {}
 
+    #TODO: get id SLA from request.json
+
+    #TODO: add all the policies associated to the SSLA.
+    
+    sec_nsi["netslice-subnet"] = sla_info
+    # TODO: Prepares MSPL (XML format) data request to deploy
+        # calls functions in slice2mspl
+    
+    # saves NSI into the Database
     response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
     if response[1] != 200:
         config_sys.logger.error(response[0])
 
-    # TODO: Gets SSLA information & and maps it inot the Sec_NSI
-    # TODO: Prepares MSPL (XML format) data request to deploy
-        # calls functions in slice2mspl
     # TODO: Validates policy is applied = Sec_NSI is deployed
 
     config_sys.logger.info(response[0])

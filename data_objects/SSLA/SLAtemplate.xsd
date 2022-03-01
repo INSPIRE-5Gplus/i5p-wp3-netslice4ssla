@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This schema defines the elements of the SLA template and extends the WSAG schema.
+     Elements defined in this schema belong to the SPECS target namespace 
+     http://www.specs-project.eu/resources/schemas/xml/SLAtemplate
+     whose alias is "specs".
+	 This schema includes two sub-schemas: sdt.xsd and slo.sdt.
+	 They define other elements of the "specs" namespace 
+-->
+<xs:schema
+    xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	targetNamespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	
+	<!-- includes sdt.xsd, where other elements belonging to the "specs" namespace
+	 are defined --> 
+	<xs:include schemaLocation="sdt.xsd"/> 
+				   
+	<!-- includes slo.xsd, where other elements belonging to the "specs" namespace
+	 are defined --> 
+	<xs:include schemaLocation="slo.xsd"/> 
+
+	<!--  defined in sdt.xsd  -->
+	<xs:element name="serviceDescription" type="specs:serviceDescriptionType"/>
+
+	<!-- endpoint (it is to be put in <wsag:ServiceReference>) -->
+	<xs:element name="endpoint" type="xs:string" />	
+
+	
+	<!-- objectiveList (it is to be put in <wsag:ServiceLevelObjective>	<wsag:CustomServiceLevel>) -->
+	<xs:element name="objectiveList">
+		<xs:complexType>
+			<xs:sequence>
+			    <!--  defined in slo.xsd  -->
+				<xs:element name="SLO" type="specs:SLOType" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>		
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

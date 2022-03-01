@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This schema defines all the elements of the SLA Template that are related 
+	to security SLOs. 
+	Elements defined in this file are part of the main 
+	SPECS target namespace: 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate 
+	whose alias is "specs". 
+	This file is INCLUDED in SLAtemplate.xsd -->
+
+<xs:schema
+	targetNamespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	elementFormDefault="qualified">
+
+	
+	
+	<!-- SLO type -->
+	<xs:complexType name="SLOType">
+		<xs:sequence>
+			<xs:element name="MetricREF" type="xs:string"  minOccurs="1" maxOccurs="1" /><!-- reference to metric definition -->
+			<xs:element name="SLOexpression" type="specs:SLOexpressionType" minOccurs="1" maxOccurs="1" /> 
+			<xs:element name="importance_weight" minOccurs="1" maxOccurs="1" >
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="LOW"/>
+						<xs:enumeration value="MEDIUM"/>
+						<xs:enumeration value="HIGH"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="SLO_ID" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="SLOexpressionType">
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:element name="oneOpExpression">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="specs:oneOpOperator" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="operand" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="twoOpExpression">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="specs:twoOpOperator" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="operand1" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="operand2" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>		
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:simpleType name="oneOpOperator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="eq"/>
+			<xs:enumeration value="gt"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="geq"/>
+			<xs:enumeration value="leq"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="twoOpOperator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="in_excluded"/> <!--boundaries of interval excluded -->
+			<xs:enumeration value="in_included"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="weightType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOW"/>
+			<xs:enumeration value="MEDIUM"/>
+			<xs:enumeration value="HIGH"/>
+		</xs:restriction>
+	</xs:simpleType>			
+	
+
+</xs:schema>

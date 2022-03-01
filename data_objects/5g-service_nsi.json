@@ -1,0 +1,57 @@
+{
+    "id":  "1dcef046-3838-4c31-8f8e-776fcf4acf8c",
+    "name": "Demo1 5G VoIP Service",
+    "short-name": "5g_voip",
+    "description": "NSI with 5G VoIP Service used in Demo1.",
+    "nst-ref": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
+    "location-smd":[
+        {
+            "smd_id": "cttc"
+        },
+        {
+            "smd_id": "umu"
+        },
+        {
+            "smd_id": "mi"
+        }
+    ],
+    "qos": {
+        "availability": "99.9"
+    },
+    "netslice-subnets": [
+        {
+            "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
+            "ref": "uuid",
+            "name": "5GService-5GVoIP",
+            "version": 0.2,
+            "vendor": "inspire5gplus",
+            "shared": "False"
+        }
+    ],
+    "security-sla": {
+        "id": "d4586d20-0ff6-48b7-bc60-0db1c8729b37",
+        "security-requirements":[
+            {"sloID": 1},
+            {"sloID": 2},
+            {"sloID": 3}
+        ],
+        "security-policies":[
+            {
+                "policy_id": "mspl_9f1a88b4fc67421b98de270d5a63d35a",
+                "name": "Channel_Protection"
+            },
+            {
+                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc9",
+                "name": "Network_traffic_analysis"
+            },
+            {
+                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc7",
+                "name": "Network_traffic_analysis"
+            },
+            {
+                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc7",
+                "name": "DDos_attack_protection"
+            }
+        ]
+    }
+}

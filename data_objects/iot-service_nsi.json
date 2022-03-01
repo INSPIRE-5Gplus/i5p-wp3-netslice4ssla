@@ -1,0 +1,42 @@
+{
+    "id":  "c77966dd-addd-45b3-a179-049958f99bc9",
+    "name": "Demo1 5G IoT Broker",
+    "short-name": "5g_iotbroker",
+    "description": "NSI with 5G IoT Broker used in Demo1.",
+    "nst-ref": "bcaf6fa6-cf2c-4917-9c04-49f12e176fc8",
+    "instantiation-parameters": {
+        "location":[
+            {
+                "domain_id": "cttc"
+            },
+            {
+                "domain_id": "umu"
+            },
+            {
+                "domain_id": "mi"
+            }
+        ]
+    },
+    "security-sla": {
+        "id": "d4586d20-0ff6-48b7-bc60-0db1c8729b37",
+        "security-requirements":[
+            {"sloID": 1},
+            {"sloID": 2},
+            {"sloID": 3}
+        ],
+        "security-policies":[
+            {
+                "policy_id": "mspl_9f1a88b4fc67421b98de270d5a63d35a",
+                "name": "Channel_Protection"
+            },
+            {
+                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc9",
+                "name": "Network_traffic_analysis"
+            },
+            {
+                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc7",
+                "name": "DDos_attack_protection"
+            }
+        ]
+    }
+}

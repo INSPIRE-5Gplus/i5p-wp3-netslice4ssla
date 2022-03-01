@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This schema defines all the elements of the SLA Template that are related to security metrics.
+     Elements defined in this file are part of the main SPECS target namespace: 
+     http://www.specs-project.eu/resources/schemas/xml/SLAtemplate
+     whose alias is "specs".
+	 This file is INCLUDED in the main SLA template file.
+-->
+<xs:schema
+    targetNamespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	elementFormDefault="qualified">
+
+	
+	<xs:complexType name="security_metricsType">
+		<xs:sequence>			
+			<xs:element name="AbstractMetric" type="specs:AbstractMetricType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="Metric" type="specs:MetricType" minOccurs="0" maxOccurs="unbounded"/>				
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="referenceType">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="referenceId" type="xs:string" use="required" />
+	</xs:complexType>
+	
+	<!-- ********************** ABSTRACT METRIC *********************** -->
+	<!-- ************************************************************** -->
+			
+	<!-- An "Abstract Metric" is an abstract standard of measurement used to assess a property.
+		 It is instantiated by a Metric, which is a standard  of  measurement  that  defines  the  conditions  and  the  rules  for  
+		 performing  the measurement and for understanding the results of a measurement.  -->
+	<xs:complexType name="AbstractMetricType">
+		<xs:complexContent>
+			<xs:extension base="specs:referenceType">
+				<xs:sequence>				
+					<xs:element name="MetricDefinition" type="specs:MetricDefinitionType" minOccurs="1" maxOccurs="1" />
+					
+					<xs:element name="AbstractMetricRuleDefinition" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RuleDefinition" type="specs:ruleDefinitionType"  minOccurs="0" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					
+					<xs:element name="AbstractMetricParameterDefinition" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ParameterDefinition" type="specs:parameterDefinitionType" minOccurs="0" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					
+					<!-- an Abstract Metric used as a basis for the definition of this Abstract Metric -->
+					<xs:element name="UnderlyingAbstractMetric" type="specs:referenceType" minOccurs="0" maxOccurs="unbounded" />
+				
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>			
+	</xs:complexType>
+	
+	
+	<xs:complexType name="MetricDefinitionType">
+		<xs:sequence>
+			<!-- The unit that will be associated with the AbstractMetric. It may be a scalar unit or a list 
+			of elements if unit is qualitative -->
+			<xs:element name="unit" type="specs:unitType" minOccurs="1" maxOccurs="1"/> 
+			<!-- Information on how the measurement value can be interpreted and what sort of operations can be 
+			performed on it. -->
+			<xs:element name="scale" type="specs:scaleType" minOccurs="1" maxOccurs="1"/>
+			<!-- The function used to assemble the underlying AbstractMetrics. It is a description. -->
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<!-- formal description of the abstract metric -->
+			<xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<!-- additional information -->
+			<xs:element name="note" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+		
+	<!-- unit-related definitions -->
+	
+	<!-- unitType -->
+	<xs:complexType name="unitType">
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:element name="enumUnit" type="specs:enumType" /> <!-- enumeration -->
+			<xs:element name="intervalUnit" type="specs:intervalType"/> <!-- continue or discrete numeric interval -->
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
+	
+	<!-- enumeration type: the range of possible values is defined by the enumeration itself -->
+	<xs:complexType name="enumType">
+		<xs:sequence>
+			<xs:element name="enumItemsType" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>	
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="integer"/>
+						<xs:enumeration value="float"/>
+						<xs:enumeration value="string"/>
+						<xs:enumeration value="boolean"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="enumItems" minOccurs="1" maxOccurs="1"> 
+				<xs:complexType> 
+					<xs:sequence>
+						<xs:element name="enumItem" minOccurs="1" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+									<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>							 
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>		
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+			
+	
+	<!-- intervalType -->
+	<!-- This type is used for continue and discrete units for which it is necessary to specify the range of possible values.
+	The interval is characterized by a start (first element), a stop (last element), and a step (distance between two subsequent elements).
+	The start and stop fields represent the boundaries of the range of possible values. If any of them is left empty, the corresponding boundary
+	is considered unlimited. For discrete units it is possible to specify a step. If step is left empty, then the interval is considered as 
+	continue according to the intervalItemsType value.
+	 
+	(ex.1 start=1,stop=8,step=1 intervalItemsType=integer: specifies integer values 1,2,3,...,8
+	 ex.2 start=1,stop=8,step=0.5 intervalItemsType=float: specifies float values 1,1.5,2,2.5,...,8
+	 ex.3 start=1,stop="",step="" intervalItemsType=float: specifies float values >=1 ) -->
+	 
+	<xs:complexType name="intervalType">
+		<xs:sequence>
+			<xs:element name="intervalItemsType" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="integer"></xs:enumeration>
+						<xs:enumeration value="float"></xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:element name="intervalItemStart" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/> 
+			<xs:element name="intervalItemStop" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/> 
+			<xs:element name="intervalItemStep" type="xs:anySimpleType" minOccurs="1" maxOccurs="1"/>		
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<!-- scale-related definitions -->
+	<xs:complexType name="scaleType">
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:element name="Qualitative" type="specs:qualitativeValueType" />
+			<xs:element name="Quantitative" type="specs:quantitativeValueType" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:simpleType name="qualitativeValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Nominal"/>
+			<xs:enumeration value="Ordinal"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="quantitativeValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Interval"/>
+			<xs:enumeration value="Ratio"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- end of scale-related definitions -->
+	
+	<!-- ruleDefinition-related definitions -->
+	<xs:complexType name="ruleDefinitionType">
+		<xs:complexContent>
+			<xs:extension base="specs:referenceType">
+				<xs:sequence>
+					<xs:element name="definition" type="xs:string"/>
+					<xs:element name="note" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+	    </xs:complexContent>			
+	</xs:complexType>
+	
+	<!-- metricRule-related definitions -->
+	<xs:complexType name="metricRuleType">
+		<xs:sequence>
+			<xs:element name="ruleDefinitionId" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="note" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- end of rule-related definitions -->
+	
+	<!-- parameterDefinition-related definitions -->
+	<xs:complexType name="parameterDefinitionType" >	
+		<xs:complexContent>
+			<xs:extension base="specs:referenceType">
+				<xs:sequence>
+					<xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="1" />
+					<xs:element name="parameterType" type="specs:parameterTypeType" minOccurs="1" maxOccurs="1" /><!-- integer, float, string, list -->
+					<xs:element name="note" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+	    </xs:complexContent>				
+	</xs:complexType>
+	
+	<xs:simpleType name="parameterTypeType" >
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="integer"/>
+			<xs:enumeration value="float"/>
+			<xs:enumeration value="string"/>
+			<xs:enumeration value="list"/><!-- list is actually a string composed of several values separated by a comma, each having its own meaning -->
+		</xs:restriction>				
+	</xs:simpleType>
+	
+	<!-- metricParameter-related definitions -->
+	<xs:complexType name="metricParameterType" >
+		<xs:sequence>
+			<xs:element name="parameterDefinitionId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/><!-- in case of a list of elements, each element is put in a string with delimiter "," -->
+			<xs:element name="note" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- end of parameter-related definitions -->
+	
+	
+
+	
+	<!-- *************************** METRIC *************************** -->
+	<!-- ************************************************************** -->
+	<!-- Metric extends AbstractMetric -->
+	<xs:complexType name="MetricType">
+		<xs:complexContent>
+			<xs:extension base="specs:AbstractMetricType">
+				<xs:sequence>
+					<!-- reference to the abstract metric it implements = referenceId attribute of the primary abstract metric --> 
+					<xs:element name="PrimaryAbstractMetric" type="xs:string" minOccurs="0" maxOccurs="1" /> 
+					
+					<!-- metric concrete rules -->
+					<xs:element name="MetricRules" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="MetricRule" type="specs:metricRuleType" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					
+					<!-- metric concrete parameters -->
+					<xs:element name="MetricParameters" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="MetricParameter" type="specs:metricParameterType" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					
+					<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+			
+</xs:schema>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This schema defines all the elements of the SLA Template that are related 
+	to service description terms 
+	Elements defined in this file are part of the main 
+	SPECS target namespace: 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate 
+	whose alias is "specs". 
+	This file is INCLUDED in SLAtemplate.xsd and 
+	INCLUDES the schema for security capabilities defined in capability.xsd and
+	the schema for security metrics defined in security_metric.xsd
+	-->
+
+<xs:schema
+	targetNamespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	elementFormDefault="qualified">
+
+
+	<!-- includes capability.xsd, where other elements belonging to the "specs" namespace are defined --> 
+	<xs:include schemaLocation="capability.xsd"/> 
+	
+	<!-- includes security_metric.xsd, where other elements belonging to the "specs" namespace are defined --> 
+	<xs:include schemaLocation="security_metric.xsd"/>
+	
+	
+	<!-- ********** serviceDescription: serviceResources, capabilities and metrics -->	
+	<xs:complexType name="serviceDescriptionType" > 
+		<xs:sequence>
+			<!-- serviceResources -->
+			<xs:element name="serviceResources" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="resourcesProvider" minOccurs="1" maxOccurs="unbounded" >
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="VM" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+										 <xs:attribute name="appliance" type="xs:string"/>
+										 <xs:attribute name="hardware" type="xs:string"/>
+										 <xs:attribute name="description" type="xs:string"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								
+								<xs:attribute name="id" type="xs:string" use="required"/>
+								<xs:attribute name="name" type="xs:string" use="required"/>
+								<xs:attribute name="zone" type="xs:string" use="required"/>
+								<xs:attribute name="description" type="xs:string" use="required"/>
+								<xs:attribute name="maxAllowedVMs" type="xs:integer" use="optional"/><!-- set by each provider -->
+								<xs:attribute name="minRequiredVMs" type="xs:integer" use="optional"/><!-- filled in an offer -->
+								<xs:attribute name="label" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- capabilities -->
+			<xs:element  name="capabilities" minOccurs="1" maxOccurs="1"> 
+				<xs:complexType>
+					<xs:sequence>
+					    <!--  defined in capability.xsd  -->
+						<xs:element name="capability" type="specs:capabilityType" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+					
+				</xs:complexType>
+			 </xs:element>
+			 
+				
+			<!-- metrics -->
+			<xs:element  name="security_metrics" minOccurs="0" maxOccurs="1"> 
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Metric" type="specs:MetricType" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			 </xs:element>
+			 
+			
+		</xs:sequence>
+	</xs:complexType>
+	<!-- end of serviceDescription -->
+	
+	
+
+</xs:schema>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsag:AgreementOffer 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:wsag="http://schemas.ggf.org/graap/2007/03/ws-agreement" 
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" 
+	xmlns:nist="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist" 
+
+	xsi:schemaLocation=
+	"http://schemas.ggf.org/graap/2007/03/ws-agreement wsag.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate SLAtemplate.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist nist.xsd"
+    wsag:AgreementId="SECURE_5G_CORE_SSLA">
+	
+	<wsag:Name>Secure 5G IoT Communications</wsag:Name>
+	<wsag:Context>
+		<wsag:AgreementInitiator>INSPIRE_5G_plus_SERVICE_CUSTOMER</wsag:AgreementInitiator>
+		<wsag:AgreementResponder>INSPIRE_5G_plus_SERVICE_PROVIDER</wsag:AgreementResponder>
+		<wsag:ServiceProvider>AgreementResponder</wsag:ServiceProvider>
+		<wsag:ExpirationTime>2022-04-30T06:00:00</wsag:ExpirationTime>
+		<wsag:TemplateName>SECURE_5G_MOBILE_COMMS_SSLA_TEMPLATE</wsag:TemplateName>
+	</wsag:Context>
+
+	<wsag:Terms>
+		<wsag:All>
+			<wsag:ServiceDescriptionTerm wsag:Name="SECURE_5G_IOT_SUPERVISION" wsag:ServiceName="SECURE_5G_IOT_SUPERVISION">
+				<specs:serviceDescription>
+					<specs:serviceResources>
+						<specs:resourcesProvider id="ec2" name="cloud.inspire-5gplus.eu" zone="eu" description="" maxAllowedVMs="20" label="">
+							<specs:VM appliance="emi-65c3e382" hardware="m1.small" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="m1.medium" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="m1.large" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="c1.xlarge" description="mos-4.0.0-beta-006-x86_64" />
+						</specs:resourcesProvider>
+					</specs:serviceResources>
+
+					<specs:capabilities>
+						<specs:capability id="5G_IOT_SENSOR_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION" name="E2E traffic confidentiality, integrity and authenticity protection" description="Capability of ensuring data-in-motion confidentiality, integrity and authenticity between two or more communicating actors" mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
+								<specs:NISTsecurityControl id="NIST_SC_8" name="TRANSMISSION CONFIDENTIALITY AND INTEGRITY - SC-8" control_family="SC" securityControl="8" control_enhancement="0">
+									<nist:description>The information system protects the [Selection (one or more): confidentiality; integrity] of transmitted information.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_SC_12" name="CRYPTOGRAPHIC KEY ESTABLISHMENT AND MANAGEMENT - SC-12" control_family="SC" securityControl="12" control_enhancement="0">
+									<nist:description>The organization establishes and manages cryptographic keys for required cryptography employed within the information system in accordance with [Assignment: organization-defined requirements for key generation, distribution, storage, access, and destruction].</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_SC_13" name="CRYPTOGRAPHIC PROTECTION - SC-13" control_family="SC" securityControl="13" control_enhancement="0">
+									<nist:description>The information system implements [Assignment: organization-defined cryptographic uses and type of cryptography required for each use] in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_SC_17" name="PUBLIC KEY INFRASTRUCTURE CERTIFICATES - SC-17" control_family="SC" securityControl="17" control_enhancement="0">
+									<nist:description>The organization issues public key certificates under an [Assignment: organization-defined certificate policy] or obtains public key certificates from an approved service provider.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>	
+							</specs:controlFramework>
+						</specs:capability>
+						<specs:capability id="5G_IOT_SENSOR_DATA_ABAC" name="IOT SENSOR DATA - ATTRIBUTE-BASED - ACCESS CONTROL" description="Capability of enforcing access control on IoT sensor (transmitted) data based on various attributes (ABAC) of the data (sensor owner organization, sensor data type/topic/sensitivity level) and attributes of the user (IoT operator) accessing the data (organization, clearance, roles)" mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
+								<specs:NISTsecurityControl id="NIST_AC_3_13" name="ACCESS ENFORCEMENT - ATTRIBUTE-BASED ACCESS CONTROL - AC-3 (13)" control_family="AC" securityControl="3" control_enhancement="13">
+									<nist:description>Enforce attribute-based access control policy over defined subjects and objects and control access based upon [Assignment: organization-defined attributes to assume access permissions].
+										</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>	
+							</specs:controlFramework>
+						</specs:capability>
+					</specs:capabilities>
+					
+					<specs:security_metrics>
+
+						<specs:Metric
+                                name="Data Integrity"
+                                referenceId="DATA_INTEGRITY_LEVEL">
+                            <specs:MetricDefinition>
+                                <specs:unit name="">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>integer</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+												<specs:value>0</specs:value>
+												<specs:description>no data integrity protection</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>1</specs:value>
+												<specs:description>data integrity protected but not authenticity (no data origin authentication)</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>2</specs:value>
+												<specs:description>data authenticity protected (including integrity and data origin authentication)</specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Quantitative>Ratio</specs:Quantitative>
+                                </specs:scale>
+                                <specs:expression></specs:expression>
+                                <specs:definition>Level of data-in-motion integrity protection.
+                                </specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+						
+						<specs:Metric
+                                name="Data Confidentiality"
+                                referenceId="DATA_CONFIDENTIALITY_LEVEL">
+                            <specs:MetricDefinition>
+                                <specs:unit name="">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>integer</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+												<specs:value>0</specs:value>
+												<specs:description>no data confidentiality protection</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>1</specs:value>
+												<specs:description>data confidentiality protected without PFS (Perfect Forward Secrecy)</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>2</specs:value>
+												<specs:description>data confidentiality protected with PFS</specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Quantitative>Ratio</specs:Quantitative>
+                                </specs:scale>
+                                <specs:expression>
+                                </specs:expression>
+                                <specs:definition>Level of data-in-motion confidentiality protection.
+                                </specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+						<specs:Metric
+                                name="Cipher suite strength"
+                                referenceId="CIPHER_SUITE_STRENGTH">
+                            <specs:MetricDefinition>
+                                <specs:unit name="">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>integer</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+												<specs:value>2</specs:value>
+												<specs:description>Cryptographic algorithms used for data confidentiality and integrity protection are all valid post-quantum algorithms from ENISA Report on Post-Quantum Cryptography v2 (May 2021)</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>1</specs:value>
+												<specs:description>Cryptographic algorithms and key sizes used for data confidentiality and integrity protection are all approved for "future" use by ECRYPT CSA D5.4 'Algorithms, Key Size and Protocols Report' (2018)</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>0</specs:value>
+												<specs:description>Neither STRONG nor POST_QUANTUM (not matching either description).</specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Quantitative>Ratio</specs:Quantitative>
+                                </specs:scale>
+                                <specs:expression>
+                                </specs:expression>
+                                <specs:definition>Strength of the cipher suite.
+                                </specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+						<specs:Metric name="Data Access Control Granularity" referenceId="DATA_AC_GRANULARITY">
+                            <specs:MetricDefinition>
+                                <specs:unit name="">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>string</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+												<specs:value>NONE</specs:value>
+												<specs:description>Any user (data consumer) with valid authentication credentials may access the data.</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>IDENTITY_BASED</specs:value>
+												<specs:description>IBAC: Data access authorizations granted based on user (data consumer) identity only.</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>ROLE_BASED</specs:value>
+												<specs:description>RBAC: Data access authorizations granted based on user role only.</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>ATTRIBUTE_BASED</specs:value>
+												<specs:description>ABAC: Data access control policy based on any attribute of: the data itself and/or the user (data consumer) and/or the environment.</specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Quantitative>Ratio</specs:Quantitative>
+                                </specs:scale>
+                                <specs:expression></specs:expression>
+                                <specs:definition>Represents the level of granularity of the data access control policy, ABAC being the finer-grained.</specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+                    </specs:security_metrics>
+				</specs:serviceDescription>
+			</wsag:ServiceDescriptionTerm>
+
+			<wsag:ServiceReference wsag:Name="Secure_5G_Core_Endpoint" wsag:ServiceName="SECURE_5G_IOT_SUPERVISION">
+				<specs:endpoint>5G_CORE_ENDPOINT_TO_BE_DEFINED</specs:endpoint>
+			</wsag:ServiceReference>
+			
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION']" wsag:ServiceName="SECURE_5G_IOT_SUPERVISION">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="5G_traffic_integrity_level" wsag:Metric="DATA_INTEGRITY_LEVEL">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_8']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="5G_traffic_confidentiality_level" wsag:Metric="DATA_CONFIDENTIALITY_LEVEL">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_8']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="5G_traffic_protect_cipher_suite_strength" wsag:Metric="CIPHER_SUITE_STRENGTH">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_12']
+						| //specs:NISTsecurityControl[@id='NIST_SC_13']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='5G_IOT_SENSOR_DATA_ABAC']" wsag:ServiceName="SECURE_5G_IOT_SUPERVISION">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="5G_iot_data_ac_granularity" wsag:Metric="DATA_AC_GRANULARITY">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_AC_3_13']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+
+			<!-- -related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="5G_traffic_integrity_level_slo">
+                                <specs:MetricREF>5G_traffic_integrity_level</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="5G_traffic_confidentiality_level_slo">
+                                <specs:MetricREF>5G_traffic_confidentiality_level</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="5G_traffic_protect_cipher_suite_strength_slo">
+                                <specs:MetricREF>5G_traffic_protect_cipher_suite_strength</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_IOT_SENSOR_DATA_ABAC']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="5G_iot_data_ac_granularity_slo">
+                                <specs:MetricREF>5G_iot_data_ac_granularity</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>ATTRIBUTE_BASED</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+
+		</wsag:All>
+	</wsag:Terms>
+</wsag:AgreementOffer>

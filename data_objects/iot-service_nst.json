@@ -1,0 +1,25 @@
+{
+    "id":  "bcaf6fa6-cf2c-4917-9c04-49f12e176fc8",
+    "name": "5g_iot_nst",
+    "version": 0.2,
+    "vendor": "inspire5gplus",
+    "author": "inspire5gplus",
+    "SNSSAI_identifier": {
+        "slice-service-type": "mMTC",
+        "slice-differentiator": "bcaf6fa6-cf2c-4917-9c04-49f12e176fc8"
+    },
+    "quality-of-service": {},
+    "netslice-subnets": [
+        {
+            "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
+            "ref": "uuid",
+            "name": "IoTBroker",
+            "version": 0.2,
+            "vendor": "inspire5gplus",
+            "shared": "False"
+        }
+    ],
+    "netslice-connection-point":[],
+    "netslice-vld": [],
+    "netslicefgd": []
+}

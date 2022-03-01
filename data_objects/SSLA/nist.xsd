@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This schema defines all the elements of the SLA Template that are related 
+	to NIST security controls. Elements defined in this file are part of the 
+	nist namespace: http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist whose 
+	alias is "nist". This file is IMPORTED by the main SLA template file. -->
+<xs:schema targetNamespace="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:nist="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist"
+	elementFormDefault="qualified">
+
+	
+ <xs:complexType name="NISTcontrolType">
+  <xs:sequence>
+   <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+   <xs:element name="importance_weight" minOccurs="1" maxOccurs="1" >
+    <xs:simpleType>
+     <xs:restriction base="xs:string">
+      <xs:enumeration value="LOW"/>
+      <xs:enumeration value="MEDIUM"/>
+      <xs:enumeration value="HIGH"/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:element>
+   </xs:sequence> 
+  <xs:attribute name="name" type="xs:string" use="required" />
+  <xs:attribute name="id" type="xs:string" use="required" />
+  <xs:attribute name="control_enhancement" type="xs:integer"
+   use="required" />
+  <xs:attribute name="securityControl" type="xs:string"
+   use="required" />
+  <xs:attribute name="control_family" type="xs:string"
+   use="required" />
+  
+  
+ </xs:complexType>
+</xs:schema>

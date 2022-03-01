@@ -1,0 +1,264 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<ITResourceOrchestration id="mspl_9f1a88b4fc67421b98de270d5a63d35f" 
+	xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd">
+   <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc9" orchestrationID="mspl_9f1a88b4fc67421b98de270d5a63d35f" tenantID="1">
+      <configuration xsi:type="RuleSetConfiguration">
+         <capability xsi:type="FiveGSecuritySlice">
+            <Name>5G_Security_Slice</Name>
+            <sliceID>1548</sliceID>
+         </capability>
+         <configurationRule>
+            <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
+               <fiveGSecuritySliceActionType>DEPLOY</fiveGSecuritySliceActionType>
+               <securedService>
+                  <service id="62">
+                        <name>[5GService]</name>
+                        <type>5GVoIP</type>
+                  </service>
+                  <securityRequirements id="asb6723bdqw87hd">
+                     <sloID>1</sloID>
+                     <sloID>2</sloID>
+                     <sloID>3</sloID>
+                  </securityRequirements>
+                  <securityPolicies >
+                     <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
+                  </securityPolicies>
+               </securedService>
+            </configurationRuleAction>
+            <configurationCondition>
+               <isCNF>false</isCNF>
+            </configurationCondition>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
+         </configurationRule>
+         <Name>Conf0</Name>
+      </configuration>
+   </ITResource>
+   <!-- E2E Channel protection -->
+   <ITResource id="mspl_9f1a88b4fc67421b98de270d5a63d35a" tenantID="1" sliceID="1548">
+      <configuration xsi:type='RuleSetConfiguration'>
+          <capability>
+              <Name>Channel_Protection</Name>
+          </capability>
+          <configurationRule>
+              <configurationRuleAction xsi:type='DataProtectionAction'>
+                  <technology>None</technology>
+                  <technologyActionParameters>
+                      <technologyParameter xsi:type='GenericChannelProtectionTechnologyParameter'>
+                            <localEndpoint>[UE]</localEndpoint>
+                            <remoteEndpoint>[5GService]</remoteEndpoint>
+                      </technologyParameter>
+                  </technologyActionParameters>
+                  <technologyActionSecurityProperty xsi:type='Confidentiality'>
+                  <!--To fill with specific cypher suite for 5G -->
+                      <encryptionAlgorithm>AES-CBC</encryptionAlgorithm>
+                      <keySize>128</keySize>
+                      <mode>GCM</mode>
+                  </technologyActionSecurityProperty>
+                  <technologyActionSecurityProperty xsi:type='Integrity'>
+                      <integrityAlgorithm>SHA256</integrityAlgorithm>
+                  </technologyActionSecurityProperty>
+              </configurationRuleAction>
+              <configurationCondition xsi:type='DataProtectionCondition'>
+              <!-- here we could specify specific subet of traffic-->
+                  <isCNF>false</isCNF>
+              </configurationCondition>
+              <externalData xsi:type='Priority'>
+                  <value>0</value>
+              </externalData>
+              <Name>Rule0</Name>
+              <isCNF>false</isCNF>
+          </configurationRule>
+          <Name>Conf0</Name>
+      </configuration>
+      <priority>1000</priority>
+      <dependencies>
+      <dependency xsi:type='EventDependency'>
+      <eventID>VNF-READY</eventID>  
+            <configurationCondition xsi:type='FilteringConfigurationCondition'>
+              <isCNF>false</isCNF>
+              <packetFilterCondition>
+                <SourceAddress>[5GService]</SourceAddress>
+              </packetFilterCondition>
+            </configurationCondition>
+      </dependency>
+    </dependencies>
+      <enforcementRequirements>
+          <enforcementDomains>
+              <!-- RAN domain -->
+              <domainID>1</domainID>   
+               <!-- 5G core domain -->       
+              <domainID>2</domainID>
+          </enforcementDomains>
+      </enforcementRequirements>
+   </ITResource>
+   <!-- Monitoring for E2E channel protection -->
+   <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc9" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9">
+      <configuration xsi:type="RuleSetConfiguration">
+         <capability>
+            <Name>Network_traffic_analysis</Name>
+         </capability>
+         <configurationRule>
+            <configurationRuleAction xsi:type="MonitoringAction">
+               <monitoringActionType>SECURITY_ANALYSIS</monitoringActionType>
+            </configurationRuleAction>
+            <configurationCondition xsi:type="MonitoringConfigurationConditions">
+               <isCNF>false</isCNF>
+               <monitoringConfigurationCondition>
+                  <isCNF>true</isCNF>
+                  <packetFilterCondition>
+                     <SourceAddress>[UE]</SourceAddress>
+                     <DestinationAddress>[5GService]</DestinationAddress>
+                  </packetFilterCondition>
+                  <channelProtected>false</channelProtected>
+                  <maxCount>
+                      <isCNF>false</isCNF>
+                          <count>
+                          <measureUnit>BYTE</measureUnit>
+                          <value>1</value>
+                          <per>SECOND</per>
+                      </count>   
+                  </maxCount>
+               </monitoringConfigurationCondition>
+            </configurationCondition>
+            <externalData xsi:type="Priority">
+               <value>500</value>
+            </externalData>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
+         </configurationRule>
+         <Name>Conf0</Name>
+      </configuration>
+      <dependencies>
+      <dependency xsi:type='PolicyDependency'>
+            <configurationCondition xsi:type='PolicyDependencyCondition'>
+              <isCNF>false</isCNF>
+              <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
+              <status>ENFORCED</status>
+            </configurationCondition>
+      </dependency>
+    </dependencies>
+          <enforcementRequirements>
+          <enforcementDomains>
+               <!-- 5G core domain -->       
+              <domainID>2</domainID>
+          </enforcementDomains>
+      </enforcementRequirements>
+   </ITResource>
+   <!-- 5G Service abnormal behaviour protection?--> 
+   <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc7" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9">
+      <configuration xsi:type="RuleSetConfiguration">
+         <capability>
+            <Name>Network_traffic_analysis</Name>
+         </capability>
+         <configurationRule>
+            <configurationRuleAction xsi:type="MonitoringAction">
+               <monitoringActionType>BEHAVIORAL</monitoringActionType>
+               <aditionalMonitoringParameters>
+               <key>behaviour</key>
+               <value>5GControlTraffic</value>
+               </aditionalMonitoringParameters>
+            </configurationRuleAction>
+            <configurationCondition xsi:type="MonitoringConfigurationConditions">
+               <isCNF>false</isCNF>
+               <monitoringConfigurationCondition>
+                  <isCNF>true</isCNF>
+                  <packetFilterCondition>
+                     <SourceAddress>[5GService]</SourceAddress>
+                     <bidirectional>true</bidirectional>
+                  </packetFilterCondition>
+                  <maxCount>
+                      <isCNF>false</isCNF>
+                          <count>
+                          <measureUnit>BYTE</measureUnit>
+                          <value>1</value>
+                          <per>SECOND</per>
+                      </count>   
+                  </maxCount>
+               </monitoringConfigurationCondition>
+            </configurationCondition>
+            <externalData xsi:type="Priority">
+               <value>500</value>
+            </externalData>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
+         </configurationRule>
+         <Name>Conf0</Name>
+      </configuration>
+         <dependencies>
+      <dependency xsi:type='PolicyDependency'>
+            <configurationCondition xsi:type='PolicyDependencyCondition'>
+              <isCNF>false</isCNF>
+              <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
+              <status>ENFORCED</status>
+            </configurationCondition>
+      </dependency>
+    </dependencies>   
+      <enforcementRequirements>
+          <enforcementDomains>
+               <!-- 5G core domain -->       
+              <domainID>2</domainID>
+          </enforcementDomains>
+      </enforcementRequirements>
+   </ITResource>
+   <!-- Monitoring for 5G Service DDoS protection -->
+   <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc9" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9">
+      <configuration xsi:type="RuleSetConfiguration">
+         <capability>
+            <Name>DDos_attack_protection</Name>
+         </capability>
+         <configurationRule>
+            <configurationRuleAction xsi:type="MonitoringAction">
+               <monitoringActionType>SECURITY_ANALYSIS</monitoringActionType>
+            </configurationRuleAction>
+            <configurationCondition xsi:type="MonitoringConfigurationConditions">
+               <isCNF>false</isCNF>
+               <monitoringConfigurationCondition>
+                  <isCNF>true</isCNF>
+                  <packetFilterCondition>
+                     <SourceAddress>[UE]</SourceAddress>
+                     <DestinationAddress>[5GService]</DestinationAddress>
+                  </packetFilterCondition>
+                  <channelProtected>false</channelProtected>
+                  <maxCount>
+                      <isCNF>false</isCNF>
+                          <count>
+                          <measureUnit>MBYTE</measureUnit>
+                          <value>500</value>
+                          <per>SECOND</per>
+                      </count>   
+                  </maxCount>
+               </monitoringConfigurationCondition>
+            </configurationCondition>
+            <externalData xsi:type="Priority">
+               <value>500</value>
+            </externalData>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
+         </configurationRule>
+         <resolutionStrategy xsi:type="FMR" />
+         <Name>Conf0</Name>
+      </configuration>
+          <dependencies>
+      <dependency xsi:type='PolicyDependency'>
+            <configurationCondition xsi:type='PolicyDependencyCondition'>
+              <isCNF>false</isCNF>
+              <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
+              <status>ENFORCED</status>
+            </configurationCondition>
+      </dependency>
+    </dependencies>
+        <enforcementRequirements>
+          <enforcementDomains>
+               <!-- RAN domain -->       
+              <domainID>1</domainID>
+              <domainID>2</domainID>
+          </enforcementDomains>
+      </enforcementRequirements>
+   </ITResource>
+</ITResourceOrchestration>

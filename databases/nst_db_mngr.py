@@ -5,46 +5,8 @@ from threading import Lock
 
 from config_files import config_system as config_sys
 
-"""
-Example of E2E NST
-{
-    "name": "NST_name",
-    "version": 0.2,
-    "author": "inspire5gplus_cttc",
-    "vendor": "inspire5gplus",
-    "SNSSAI_identifier": {
-        "slice-service-type": "eMBB_URLLC_mMTC",
-        "slice-differentiator": "uuid"
-    },
-    "usageState": "IN_USE||NOT_IN_USE",
-    "slice-subnets": [
-        {
-            "id": "uuid",
-            "ref": "uuid",
-            "name": "nst_name",
-            "version": 0.2,
-            "vendor": "inspire5gplus",
-            "shared": "True||False",
-            "sla-name": "sla_name",
-            "sla-ref": "uuid"
-        }
-    ],
-    "slice_vld": [
-        {
-            "id": "uuid",
-            "name": "vld_name",
-            "mgmt-network": "True||False",
-            "type": "E-LINE||E-TREE||E-LAN",
-            "nsd-connection-point-ref": [
-            {
-                "subnet-ref": "nsd_name_ref",
-                "nsd-cp-ref": "nsd_cp_ref",
-                "ip-address": "10.0.37.13/24"
-            }
-        }
-    ]
-}
-"""
+#NOTE: example of e2E NST in ../data_objects/
+
 # mutex used to ensure a single access to the DB
 mutex_nts_db = Lock()
 

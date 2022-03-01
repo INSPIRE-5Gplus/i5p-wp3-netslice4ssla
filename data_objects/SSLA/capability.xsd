@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This schema defines all the elements of the SLA Template that are related 
+	to security capabilities. 
+	Elements defined in this file are part of the main 
+	SPECS target namespace: 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate 
+	whose alias is "specs". 
+	This file IMPORTS the schema for NIST security controls
+	and is INCLUDED in sdt.xsd, which defines service description terms -->
+
+<xs:schema
+	targetNamespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:nist="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist"
+	xmlns:ccm="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm"
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+	elementFormDefault="qualified">
+
+	
+	<!-- imports the elements belonging to the "nist" namespace, defined in 
+		nist.xsd -->
+	<xs:import schemaLocation="nist.xsd"
+		namespace="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist" />
+
+	<!-- imports the elements belonging to the "ccm" namespace, defined in 
+		ccm.xsd -->
+	<xs:import schemaLocation="ccm.xsd"
+		namespace="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm" />
+
+	
+	<!-- capability type -->
+	<xs:complexType name="capabilityType">
+		<xs:sequence>
+			<xs:element name="controlFramework" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:choice>
+						<xs:sequence minOccurs="1" maxOccurs="unbounded">
+						    <!--  defined in nist.xsd  -->
+							<xs:element name="NISTsecurityControl" type="nist:NISTcontrolType" minOccurs="1" maxOccurs="unbounded" />
+						</xs:sequence>
+						<xs:sequence minOccurs="1" maxOccurs="unbounded">
+							<!--  defined in ccm.xsd  -->
+							<xs:element name="CCMsecurityControl" type="ccm:CCMcontrolType" minOccurs="1" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:choice>
+				<xs:attribute name="id"  type="xs:string" use="required"/>
+				<xs:attribute name="frameworkName"  type="xs:string" use="required"/>
+				</xs:complexType>				
+			</xs:element> 
+		</xs:sequence> 
+		
+		<xs:attribute name="id" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="description" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="mandatory" type="xs:string" use="required"/><!-- yes/no -->
+	</xs:complexType>
+		
+	
+		
+	<!-- end of capability-related declarations -->
+	
+
+</xs:schema>
