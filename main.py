@@ -83,11 +83,6 @@ def nst_remove(nst_uuid):
   return response[0], response[1]
 
 ########################################### NSI API #################################################
-"""
-{
-  
-}
-"""
 # Triggers a Sec_NSI deployment
 @app.route('/sec_nsi', methods=['POST'])
 def deploy_sec_nsi():

@@ -25,11 +25,13 @@
             "name": "5GService-5GVoIP",
             "version": 0.2,
             "vendor": "inspire5gplus",
-            "shared": "False"
+            "shared": "False",
+            "deploymnet_policy": "mspl_eef61525d1594412bdcef34a4bfb7fc9"
         }
     ],
     "security-sla": {
         "id": "d4586d20-0ff6-48b7-bc60-0db1c8729b37",
+        "name": "Secure 5G Mobile Communications",
         "security-requirements":[
             {"sloID": 1},
             {"sloID": 2},
@@ -45,11 +47,11 @@
                 "name": "Network_traffic_analysis"
             },
             {
-                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc7",
+                "policy_id": "mspl_aef61525d1594412bdcef34a4bfb7fc7",
                 "name": "Network_traffic_analysis"
             },
             {
-                "policy_id": "mspl_eef61525d1594412bdcef34a4bfb7fc7",
+                "policy_id": "mspl_zzf61525d1594412bdcef34a4bfb7fc7",
                 "name": "DDos_attack_protection"
             }
         ]

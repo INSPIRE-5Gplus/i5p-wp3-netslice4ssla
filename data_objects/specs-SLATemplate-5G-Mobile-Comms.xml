@@ -97,7 +97,6 @@
 					
 					<specs:security_metrics>
 						<!-- Each metric includes the abstract metric definition and the concrete metric -->
-
 						<!-- security metrics for anti-DDoS -->
 						<specs:Metric name="Service Uptime" referenceId="SERVICE_UPTIME">
 							<specs:MetricDefinition>
@@ -118,7 +117,6 @@
 							</specs:MetricDefinition>
 						</specs:Metric>
 
-						
 						<specs:Metric name="Intrusion (DDoS) Detection Scan Frequency" referenceId="INTRUSION_SCAN_FREQ">
 							<specs:MetricDefinition>
 								<specs:unit name="seconds">
@@ -303,9 +301,7 @@
 							</specs:MetricDefinition>
 						</specs:Metric>
 
-						<specs:Metric
-                                name="Data Integrity"
-                                referenceId="DATA_INTEGRITY_LEVEL">
+						<specs:Metric name="Data Integrity" referenceId="DATA_INTEGRITY_LEVEL">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -336,9 +332,7 @@
                             </specs:MetricDefinition>
                         </specs:Metric>
 						
-						<specs:Metric
-                                name="Data Confidentiality"
-                                referenceId="DATA_CONFIDENTIALITY_LEVEL">
+						<specs:Metric name="Data Confidentiality" referenceId="DATA_CONFIDENTIALITY_LEVEL">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -370,9 +364,7 @@
                             </specs:MetricDefinition>
                         </specs:Metric>
 
-						<specs:Metric
-                                name="Cipher suite strength"
-                                referenceId="CIPHER_SUITE_STRENGTH">
+						<specs:Metric name="Cipher suite strength" referenceId="CIPHER_SUITE_STRENGTH">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -421,8 +413,7 @@
 						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_8']</wsag:Location>
 					</wsag:Variable>
 					<wsag:Variable wsag:Name="5G_traffic_protect_cipher_suite_strength" wsag:Metric="CIPHER_SUITE_STRENGTH">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_12']
-						| //specs:NISTsecurityControl[@id='NIST_SC_13']</wsag:Location>
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_12'] | //specs:NISTsecurityControl[@id='NIST_SC_13']</wsag:Location>
 					</wsag:Variable>
 				</wsag:VariableSet>
 			</wsag:ServiceProperties>
@@ -476,7 +467,6 @@
 
 			<!-- -related SLOs -->
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>

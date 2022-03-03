@@ -14,8 +14,8 @@
                <fiveGSecuritySliceActionType>DEPLOY</fiveGSecuritySliceActionType>
                <securedService>
                   <service id="62">
-                        <name>[5GService]</name>
-                        <type>5GVoIP</type>
+                     <name>[5GService]</name>
+                     <type>5GVoIP</type>
                   </service>
                   <securityRequirements id="asb6723bdqw87hd">
                      <sloID>1</sloID>
