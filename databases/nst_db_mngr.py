@@ -17,7 +17,7 @@ def add_nst(nst_json):
         mutex_nts_db.acquire()
         # TODO: verify if element (uuid) exists before adding.
         # adds the new element into the file (creates file if it doesn't exist
-        nst_element = str(nst_json["uuid"]) + " - " + json.dumps(nst_json) + "\n"
+        nst_element = str(nst_json["id"]) + " - " + json.dumps(nst_json) + "\n"
         with open('./databases/nst_list.txt', 'a') as nst_file:
             nst_file.write(nst_element)
         msg = 'E2E NST element added and saved.'

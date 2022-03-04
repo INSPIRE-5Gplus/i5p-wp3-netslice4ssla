@@ -2,6 +2,8 @@
 
 import os, sys, logging, json, argparse, time, datetime, requests, uuid
 
+from config_files import config_system as config_sys
+
 # POLICY FRAMEWORK EMULATED
 
 CONTENT_HEADER = {'Content-Type':'application/xml'}
@@ -33,22 +35,31 @@ policies_list = [
 # Retrieve policies based on the ssla capabilities
 # NOTE if two capabilities have the same policy associated, that policy is returned once associated to both cpabilities
 def get_policies_by_sla(ssla_caps):
+    config_sys.logger.info('POLICY-FRAMEWORK: Retrieving Policis associated to the SSLA capabilities requested.')
     temp_list = []
     selected_policies = []
+    config_sys.logger.info('POLICY-FRAMEWORK: policies_list' + str(policies_list))
     for policy_item in policies_list:
         for cap_item in ssla_caps:
             if cap_item in policy_item["ssla-capability"]:
                 temp_list.append(policy_item)
 
+    config_sys.logger.info('POLICY-FRAMEWORK: temp_list' + str(temp_list))
     for temp_item in temp_list:
         if selected_policies == []:
             selected_policies.append(temp_item)
         else:
+            matched_policy = False
             for pol_ref_item in selected_policies:
                 if (temp_item["id"] == pol_ref_item["id"] and temp_item["monitoring-id"] == pol_ref_item["monitoring-id"]):
                     updated_cap_list = pol_ref_item["ssla-capability"]
                     updated_cap_list.append(temp_item["ssla-capability"][0])
                     pol_ref_item["ssla-capability"] = updated_cap_list
+                    matched_policy = True
+            
+            if matched_policy == False:
+                selected_policies.append(temp_item)
         
+    config_sys.logger.info('POLICY-FRAMEWORK: selected_policies' + str(selected_policies))
     return selected_policies, 201
 

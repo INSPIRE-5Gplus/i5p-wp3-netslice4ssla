@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3.4
 
 import os, sys, logging, json, argparse, time, datetime, requests, uuid
-import xml.dom.minidom
+from xml.dom import minidom 
 
 from config_files import config_system as config_sys
 from databases import nst_db_mngr
@@ -42,83 +42,83 @@ from mappers import pf_mapper as e2e_pf
   }
 """
 def deploy_sec_nsi(request_json, ssla_object):
-    print("Deploying Secured NSI...")
+  config_sys.logger.info('NSI-MNGR: Deploying E2E NST: ' + str(request_json["nst"]["name"])+ ' with SSLA ID: '+ str(request_json['ssla_id']))
 
-    # Stores received E2E NST
-    response = nst_db_mngr.add_nst(request_json)
+  # Stores received E2E NST
+  response = nst_db_mngr.add_nst(request_json["nst"])
 
-    # Prepares Sec_NSI data object structure
-    sec_nsi = {}
-    sec_nsi["id"] = str(uuid.uuid4())
-    sec_nsi["name"] = request_json["name"]
-    sec_nsi["description"] = request_json["description"]
-    sec_nsi["nst-ref"] = request_json["id"]
-    sec_nsi["status"] = "INSTANTIATING"
+  # Prepares Sec_NSI data object structure
+  sec_nsi = {}
+  sec_nsi["id"] = str(uuid.uuid4())
+  sec_nsi["name"] = request_json["nst"]["name"]
+  sec_nsi["description"] = request_json["nst"]["description"]
+  sec_nsi["nst-ref"] = request_json["nst"]["id"]
+  sec_nsi["status"] = "INSTANTIATING"
 
-    # Copies the slice-subnets information
-    #response = nst_db_mngr.get_nst(request_json["id"])
-    #sec_nsi["netslice-subnets"] = response[0]["msg"]["netslice-subnets"]
-    sec_nsi["netslice-subnets"] = request_json["netslice-subnets"]
+  # Copies the slice-subnets information
+  #response = nst_db_mngr.get_nst(request_json["id"])
+  #sec_nsi["netslice-subnets"] = response[0]["msg"]["netslice-subnets"]
+  sec_nsi["netslice-subnets"] = request_json["nst"]["netslice-subnets"]
 
-    # Copies the info about the QoS
-    sec_nsi["quality-of-service"] = request_json["quality-of-service"]
-    
-    # TODO: obtain the SMDs where to apply the slice (from Data Services)
-    location_smd = []
-    sec_nsi["location-smd"] = location_smd
-    
-    # obtain the deployment MSPL policy ID
-    mspl_id = str(uuid.uuid4())
-    mspl_id = mspl_id.replace('-', '')
-    mspl_id = "mspl_"+mspl_id
-    sec_nsi["deployment-policy"] = mspl_id
-    
-    #add all the policies associated to the SSLA.
-    ssla_info = {}
-    ssla_info["id"] = request_json['ssla_id']
-    ssla_name = ssla_object.getElementsByTagName("wsag:Name")[0]
-    ssla_info["name"] = str(ssla_name.firstChild.data)
-    
-    #TODO: to process and obtain the sloIDs for the security-requirements
-    ssla_info["security-requirements"] = []
+  # Copies the info about the QoS
+  sec_nsi["quality-of-service"] = request_json["nst"]["quality-of-service"]
+  
+  # TODO: obtain the SMDs where to apply the slice (from Data Services)
+  location_smd = []
+  sec_nsi["location-smd"] = location_smd
+  
+  # obtain the deployment MSPL policy ID
+  mspl_id = str(uuid.uuid4())
+  mspl_id = mspl_id.replace('-', '')
+  mspl_id = "mspl_"+mspl_id
+  sec_nsi["deployment-policy"] = mspl_id
+  
+  #add all the policies associated to the SSLA.
+  ssla_info = {}
+  ssla_info["id"] = request_json['ssla_id']
+  ssla_name = ssla_object.getElementsByTagName("wsag:Name")[0]
+  ssla_info["name"] = str(ssla_name.firstChild.data)
+  
+  #TODO: to process and obtain the sloIDs for the security-requirements
+  ssla_info["security-requirements"] = []
 
-    # obtains the policies to apply based on the SSLA capabilites requested
-    capabilities_list = ssla_object.getElementsByTagName("specs:capability")
-    caps_list = []
-    for capability in capabilities_list:
-      cap_id = capability.getAttribute("id")
-      caps_list.append(cap_id)
-    response = e2e_pf.get_policies_by_sla(caps_list)
-    policies_list = response[0]
-    
-    # prepares the policies info to store it in the slice instance object
-    mapped_policies = []
-    for pol_item in policies_list:
-      pol = {}
-      mon_pol = {}
-      pol["ssla-capability"] = pol_item["ssla-capability"]
-      pol["policy-id"] = pol_item["id"]
-      pol["name"] = pol_item["name"]
-      mapped_policies.append(pol)
-      mon_pol["ssla-capability"] = pol_item["ssla-capability"]
-      mon_pol["policy-id"] = pol_item["monitoring-id"]
-      mon_pol["name"] = pol_item["monitoring-name"]
-      mapped_policies.append(mon_pol)
-    ssla_info["mapped-policies"] = mapped_policies
-    sec_nsi["security-sla"] = ssla_info
-    
-    print(str(sec_nsi))
+  # obtains the policies to apply based on the SSLA capabilites requested
+  capabilities_list = ssla_object.getElementsByTagName("specs:capability")
+  caps_list = []
+  for capability in capabilities_list:
+    cap_id = capability.getAttribute("id")
+    caps_list.append(cap_id)
+    config_sys.logger.info('NSI-MNGR: CAPABILITY ID FORM SSLA:' + str(cap_id))
+  response = e2e_pf.get_policies_by_sla(caps_list)
+  policies_list = response[0]
+  
+  # prepares the policies info to store it in the slice instance object
+  mapped_policies = []
+  for pol_item in policies_list:
+    pol = {}
+    mon_pol = {}
+    pol["ssla-capability"] = pol_item["ssla-capability"]
+    pol["policy-id"] = pol_item["id"]
+    pol["name"] = pol_item["name"]
+    mapped_policies.append(pol)
+    mon_pol["ssla-capability"] = pol_item["ssla-capability"]
+    mon_pol["policy-id"] = pol_item["monitoring-id"]
+    mon_pol["name"] = pol_item["monitoring-name"]
+    mapped_policies.append(mon_pol)
+  ssla_info["mapped-policies"] = mapped_policies
+  sec_nsi["security-sla"] = ssla_info
+  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
+ 
+  # saves NSI into the Database
+  #response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
+  #if response[1] != 200:
+  #    config_sys.logger.error(response[0])
 
-    # TODO: Prepares MSPL (XML format) data request to deploy
-      # calls functions in slice2mspl
-    
-    # saves NSI into the Database
-    #response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
-    #if response[1] != 200:
-    #    config_sys.logger.error(response[0])
+  # TODO: Prepares MSPL (XML format) data request to deploy
+    # calls functions in slice2mspl
 
-    # TODO: Validates policy is applied = Sec_NSI is deployed
-    config_sys.logger.info(response[0])
+  # TODO: Validates policy is applied = Sec_NSI is deployed
+  config_sys.logger.info(response[0])
 
 def terminate_sec_nsi(sec_nsi_uuid):
     config_sys.logger.info('GET SEC NSI')
