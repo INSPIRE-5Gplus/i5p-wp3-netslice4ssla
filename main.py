@@ -88,12 +88,17 @@ def nst_remove(nst_uuid):
 def deploy_sec_nsi():
   config_sys.logger.info('Request to deploy Sec NSI received.')
   incoming_request =  request.json
-  #TODO: Validate selected NST and SSLA existance
-  config_sys.executor.submit(nsi_mngr.deploy_sec_nsi, incoming_request)
-  
-  response = {}
-  response['log'] = "Request accepted, setting up the E2E Network Slice."
-  return response, 200
+  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])
+  request_response = {}
+  if response[1] == 201:
+    config_sys.executor.submit(nsi_mngr.deploy_sec_nsi, incoming_request, response[0])
+    
+    response['log'] = "Request accepted, setting up the E2E Network Slice."
+    code = 200
+  else:
+    response['log'] = "Request NOT ACCEPTED, there is NO SSLA with this ID."
+    code = 404
+  return request_response, code
 
 # GETS all the Sec_NSI
 @app.route('/sec_nsi', methods=['GET'])

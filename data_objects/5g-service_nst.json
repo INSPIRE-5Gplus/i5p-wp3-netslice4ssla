@@ -1,10 +1,10 @@
-# E2E NSTº
 {
     "id":  "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
     "name": "5g_voip_service_nst",
     "version": 0.2,
     "vendor": "inspire5gplus",
     "author": "inspire5gplus",
+    "description": "E2E NST Description service",
     "SNSSAI_identifier": {
         "slice-service-type": "eMBB",
         "slice-differentiator": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67"

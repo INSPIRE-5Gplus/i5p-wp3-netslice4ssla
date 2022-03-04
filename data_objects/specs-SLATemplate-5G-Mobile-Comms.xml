@@ -507,7 +507,6 @@
 			</wsag:GuaranteeTerm>
 			
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_SYSTEM_ANTI_DDOS_PROTECTION']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
@@ -588,7 +587,6 @@
 			</wsag:GuaranteeTerm>
 
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='DETECTION_OF_CRYPTOCURRENCY_MINING_IN_5G_TRAFFIC']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>

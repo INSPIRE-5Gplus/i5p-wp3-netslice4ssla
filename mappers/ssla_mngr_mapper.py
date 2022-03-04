@@ -1,8 +1,11 @@
 #!/usr/local/bin/python3.4
 
 import os, sys, logging, json, argparse, time, datetime, requests, uuid
+import xml.dom.minidom
 
 CONTENT_HEADER = {'Content-Type':'application/xml'}
+
+# SSLA MANAGER EMULATED
 
 ## Security Service Level Agreement Manager API Options ##
 # Create SSLA (POST /sla) --> # NOTE: NOT NECESSARY
@@ -25,6 +28,7 @@ def get_ssla_list():
 
 # Retrieve SSLA (GET /sla/{slaId})
 def get_ssla(ssla_id):
+    """
     ssla_mngr_ip = os.environ.get("SSLA_IP")
     ssla_mngr_port = os.environ.get("SSLA_PORT")
     url = "http://"+ str(ssla_mngr_ip) + ":" + str(ssla_mngr_port) +"/sla/"+str(ssla_id)
@@ -34,5 +38,14 @@ def get_ssla(ssla_id):
     else:
         #TODO: process the response.text from XML to JSON
         ssla_json = []
-
     return ssla_json, 201
+    """
+    if ssla_id == "Secure 5G Mobile Communications":
+        ssla_doc = xml.doc.minidom.parse("./data_objects/specs-SLATemplate-5G-Mobile-Comms.xml")
+    elif ssla_id == "Secure 5G IoT Communications":
+        ssla_doc = xml.doc.minidom.parse("./data_objects/specs-SLATemplate-5G-IoT-Comms.xml")
+    else:
+        # TODO: ERROR MANAGEMENT
+        pass
+    return ssla_doc, 201
+
