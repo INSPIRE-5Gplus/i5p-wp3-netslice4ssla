@@ -27,7 +27,6 @@ from mappers import pf_mapper as e2e_pf
       "netslice-subnets": [
         {
           "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
-          "ref": "uuid",
           "name": "5GService-5GVoIP",
           "version": 0.2,
           "vendor": "inspire5gplus",
@@ -110,12 +109,12 @@ def deploy_sec_nsi(request_json, ssla_object):
   config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
  
   # saves NSI into the Database
-  #response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
-  #if response[1] != 200:
-  #    config_sys.logger.error(response[0])
+  response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
+  if response[1] != 200:
+    config_sys.logger.error(response[0])
 
   # TODO: Prepares MSPL (XML format) data request to deploy
-    # calls functions in slice2mspl
+  slice2mspl.generateMSPL(sec_nsi)
 
   # TODO: Validates policy is applied = Sec_NSI is deployed
   config_sys.logger.info(response[0])

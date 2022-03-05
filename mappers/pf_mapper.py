@@ -38,13 +38,13 @@ def get_policies_by_sla(ssla_caps):
     config_sys.logger.info('POLICY-FRAMEWORK: Retrieving Policis associated to the SSLA capabilities requested.')
     temp_list = []
     selected_policies = []
-    config_sys.logger.info('POLICY-FRAMEWORK: policies_list' + str(policies_list))
+    #config_sys.logger.info('POLICY-FRAMEWORK: policies_list' + str(policies_list))
     for policy_item in policies_list:
         for cap_item in ssla_caps:
             if cap_item in policy_item["ssla-capability"]:
                 temp_list.append(policy_item)
 
-    config_sys.logger.info('POLICY-FRAMEWORK: temp_list' + str(temp_list))
+    #config_sys.logger.info('POLICY-FRAMEWORK: temp_list' + str(temp_list))
     for temp_item in temp_list:
         if selected_policies == []:
             selected_policies.append(temp_item)
@@ -60,6 +60,6 @@ def get_policies_by_sla(ssla_caps):
             if matched_policy == False:
                 selected_policies.append(temp_item)
         
-    config_sys.logger.info('POLICY-FRAMEWORK: selected_policies' + str(selected_policies))
+    #config_sys.logger.info('POLICY-FRAMEWORK: selected_policies' + str(selected_policies))
     return selected_policies, 201
 

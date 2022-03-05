@@ -16,7 +16,8 @@
         {
             "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
             "ref": "uuid",
-            "name": "5GService-5GVoIP",
+            "name": "5GService",
+            "type": "5GVoIP",
             "version": 0.2,
             "vendor": "inspire5gplus",
             "shared": "False"

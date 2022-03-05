@@ -1,14 +1,14 @@
 {
     "id":  "1dcef046-3838-4c31-8f8e-776fcf4acf8c",
-    "name": "Demo1 5G VoIP Service",
+    "name": "5GVoIP-SecSlice",
     "description": "NSI with 5G VoIP Service used in Demo1.",
     "nst-ref": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
     "status": "INSTANTIATING/INSTANTIATED/TERMINATING/TERMINATED/ERROR",
     "netslice-subnets": [
         {
             "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
-            "ref": "uuid",
-            "name": "5GService-5GVoIP",
+            "name": "5GService",
+            "type": "5GVoIP",
             "version": 0.2,
             "vendor": "inspire5gplus",
             "shared": "False"

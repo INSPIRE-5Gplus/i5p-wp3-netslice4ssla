@@ -9,38 +9,6 @@ from config_files import config_system as config_sys
 # All the information is stored in a .txt file to keep their status in case the service fales.
 # Withi the .txt, each line is a secure netslie object and it follows this structure:
 # uuid - "string with the secured netslice in json format"
-"""
-EXAMPLE OF SECURE E2E NSI
-#TODO: to improve
-{
-    "uuid": "uuid4",
-    "name": "sec_nsi_inspire"
-    "status": "DEPLOYING/DEPLOYED/TERMINATING/TERMINATED/ERROR"
-    "nst-ref":[
-        {
-            "uuid": "uuid4",
-            "name": "nst_inspire",
-            "version": "2.4"
-        }
-    ],
-    "ssla-ref":[
-        {
-            "uuid": "uuid4",
-            "name": "ssla_inspire"
-        }
-    ],
-    "sec-mngmnt-domains-ref:[
-        {
-            "uuid": "uuid4",
-            "name": "cttc-smd"
-        },
-        {
-            "uuid": "uuid4",
-            "name": "umu-smd"
-        }
-    ]
-}
-"""
 
 # mutex used to ensure a single access to the DB
 mutex_secnsi_db = Lock()
@@ -52,7 +20,7 @@ def add_sec_nsi(sec_nsi_json):
         mutex_secnsi_db.acquire()
         # TODO: verify if element (uuid) exists before adding.
         # adds the new element into the file (creates file if it doesn't exist
-        sec_nsi_element = str(sec_nsi_json["uuid"]) + " - " + json.dumps(sec_nsi_json) + "\n"
+        sec_nsi_element = str(sec_nsi_json["id"]) + " - " + json.dumps(sec_nsi_json) + "\n"
         with open('./databases/sec_nsi_list.txt', 'a') as sec_nsi_file:
             sec_nsi_file.write(sec_nsi_element)
         msg = 'SEC_NSI element added and saved.'
