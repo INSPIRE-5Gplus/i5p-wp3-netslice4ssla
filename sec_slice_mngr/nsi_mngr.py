@@ -108,7 +108,6 @@ def deploy_sec_nsi(request_json, ssla_object):
     return so_response, 201
   """
 
-
   # TODO: Validates policy is applied = Sec_NSI is deployed
   if so_response == 200:
     sec_nsi["status"] = "INSTANTIATING"
