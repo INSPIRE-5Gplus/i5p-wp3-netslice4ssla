@@ -9,37 +9,7 @@ from databases import secnsi_db_mngr
 from sec_slice_mngr import slice2mspl
 from mappers import pf_mapper as e2e_pf
 
-"""
-  {
-    "nst": {
-      "id":  "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
-      "name": "5g_voip_service_nst",
-      "version": 0.2,
-      "vendor": "inspire5gplus",
-      "author": "inspire5gplus",
-      "SNSSAI_identifier": {
-        "slice-service-type": "eMBB",
-        "slice-differentiator": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67"
-      },
-      "quality-of-service": {
-        "availability": "99.9"
-      },
-      "netslice-subnets": [
-        {
-          "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
-          "name": "5GService-5GVoIP",
-          "version": 0.2,
-          "vendor": "inspire5gplus",
-          "shared": "False"
-        }
-      ],
-      "netslice-connection-point":[],
-      "netslice-vld": [],
-      "netslicefgd": []
-    },
-    "ssla_id": "uuid"
-  }
-"""
+# manages the process to stro the received NST, generate the NSI and MSPL objects associated.
 def deploy_sec_nsi(request_json, ssla_object):
   config_sys.logger.info('NSI-MNGR: Deploying E2E NST: ' + str(request_json["nst"]["name"])+ ' with SSLA ID: '+ str(request_json['ssla_id']))
 
@@ -77,8 +47,14 @@ def deploy_sec_nsi(request_json, ssla_object):
   ssla_name = ssla_object.getElementsByTagName("wsag:Name")[0]
   ssla_info["name"] = str(ssla_name.firstChild.data)
   
-  #TODO: to process and obtain the sloIDs for the security-requirements
-  ssla_info["security-requirements"] = []
+  #to process and obtain the sloIDs for the security-requirements
+  slo_list = ssla_object.getElementsByTagName("specs:SLO")
+  sec_req = []
+  for slo_item in slo_list:
+    slo_json = {}
+    slo_json["sloID"] = slo_item.getAttribute("SLO_ID")
+    sec_req.append(slo_json)
+  ssla_info["security-requirements"] = sec_req
 
   # obtains the policies to apply based on the SSLA capabilites requested
   capabilities_list = ssla_object.getElementsByTagName("specs:capability")
@@ -117,6 +93,7 @@ def deploy_sec_nsi(request_json, ssla_object):
   config_sys.logger.info('NSI-MNGR: MSPL READY FOR SO:' + str(xml_tree))
   # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
   so_response =200
+
 
   # TODO: Validates policy is applied = Sec_NSI is deployed
   if so_response == 200:
