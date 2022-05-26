@@ -79,6 +79,8 @@ def generateMSPL(e2e_nsi_json) :
     tree = ET.ElementTree(indent(root))
     tree.write('MSPL_test.xml', xml_declaration=True, encoding='utf-8')
 
+    return tree
+
 
 #pretty print method
 def indent(elem, level=0):

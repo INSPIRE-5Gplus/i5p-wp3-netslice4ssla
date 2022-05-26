@@ -43,16 +43,19 @@ def get_ssla(ssla_id):
             ssla_json = []
         return ssla_json, 201
     """
+    config_sys.logger.info('SSLA: A')
     if ssla_id == "Secure 5G Mobile Communications":
+        config_sys.logger.info('SSLA: B')
         ssla_doc = minidom.parse("./data_objects/specs-SLATemplate-5G-Mobile-Comms.xml")
         code = 201
     elif ssla_id == "Secure 5G IoT Communications":
+        config_sys.logger.info('SSLA: C')
         ssla_doc = minidom.parse("./data_objects/specs-SLATemplate-5G-IoT-Comms.xml")
         code = 201
     else:
         # TODO: ERROR MANAGEMENT
         ssla_doc = ""
         code = 404
-    
+    config_sys.logger.info('SSLA: D')
     return ssla_doc, code
 

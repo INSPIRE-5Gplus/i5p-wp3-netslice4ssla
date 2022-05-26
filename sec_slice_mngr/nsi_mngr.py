@@ -52,7 +52,6 @@ def deploy_sec_nsi(request_json, ssla_object):
   sec_nsi["name"] = request_json["nst"]["name"]
   sec_nsi["description"] = request_json["nst"]["description"]
   sec_nsi["nst-ref"] = request_json["nst"]["id"]
-  sec_nsi["status"] = "INSTANTIATING"
 
   # Copies the slice-subnets information
   #response = nst_db_mngr.get_nst(request_json["id"])
@@ -94,8 +93,8 @@ def deploy_sec_nsi(request_json, ssla_object):
   # prepares the policies info to store it in the slice instance object
   mapped_policies = []
   for pol_item in policies_list:
-    pol = {}
-    mon_pol = {}
+    pol = {}        # policy object
+    mon_pol = {}    # monitoring policy
     pol["ssla-capability"] = pol_item["ssla-capability"]
     pol["policy-id"] = pol_item["id"]
     pol["name"] = pol_item["name"]
@@ -114,10 +113,23 @@ def deploy_sec_nsi(request_json, ssla_object):
     config_sys.logger.error(response[0])
 
   # TODO: Prepares MSPL (XML format) data request to deploy
-  slice2mspl.generateMSPL(sec_nsi)
+  xml_tree = slice2mspl.generateMSPL(sec_nsi)
+  config_sys.logger.info('NSI-MNGR: MSPL READY FOR SO:' + str(xml_tree))
+  # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
+  so_response =200
 
   # TODO: Validates policy is applied = Sec_NSI is deployed
+  if so_response == 200:
+    sec_nsi["status"] = "INSTANTIATING"
+  else:
+    sec_nsi["status"] = "ERROR"
+  response = update_sec_nsi(sec_nsi['id'], sec_nsi)
   config_sys.logger.info(response[0])
+
+def update_sec_nsi(nsi_json):
+  # TODO: nsi_json (nsi_uuid, subnet_uuid, status)
+  # TODO: take nsi_uuid to get it from DB, look for the slice-subnet based with the subnet_uuid) & update status
+  pass
 
 def terminate_sec_nsi(sec_nsi_uuid):
     config_sys.logger.info('GET SEC NSI')
