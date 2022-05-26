@@ -89,7 +89,6 @@ def deploy_sec_nsi():
   config_sys.logger.info('MAIN: Request to deploy Sec NSI received.')
   incoming_request =  request.json
   response = ssla_mngr.get_ssla(incoming_request['ssla_id'])
-  config_sys.logger.info('MAIN: A')
   request_response = {}
   if response[1] == 201:
     config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))

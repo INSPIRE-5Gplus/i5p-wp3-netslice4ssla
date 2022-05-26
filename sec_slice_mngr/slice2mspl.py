@@ -68,7 +68,7 @@ def generateMSPL(e2e_nsi_json) :
     securityRequirements = ET.SubElement(securedService, 'securityRequirements', {'id':e2e_nsi_json['id']})
     for secreq_item in e2e_nsi_json['security-sla']['security-requirements']:
         sloID = ET.SubElement(securityRequirements, 'sloID')
-        sloID.text = policy_item['sloID']
+        sloID.text = secreq_item['sloID']
 
     securityPolicies = ET.SubElement(securedService, 'securityPolicies')
     for policy_item in e2e_nsi_json['security-sla']['mapped-policies']:

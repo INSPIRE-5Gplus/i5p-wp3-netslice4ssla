@@ -32,6 +32,19 @@ policies_list = [
     }
 ]
 
+"""
+pf_mngr_ip = os.environ.get("PF_IP")
+pf_mngr_port = os.environ.get("PF_PORT")
+url = "http://"+ str(pf_mngr_ip) + ":" + str(pf_mngr_port) +"/policy/"+str(policy_id)
+response = requests.get(url, headers=CONTENT_HEADER)
+if response.status_code != 200:
+    return [], response.status_code
+else:
+    #TODO: process the response.text from XML to JSON
+    policy = []
+return policy, 201
+"""
+
 # Retrieve policies based on the ssla capabilities
 # NOTE if two capabilities have the same policy associated, that policy is returned once associated to both cpabilities
 def get_policies_by_sla(ssla_caps):

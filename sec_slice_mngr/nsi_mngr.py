@@ -62,7 +62,7 @@ def deploy_sec_nsi(request_json, ssla_object):
   for capability in capabilities_list:
     cap_id = capability.getAttribute("id")
     caps_list.append(cap_id)
-    config_sys.logger.info('NSI-MNGR: CAPABILITY ID FORM SSLA:' + str(cap_id))
+    config_sys.logger.info('NSI-MNGR: CAPABILITY ID FROM SSLA:' + str(cap_id))
   response = e2e_pf.get_policies_by_sla(caps_list)
   policies_list = response[0]
   
@@ -88,11 +88,25 @@ def deploy_sec_nsi(request_json, ssla_object):
   if response[1] != 200:
     config_sys.logger.error(response[0])
 
+  print(str(sec_nsi))
   # TODO: Prepares MSPL (XML format) data request to deploy
   xml_tree = slice2mspl.generateMSPL(sec_nsi)
-  config_sys.logger.info('NSI-MNGR: MSPL READY FOR SO:' + str(xml_tree))
+  config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
+  
   # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
   so_response =200
+  """
+    so_ip = os.environ.get("SO_IP")
+    so_port = os.environ.get("SO_PORT")
+    url = "http://"+ str(so_ip) + ":" + str(so_port) +"/sla/"+str(ssla_id)
+    response = requests.get(url, headers=CONTENT_HEADER)
+    if response.status_code != 200:
+        return [], response.status_code
+    else:
+        #TODO: process the response.text from the E2E SO
+        so_response = []
+    return so_response, 201
+  """
 
 
   # TODO: Validates policy is applied = Sec_NSI is deployed
@@ -100,7 +114,7 @@ def deploy_sec_nsi(request_json, ssla_object):
     sec_nsi["status"] = "INSTANTIATING"
   else:
     sec_nsi["status"] = "ERROR"
-  response = update_sec_nsi(sec_nsi['id'], sec_nsi)
+  response = secnsi_db_mngr.update_sec_nsi(sec_nsi['id'], sec_nsi)
   config_sys.logger.info(response[0])
 
 def update_sec_nsi(nsi_json):
