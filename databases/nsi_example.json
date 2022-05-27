@@ -1,5 +1,5 @@
 {
-  "id": "a5b61fae-913e-45b3-8bd6-d4a9cd752891",
+  "id": "4c483430-8c65-49ae-a599-80db74b2990a",
   "name": "5g_voip_service_nst",
   "description": "E2E NST Description service",
   "nst-ref": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
@@ -14,7 +14,7 @@
       "version": 0.2,
       "vendor": "inspire5gplus",
       "shared": "False",
-      "deployment-policy": "mspl_e520d3e0d37845a49fbedadc282b7a70"
+      "deployment-policy": "mspl_62ab08c8e76f4071bbd01892a83315cb"
     }
   ],
   "security-sla": {
@@ -36,7 +36,7 @@
             "SLO": "SHA256"
           }
         ],
-        "policy-id": "mspl_508872529ce5467fa9de49c11bc4195d"
+        "mspl_id": "mspl_1822125273354f098c8ed88b57a8849b"
       },
       {
         "capability-ssla": "Network_traffic_analysis",
@@ -48,7 +48,7 @@
             "SLO": "1 BYTE/SECOND"
           }
         ],
-        "policy-id": "mspl_71a370528e904e51a79226ce787ece2b"
+        "mspl_id": "mspl_35404dbc1992465cbcb4e3129218b2bf"
       },
       {
         "capability-ssla": "DDos_attack_protection",
@@ -60,7 +60,7 @@
             "SLO": "500"
           }
         ],
-        "policy-id": "mspl_31003748e1bf46a4bdece7cb69e08cb6"
+        "mspl_id": "mspl_3f2e8ebaad1a4185bdff5b947c4b0ada"
       }
     ]
   },

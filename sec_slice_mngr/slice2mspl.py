@@ -15,41 +15,40 @@ def generateMSPL(e2e_nsi_json, policies_list):
         'id':omspl_id,
         'xmlns':'http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd',
 	    'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
-	    'xsi:schemaLocation':'http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd'
+	    'xsi:schemaLocation':'http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd',
         'sliceID':e2e_nsi_json['id'],             #NOTE why is this sliceID here???? is it necessary?
         'tenantID':'1'
     }
-    root = ET.Element('ITResourceOrchestration', ITResourceOrchestration_info)
+    root_mspl = ET.Element('ITResourceOrchestration', ITResourceOrchestration_info)
 
     # extracts specific information requried for the policies items
     slo_ids = []
     policies_ids = []
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
-        policies_ids.append(capability_item['policy-id'])
+        policies_ids.append(capability_item['mspl_id'])
         for slo_item in capability_item['slos']:
             slo_ids.append(slo_item['SLO_ID'])      
 
     # prepares the deployment policies items for the MSPL
     for subnet_item in e2e_nsi_json['netslice-subnets']:
-        updated_root_mspl = deployment_mspl(root_mspl, subnet_item, omspl_id, e2e_nsi_json['id'], e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
-        root_mspl = updated_root_mspl.copy()
+        root_mspl = deployment_mspl(root_mspl, subnet_item, omspl_id, e2e_nsi_json['id'], e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
     
     # prepares the security policies items for the MSPL
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
-        updated_root_mspl = security_mspl(root_mspl)
-        root_mspl = updated_root_mspl.copy()
+        for policy_item in policies_list:
+            if capability_item['capability-ssla'] == policy_item['capability-ssla']:
+                root_mspl = security_mspl(root_mspl, capability_item, policy_item)
     
     #write to file
-    tree = ET.ElementTree(indent(root))
+    tree = ET.ElementTree(indent(root_mspl))
     tree.write('MSPL_test.xml', xml_declaration=True, encoding='utf-8')
 
     return tree
 
 def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids, policies_ids):
     #Level 1: ITResource sub-element
-    itresource_id = subnet_item['deployment-policy']
     ITResource_info = {
-        'id':itresource_id,
+        'id':subnet_item['deployment-policy'],
         'orchestrationID':omspl_id,
         'tenantID':'1'
     }
@@ -91,12 +90,12 @@ def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids
     serv_type = ET.SubElement(service, 'type')
     serv_type.text = subnet_item['type']
     serv_domain = ET.SubElement(service, 'domainID')
-    serv_domain.text = 3                #NOTE: update with the domain infor from the Data Services.
+    serv_domain.text = '3'                #NOTE: update with the domain infor from the Data Services.
     
     securityRequirements = ET.SubElement(securedService, 'securityRequirements', {'id':ssla_id}) #TODO: WHERE DOES THIS ID COME FROM? For now, we use the slice-id
     for sloid_item in slo_ids:
         sloID = ET.SubElement(securityRequirements, 'sloID')
-        sloID.text = sloid_item
+        sloID.text = str(sloid_item)
 
     securityPolicies = ET.SubElement(securedService, 'securityPolicies')
     for policyid_item in policies_ids:
@@ -104,9 +103,18 @@ def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids
         msplID.text = policyid_item
 
     return root_mspl
+
+def security_mspl(root_mspl, capability_item, policy_item):
+    #Level 1: ITResource sub-element
+    ITResource_info = {
+        'id':subnet_item['deployment-policy'],
+        'orchestrationID':omspl_id,
+        'tenantID':'1'
+    }
+    ITResource = ET.SubElement(root_mspl, 'ITResource', ITResource_info)
+
     
-def security_mspl(root_mspl):
-    pass
+    return root_mspl
 
 #pretty print method
 def indent(elem, level=0):

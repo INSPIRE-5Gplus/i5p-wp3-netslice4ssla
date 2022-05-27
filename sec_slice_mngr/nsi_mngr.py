@@ -72,7 +72,7 @@ def deploy_sec_nsi(request_json, ssla_object):
     mspl_id = str(uuid.uuid4())
     mspl_id = mspl_id.replace('-', '')
     mspl_id = "mspl_"+mspl_id
-    temp_pol["policy-id"] = mspl_id
+    temp_pol["mspl_id"] = mspl_id
     temp_pol.pop("policy", None)
     capabilities.append(temp_pol)
   ssla_info["capabilities"] = capabilities
