@@ -22,24 +22,19 @@ def deploy_sec_nsi(request_json, ssla_object):
   sec_nsi["name"] = request_json["nst"]["name"]
   sec_nsi["description"] = request_json["nst"]["description"]
   sec_nsi["nst-ref"] = request_json["nst"]["id"]
+  # Copies the info about the QoS
+  sec_nsi["quality-of-service"] = request_json["nst"]["quality-of-service"]
 
   # Copies the slice-subnets information
   #response = nst_db_mngr.get_nst(request_json["id"])
   #sec_nsi["netslice-subnets"] = response[0]["msg"]["netslice-subnets"]
   sec_nsi["netslice-subnets"] = request_json["nst"]["netslice-subnets"]
-
-  # Copies the info about the QoS
-  sec_nsi["quality-of-service"] = request_json["nst"]["quality-of-service"]
-  
-  # TODO: obtain the SMDs where to apply the slice (from Data Services)
-  location_smd = []
-  sec_nsi["location-smd"] = location_smd
-  
-  # obtain the deployment MSPL policy ID
-  mspl_id = str(uuid.uuid4())
-  mspl_id = mspl_id.replace('-', '')
-  mspl_id = "mspl_"+mspl_id
-  sec_nsi["deployment-policy"] = mspl_id
+  for subnet_item in sec_nsi["netslice-subnets"]:
+    # obtain the deployment MSPL policy ID
+    mspl_id = str(uuid.uuid4())
+    mspl_id = mspl_id.replace('-', '')
+    mspl_id = "mspl_"+mspl_id
+    subnet_item["deployment-policy"] = mspl_id
   
   #add all the policies associated to the SSLA.
   ssla_info = {}
@@ -71,45 +66,34 @@ def deploy_sec_nsi(request_json, ssla_object):
   # add the policies info into the NSI
   # prepares the policies info to store it in the slice instance object
   capabilities = []
-  """
   for pol_item in policies_list:
-    policy = {}            # policy object
-    monitoring_pol = {}    # monitoring policy
-    policy["ssla-capability"] = pol_item["ssla-capability"]
-    policy["policy-id"] = pol_item["id"]
-    policy["name"] = pol_item["name"]
-    mapped_policies.append(policy)
-    monitoring_pol["ssla-capability"] = pol_item["ssla-capability"]
-    monitoring_pol["policy-id"] = pol_item["monitoring-id"]
-    monitoring_pol["name"] = pol_item["monitoring-name"]
-    mapped_policies.append(monitoring_pol)
-  """
-  for pol_item in policies_list:
-    temp_pol = pol_item
-    print("----------------------------------------")
-    print(str(pol_item))
-    print(str(temp_pol))
+    temp_pol = pol_item.copy()
+    # obtain the deployment MSPL policy ID
+    mspl_id = str(uuid.uuid4())
+    mspl_id = mspl_id.replace('-', '')
+    mspl_id = "mspl_"+mspl_id
+    temp_pol["policy-id"] = mspl_id
     temp_pol.pop("policy", None)
-    print(str(pol_item))
-    print(str(temp_pol))
-    print("----------------------------------------")
     capabilities.append(temp_pol)
   ssla_info["capabilities"] = capabilities
   sec_nsi["security-sla"] = ssla_info
-  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
- 
+
   # saves NSI into the Database
   response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
   if response[1] != 200:
     config_sys.logger.error(response[0])
 
-  print(str(sec_nsi))
+  # TODO: obtain the SMDs where to deploy the subnets&SLOs (from Data Services)
+  location_smd = []
+  sec_nsi["location-smd"] = location_smd
+  
+  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
   # TODO: Prepares MSPL (XML format) data request to deploy
-  #xml_tree = slice2mspl.generateMSPL(sec_nsi, policies_list)
-  #config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
+  xml_tree = slice2mspl.generateMSPL(sec_nsi, policies_list)
+  config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
   
   # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
-  so_response =200
+  so_response = 200
   """
     so_ip = os.environ.get("SO_IP")
     so_port = os.environ.get("SO_PORT")
@@ -129,6 +113,7 @@ def deploy_sec_nsi(request_json, ssla_object):
   else:
     sec_nsi["status"] = "ERROR"
   response = secnsi_db_mngr.update_sec_nsi(sec_nsi['id'], sec_nsi)
+  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
   config_sys.logger.info(response[0])
 
 def update_sec_nsi(nsi_json):

@@ -1,0 +1,71 @@
+{
+  "id": "a5b61fae-913e-45b3-8bd6-d4a9cd752891",
+  "name": "5g_voip_service_nst",
+  "description": "E2E NST Description service",
+  "nst-ref": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
+  "quality-of-service": {
+    "availability": "99.9"
+  },
+  "netslice-subnets": [
+    {
+      "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
+      "name": "5GService",
+      "type": "5GVoIP",
+      "version": 0.2,
+      "vendor": "inspire5gplus",
+      "shared": "False",
+      "deployment-policy": "mspl_e520d3e0d37845a49fbedadc282b7a70"
+    }
+  ],
+  "security-sla": {
+    "id": "Secure 5G Mobile Communications",
+    "name": "5G_SERVICE_SSLA",
+    "capabilities": [
+      {
+        "capability-ssla": "Channel_Protection",
+        "capability-name": "E2E traffic confidentiality, integrity and authenticity protection",
+        "slos": [
+          {
+            "SLO_ID": 1,
+            "metric": "5G_TRAFFIC_ENCRYPTION_ALGORITHM",
+            "SLO": "AES_128_GCM"
+          },
+          {
+            "SLO_ID": 2,
+            "metric": "5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM",
+            "SLO": "SHA256"
+          }
+        ],
+        "policy-id": "mspl_508872529ce5467fa9de49c11bc4195d"
+      },
+      {
+        "capability-ssla": "Network_traffic_analysis",
+        "capability-name": "CRYPTOCURRENCY MINING DETECTION IN 5G NETWORK TRAFFIC",
+        "slos": [
+          {
+            "SLO_ID": 3,
+            "metric": "NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT",
+            "SLO": "1 BYTE/SECOND"
+          }
+        ],
+        "policy-id": "mspl_71a370528e904e51a79226ce787ece2b"
+      },
+      {
+        "capability-ssla": "DDos_attack_protection",
+        "capability-name": "5G SYSTEM DDOS DETECTION AND MITIGATION",
+        "slos": [
+          {
+            "SLO_ID": 4,
+            "metric": "ANTI_DDOS_PROTECTION_THROUGHPUT",
+            "SLO": "500"
+          }
+        ],
+        "policy-id": "mspl_31003748e1bf46a4bdece7cb69e08cb6"
+      }
+    ]
+  },
+  "location-smd": [
+    
+  ],
+  "status": "INSTANTIATING"
+}

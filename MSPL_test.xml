@@ -1,31 +1,46 @@
 <?xml version='1.0' encoding='utf-8'?>
-<ITResourceOrchestration id="mspl_b0512561a3514951adeca3d1907309d4" xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd">
-  <ITResource id="mspl_87dc5d72f4a1423a92b8d6f55fd25d64" orchestrationID="mspl_b0512561a3514951adeca3d1907309d4" tenantID="1">
+<ITResourceOrchestration id="mspl_ee544caf014d4e76976d11dfa5111b76" xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd">
+  <ITResource id="mspl_ad5bb7fc1d8a475a89ce3245318c85b5" orchestrationID="mspl_ee544caf014d4e76976d11dfa5111b76" tenantID="1">
     <configuration xsi:type="RuleSetConfiguration">
       <Name>Conf0</Name>
-    <capability xsi:type="FiveGSecuritySlice">
+      <capability xsi:type="FiveGSecuritySlice">
         <Name>5g_voip_service_nst</Name>
-      <sliceID>4ca584a9-8936-498d-9f6f-3843d241fc69</sliceID>
+        <sliceID>f221b153-bd7f-4a4a-9c3a-9e17fed0472b</sliceID>
       </capability>
-    <configurationRule>
+      <configurationRule>
         <Name>Rule0</Name>
-      <isCNF>false</isCNF>
-      <configurationCondition>
+        <isCNF>false</isCNF>
+        <configurationCondition>
           <isCNF>false</isCNF>
         </configurationCondition>
-      <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
+        <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
           <fiveGSecuritySliceActionType>DEPLOY</fiveGSecuritySliceActionType>
-        <securedService>
+          <securedService>
             <service id="64c4b6a6-d395-46ed-b3ae-a3351e515ee7">
               <name>5GService</name>
-            <type>5GVoIP</type>
+              <type>5GVoIP</type>
             </service>
-          <securityRequirements id="4ca584a9-8936-498d-9f6f-3843d241fc69" />
-          <securityPolicies>
+            <securityRequirements id="f221b153-bd7f-4a4a-9c3a-9e17fed0472b">
+              <sloID>5G_traffic_integrity_level_slo</sloID>
+              <sloID>5G_traffic_confidentiality_level_slo</sloID>
+              <sloID>5G_traffic_protect_cipher_suite_strength_slo</sloID>
+              <sloID>ddos_protect_service_uptime_slo</sloID>
+              <sloID>ddos_scan_freq_slo</sloID>
+              <sloID>ddos_scan_report_age_slo</sloID>
+              <sloID>ddos_detection_acc_slo</sloID>
+              <sloID>ddos_detection_ppv_slo</sloID>
+              <sloID>ddos_detection_tpr_slo</sloID>
+              <sloID>ddos_detection_fpr_slo</sloID>
+              <sloID>mining_detection_acc_slo</sloID>
+              <sloID>mining_detection_ppv_slo</sloID>
+              <sloID>mining_detection_tpr_slo</sloID>
+              <sloID>mining_detection_fpr_slo</sloID>
+            </securityRequirements>
+            <securityPolicies>
               <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
-            <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
-            <msplID>mspl_zzf61525d1594412bdcef34a4bfb7fc7</msplID>
-            <msplID>mspl_aef61525d1594412bdcef34a4bfb7fc7</msplID>
+              <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
+              <msplID>mspl_zzf61525d1594412bdcef34a4bfb7fc7</msplID>
+              <msplID>mspl_aef61525d1594412bdcef34a4bfb7fc7</msplID>
             </securityPolicies>
           </securedService>
         </configurationRuleAction>
