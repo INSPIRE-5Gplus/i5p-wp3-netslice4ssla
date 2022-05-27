@@ -48,6 +48,7 @@ def deploy_sec_nsi(request_json, ssla_object):
   ssla_info["name"] = str(ssla_name.firstChild.data)
   
   #to process and obtain the sloIDs for the security-requirements
+  """
   slo_list = ssla_object.getElementsByTagName("specs:SLO")
   sec_req = []
   for slo_item in slo_list:
@@ -55,6 +56,7 @@ def deploy_sec_nsi(request_json, ssla_object):
     slo_json["sloID"] = slo_item.getAttribute("SLO_ID")
     sec_req.append(slo_json)
   ssla_info["security-requirements"] = sec_req
+  """
 
   # obtains the policies to apply based on the SSLA capabilites requested
   capabilities_list = ssla_object.getElementsByTagName("specs:capability")
@@ -63,23 +65,36 @@ def deploy_sec_nsi(request_json, ssla_object):
     cap_id = capability.getAttribute("id")
     caps_list.append(cap_id)
     config_sys.logger.info('NSI-MNGR: CAPABILITY ID FROM SSLA:' + str(cap_id))
-  response = e2e_pf.get_policies_by_sla(caps_list)
+  response = e2e_pf.get_policies_sla_capability(caps_list)
   policies_list = response[0]
   
+  # add the policies info into the NSI
   # prepares the policies info to store it in the slice instance object
-  mapped_policies = []
+  capabilities = []
+  """
   for pol_item in policies_list:
-    pol = {}        # policy object
-    mon_pol = {}    # monitoring policy
-    pol["ssla-capability"] = pol_item["ssla-capability"]
-    pol["policy-id"] = pol_item["id"]
-    pol["name"] = pol_item["name"]
-    mapped_policies.append(pol)
-    mon_pol["ssla-capability"] = pol_item["ssla-capability"]
-    mon_pol["policy-id"] = pol_item["monitoring-id"]
-    mon_pol["name"] = pol_item["monitoring-name"]
-    mapped_policies.append(mon_pol)
-  ssla_info["mapped-policies"] = mapped_policies
+    policy = {}            # policy object
+    monitoring_pol = {}    # monitoring policy
+    policy["ssla-capability"] = pol_item["ssla-capability"]
+    policy["policy-id"] = pol_item["id"]
+    policy["name"] = pol_item["name"]
+    mapped_policies.append(policy)
+    monitoring_pol["ssla-capability"] = pol_item["ssla-capability"]
+    monitoring_pol["policy-id"] = pol_item["monitoring-id"]
+    monitoring_pol["name"] = pol_item["monitoring-name"]
+    mapped_policies.append(monitoring_pol)
+  """
+  for pol_item in policies_list:
+    temp_pol = pol_item
+    print("----------------------------------------")
+    print(str(pol_item))
+    print(str(temp_pol))
+    temp_pol.pop("policy", None)
+    print(str(pol_item))
+    print(str(temp_pol))
+    print("----------------------------------------")
+    capabilities.append(temp_pol)
+  ssla_info["capabilities"] = capabilities
   sec_nsi["security-sla"] = ssla_info
   config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
  
@@ -90,8 +105,8 @@ def deploy_sec_nsi(request_json, ssla_object):
 
   print(str(sec_nsi))
   # TODO: Prepares MSPL (XML format) data request to deploy
-  xml_tree = slice2mspl.generateMSPL(sec_nsi)
-  config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
+  #xml_tree = slice2mspl.generateMSPL(sec_nsi, policies_list)
+  #config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
   
   # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
   so_response =200

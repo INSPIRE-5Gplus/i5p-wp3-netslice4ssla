@@ -8,27 +8,198 @@ from config_files import config_system as config_sys
 
 CONTENT_HEADER = {'Content-Type':'application/xml'}
 
+# TODO: ADD the capabilities-policies for the SSLA 2 
 policies_list = [
     {
-        "ssla-capability":["5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION"],
-        "name": "Channel_Protection",
-        "id": "mspl_9f1a88b4fc67421b98de270d5a63d35a",
-        "monitoring-name": "Network_traffic_analysis",
-        "monitoring-id":"mspl_eef61525d1594412bdcef34a4bfb7fc9"
+        "capability-ssla":"Channel_Protection",
+        "capability-name": "E2E traffic confidentiality, integrity and authenticity protection",
+        "slos":[
+            {
+                "SLO_ID": 1,
+                "metric": "5G_TRAFFIC_ENCRYPTION_ALGORITHM",
+                "SLO": "AES_128_GCM"
+            },
+            {
+                "SLO_ID": 2,
+                "metric": "5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM",
+                "SLO": "SHA256"
+            }
+        ],
+        "policy":{
+            "configuration":{
+                "type": "RuleSetConfiguration",
+                "name": "Conf0",
+                "configurationRule":{
+                    "name": "Rule0",
+                    "isCNF": "false",
+                    "configurationRuleAction": {
+                        "type": "DataProtectionAction",
+                        "technology": "None",
+                        "technologyActionParameters":[
+                            {
+                                "type": "GenericChannelProtectionTechnologyParameter",
+                                "localEndpoint": "[UE]",
+                                "remoteEndpoint":"[5GService]"
+                            }
+                        ],
+                        "technologyActionSecurityProperty":[
+                            {
+                                "type":"Confidentiality",
+                                "encryptionAlgorithm": "AES-CBC",
+                                "keySize": "128",
+                                "mode": "GCM"
+                            },
+                            {
+                                "type":"Integrity",
+                                "integrityAlgorithm": "SHA256"
+                            }
+                        ]
+                    },
+                    "configurationCondition":{
+                        "type": "DataProtectionCondition",
+                        "isCNF": "false"
+                    },
+                    "externalData":{
+                        "type": "Priority",
+                        "value": "0"
+                    }
+                }
+            },
+            "priority":"1000",
+            "dependencies":[
+                {
+                    "type": "EventDependency",
+                    "eventID": "VNF-READY",
+                    "configurationCondition":{
+                        "type": "FilteringConfigurationCondition",
+                        "isCNF": "false",
+                        "packetFilterCondition":{
+                            "SourceAddress": "[5GService]"
+                        }
+                    }
+                }
+            ]
+        }
     },
     {
-        "ssla-capability":["5G_SYSTEM_ANTI_DDOS_PROTECTION"],
-        "name": "Channel_Protection",
-        "id": "mspl_9f1a88b4fc67421b98de270d5a63d35a",
-        "monitoring-name": "Network_traffic_analysis",
-        "monitoring-id":"mspl_eef61525d1594412bdcef34a4bfb7fc9"
+        "capability-ssla":"Network_traffic_analysis",
+        "capability-name": "CRYPTOCURRENCY MINING DETECTION IN 5G NETWORK TRAFFIC",
+        "slos":[
+            {
+                "SLO_ID": 3,
+                "metric": "NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT",
+                "SLO": "1 BYTE/SECOND"
+            }
+        ],
+        "policy":{
+            "configuration":{
+                "type": "RuleSetConfiguration",
+                "name": "Conf0",
+                "configurationRule":{
+                    "name": "Rule0",
+                    "isCNF": "false",
+                    "configurationRuleAction": {
+                        "type": "MonitoringAction",
+                        "monitoringActionType": "BEHAVIORAL",
+                        "aditionalMonitoringParameters":[
+                            {
+                                "key": "behaviour",
+                                "value": "5GControlTraffic"
+                            }
+                        ]
+                    },
+                    "configurationCondition":{
+                        "type": "MonitoringConfigurationConditions",
+                        "isCNF": "false",
+                        "monitoringConfigurationCondition":{
+                            "isCNF": "true",
+                            "packetFilterCondition": {
+                                "SourceAddress": "[5GService]",
+                                "bidirectional": "true"
+                            },
+                            "maxCount":{
+                                "isCNF": "false",
+                                "count": {
+                                    "measureUnit": "BYTE",
+                                    "value": 1,
+                                    "per": "SECOND"
+                                }
+                            }
+                        }
+                    },
+                    "externalData":{
+                        "type": "Priority",
+                        "value": "500"
+                    }
+                }
+            },
+            "priority":"0",
+            "dependencies":[
+                {
+                    "type": "PolicyDependency",
+                    "eventID": "",
+                    "configurationCondition":
+                    {
+                        "type": "PolicyDependencyCondition",
+                        "isCNF": "false",
+                        "policyID": "Channel_Protection",
+                        "status": "ENFORCED"
+                    }
+                }
+            ]
+        }
     },
     {
-        "ssla-capability":["DETECTION_OF_CRYPTOCURRENCY_MINING_IN_5G_TRAFFIC"],
-        "name": "DDos_attack_protection",
-        "id": "mspl_zzf61525d1594412bdcef34a4bfb7fc7",
-        "monitoring-name": "Network_traffic_analysis",
-        "monitoring-id":"mspl_aef61525d1594412bdcef34a4bfb7fc7"
+        "capability-ssla":"DDos_attack_protection",
+        "capability-name": "5G SYSTEM DDOS DETECTION AND MITIGATION",
+        "slos":[
+            {
+                "SLO_ID": 4,
+                "metric": "ANTI_DDOS_PROTECTION_THROUGHPUT",
+                "SLO": "500"
+            }
+        ],
+        "policy":{
+            "configuration":{
+                "type": "RuleSetConfiguration",
+                "name": "Conf0",
+                "configurationRule":{
+                    "name": "Rule0",
+                    "isCNF": "false",
+                    "configurationRuleAction": {
+                        "type": "MonitoringAction",
+                        "monitoringActionType": "SECURITY_ANALYSIS",
+                        "aditionalMonitoringParameters":[]
+                    },
+                    "configurationCondition":{
+                        "type": "MonitoringConfigurationConditions",
+                        "isCNF": "false",
+                        "monitoringConfigurationCondition":{
+                            "isCNF": "true",
+                            "packetFilterCondition": {
+                                "SourceAddress": "[UE]",
+                                "DestinationAddress": "[5GService]",
+                            },
+                            "channelProtected": "false",
+                            "maxCount":{
+                                "isCNF": "false",
+                                "count": {
+                                    "measureUnit": "MBYTE",
+                                    "value": 500,
+                                    "per": "SECOND"
+                                }
+                            }
+                        }
+                    },
+                    "externalData":{
+                        "type": "Priority",
+                        "value": "500"
+                    }
+                }
+            },
+            "priority":"0",
+            "dependencies":[]
+        }
     }
 ]
 
@@ -47,32 +218,15 @@ policies_list = [
 
 # Retrieve policies based on the ssla capabilities
 # NOTE if two capabilities have the same policy associated, that policy is returned once associated to both cpabilities
-def get_policies_by_sla(ssla_caps):
+def get_policies_sla_capability(ssla_caps):
     config_sys.logger.info('POLICY-FRAMEWORK: Retrieving Policis associated to the SSLA capabilities requested.')
-    temp_list = []
     selected_policies = []
     #config_sys.logger.info('POLICY-FRAMEWORK: policies_list' + str(policies_list))
     for policy_item in policies_list:
         for cap_item in ssla_caps:
-            if cap_item in policy_item["ssla-capability"]:
-                temp_list.append(policy_item)
+            if cap_item == policy_item["capability-ssla"]:
+                selected_policies.append(policy_item)
 
-    #config_sys.logger.info('POLICY-FRAMEWORK: temp_list' + str(temp_list))
-    for temp_item in temp_list:
-        if selected_policies == []:
-            selected_policies.append(temp_item)
-        else:
-            matched_policy = False
-            for pol_ref_item in selected_policies:
-                if (temp_item["id"] == pol_ref_item["id"] and temp_item["monitoring-id"] == pol_ref_item["monitoring-id"]):
-                    updated_cap_list = pol_ref_item["ssla-capability"]
-                    updated_cap_list.append(temp_item["ssla-capability"][0])
-                    pol_ref_item["ssla-capability"] = updated_cap_list
-                    matched_policy = True
-            
-            if matched_policy == False:
-                selected_policies.append(temp_item)
-        
     #config_sys.logger.info('POLICY-FRAMEWORK: selected_policies' + str(selected_policies))
     return selected_policies, 201
 

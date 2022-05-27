@@ -9,21 +9,24 @@
 	"http://schemas.ggf.org/graap/2007/03/ws-agreement wsag.xsd 
 	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate SLAtemplate.xsd 
 	http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist nist.xsd"
-    wsag:AgreementId="SECURE_5G_CORE_SSLA">
+    wsag:AgreementId="5G_SERVICE_SSLA">
 	
-	<wsag:Name>Secure 5G Mobile Communications</wsag:Name>
+	<wsag:Name>5G_SERVICE_SSLA</wsag:Name>
 	<wsag:Context>
 		<wsag:AgreementInitiator>INSPIRE_5G_plus_SERVICE_CUSTOMER</wsag:AgreementInitiator>
 		<wsag:AgreementResponder>INSPIRE_5G_plus_SERVICE_PROVIDER</wsag:AgreementResponder>
 		<wsag:ServiceProvider>AgreementResponder</wsag:ServiceProvider>
-		<wsag:ExpirationTime>2022-04-30T06:00:00</wsag:ExpirationTime>
-		<wsag:TemplateName>SECURE_5G_MOBILE_COMMS_SSLA_TEMPLATE</wsag:TemplateName>
+		<wsag:ExpirationTime>2022-05-16T06:00:00</wsag:ExpirationTime>
+		<wsag:TemplateName>5G_SERVICE_SSLA_TEMPLATE</wsag:TemplateName>
 	</wsag:Context>
 
 	<wsag:Terms>
 		<wsag:All>
-			<wsag:ServiceDescriptionTerm wsag:Name="SECURE_5G_MOBILE_COMM_SYSTEM" wsag:ServiceName="SECURE_5G_MOBILE_COMM_SYSTEM">
+			<!-- MSPL securedService/service/name expected to use this ServiceName -->
+			<wsag:ServiceDescriptionTerm wsag:Name="5G_SERVICE_TERM" wsag:ServiceName="5G_SERVICE">	
 				<specs:serviceDescription>
+					<!-- SPECS serviceResources definition is ignored in INSPIRE-5Gplus Demo1. -->
+					<!--
 					<specs:serviceResources>
 						<specs:resourcesProvider id="ec2" name="cloud.inspire-5gplus.eu" zone="eu" description="" maxAllowedVMs="20" label="">
 							<specs:VM appliance="emi-65c3e382" hardware="m1.small" description="mos-4.0.0-beta-006-x86_64" />
@@ -32,9 +35,11 @@
 							<specs:VM appliance="emi-65c3e382" hardware="c1.xlarge" description="mos-4.0.0-beta-006-x86_64" />
 						</specs:resourcesProvider>
 					</specs:serviceResources>
+					-->
 
 					<specs:capabilities>
-						<specs:capability id="5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION" name="E2E traffic confidentiality, integrity and authenticity protection" description="Capability of ensuring data-in-motion confidentiality, integrity and authenticity between two or more communicating actors" mandatory="no">
+						<!-- MSPL capability expected to use the same id -->
+						<specs:capability id="Channel_Protection" name="E2E traffic confidentiality, integrity and authenticity protection" description="Capability of ensuring data-in-motion confidentiality, integrity and authenticity between two or more communicating actors" mandatory="no">
 							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
 								<specs:NISTsecurityControl id="NIST_SC_8" name="TRANSMISSION CONFIDENTIALITY AND INTEGRITY - SC-8" control_family="SC" securityControl="8" control_enhancement="0">
 									<nist:description>The information system protects the [Selection (one or more): confidentiality; integrity] of transmitted information.</nist:description>
@@ -54,8 +59,44 @@
 								</specs:NISTsecurityControl>	
 							</specs:controlFramework>
 						</specs:capability>
-
-						<specs:capability id="5G_SYSTEM_ANTI_DDOS_PROTECTION" name="5G SYSTEM DDOS DETECTION AND MITIGATION" description="Capability of detecting, reacting to - preventing if possible - security attacks aimed at distrupting a system's availability" mandatory="yes">
+						<!-- TODO: Capability to be clarified by UMU -->
+						<!--
+						<specs:capability id="Proof_of_Transit" name="Proof of Transit" description="To be clarified and described in Demo 1" mandatory="yes">
+							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
+								<specs:NISTsecurityControl id="NIST_IR_4_13" name="BEHAVIOR ANALYSIS - IR-4(13)" control_family="IR" securityControl="4" control_enhancement="13">
+									<nist:description>Analyze anomalous or suspected adversarial behavior in or related to organization-defined environments or resources.
+										</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
+									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_SI_4" name="INFORMATION SYSTEM MONITORING - SI-4" control_family="SI" securityControl="4" control_enhancement="0">
+									<nist:description>The organization monitors the information system to detect attacks and indicators of potential attacks in accordance with a defined monitoring objectives and unauthorized local, network, and remote connections. It identifies unauthorized use of the information system and deploys proper monitoring tools to collect information about the system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+					-->
+						<specs:capability id="Network_traffic_analysis" name="CRYPTOCURRENCY MINING DETECTION IN 5G NETWORK TRAFFIC" description="Capability of detecting cryptocurrency mining in 5G network traffic" mandatory="yes">
+							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
+								<specs:NISTsecurityControl id="NIST_IR_4_13" name="BEHAVIOR ANALYSIS - IR-4(13)" control_family="IR" securityControl="4" control_enhancement="13">
+									<nist:description>Analyze anomalous or suspected adversarial behavior in or related to organization-defined environments or resources.
+										</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
+									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="NIST_SI_4" name="INFORMATION SYSTEM MONITORING - SI-4" control_family="SI" securityControl="4" control_enhancement="0">
+									<nist:description>The organization monitors the information system to detect attacks and indicators of potential attacks in accordance with a defined monitoring objectives and unauthorized local, network, and remote connections. It identifies unauthorized use of the information system and deploys proper monitoring tools to collect information about the system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>	
+						<specs:capability id="DDos_attack_protection" name="5G SYSTEM DDOS DETECTION AND MITIGATION" description="Capability of detecting, reacting to - preventing if possible - security attacks aimed at distrupting a system's availability" mandatory="yes">
 							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
 								<specs:NISTsecurityControl id="NIST_SC_5" name="DENIAL OF SERVICE PROTECTION - SC-5" control_family="SC" securityControl="5" control_enhancement="0">
 									<nist:description>The information system protects against or limits the effects of denial of service attacks by employing proper security safeguards.</nist:description>
@@ -75,29 +116,12 @@
 								</specs:NISTsecurityControl>
 							</specs:controlFramework>
 						</specs:capability>
-
-						<specs:capability id="DETECTION_OF_CRYPTOCURRENCY_MINING_IN_5G_TRAFFIC" name="CRYPTOCURRENCY MINING DETECTION IN 5G NETWORK TRAFFIC" description="Capability of detecting cryptocurrency mining in 5G network traffic" mandatory="yes">
-							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
-								<specs:NISTsecurityControl id="NIST_IR_4_13" name="BEHAVIOR ANALYSIS - IR-4(13)" control_family="IR" securityControl="4" control_enhancement="13">
-									<nist:description>Analyze anomalous or suspected adversarial behavior in or related to organization-defined environments or resources.
-										</nist:description>
-									<nist:importance_weight>MEDIUM</nist:importance_weight>
-								</specs:NISTsecurityControl>
-								<specs:NISTsecurityControl id="NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
-									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
-									<nist:importance_weight>MEDIUM</nist:importance_weight>
-								</specs:NISTsecurityControl>
-								<specs:NISTsecurityControl id="NIST_SI_4" name="INFORMATION SYSTEM MONITORING - SI-4" control_family="SI" securityControl="4" control_enhancement="0">
-									<nist:description>The organization monitors the information system to detect attacks and indicators of potential attacks in accordance with a defined monitoring objectives and unauthorized local, network, and remote connections. It identifies unauthorized use of the information system and deploys proper monitoring tools to collect information about the system.</nist:description>
-									<nist:importance_weight>MEDIUM</nist:importance_weight>
-								</specs:NISTsecurityControl>
-							</specs:controlFramework>
-						</specs:capability>
 					</specs:capabilities>
 					
 					<specs:security_metrics>
 						<!-- Each metric includes the abstract metric definition and the concrete metric -->
-						<!-- security metrics for anti-DDoS -->
+						<!-- Example metrics for anti-DDoS, not used in SLO -->
+						<!--
 						<specs:Metric name="Service Uptime" referenceId="SERVICE_UPTIME">
 							<specs:MetricDefinition>
 								<specs:unit name="rate">
@@ -184,7 +208,7 @@
 								<specs:definition>Age of the intrusion detection scanning report</specs:definition>
 								<specs:note></specs:note>
 							</specs:MetricDefinition>
-							<!-- if applicable, set Rule and Parameter definitions -->
+
 							<specs:AbstractMetricRuleDefinition>
 								<specs:RuleDefinition name="Intrusion Detection Scan Report Age - Basic Check Strategy" referenceId="INTRUSION_SCAN_REPORT_AGE_CHECK_STRATEGY">
 									<specs:definition>This rule defines how to check that the intrusion detection scan report is not too old</specs:definition>
@@ -215,8 +239,9 @@
 							</specs:MetricParameters>
 							<specs:note></specs:note>
 						</specs:Metric>
-
-                        <!-- FOCUS ON CRYPTOCURRENCY MINING TRAFFIC DETECTION -->
+					-->
+						<!-- Example metric for CRYPTOCURRENCY MINING TRAFFIC DETECTION, not used in SLO -->
+						<!--
 						<specs:Metric name="Intrusion (Malicious Traffic) Detection Accuracy" referenceId="DETECTION_ACC_HOURLY">
 							<specs:MetricDefinition>
 								<specs:unit name="rate">
@@ -300,8 +325,12 @@
 								<specs:note></specs:note>
 							</specs:MetricDefinition>
 						</specs:Metric>
-
-						<specs:Metric name="Data Integrity" referenceId="DATA_INTEGRITY_LEVEL">
+					-->
+						<!-- Example of high-level data integrity metric, not used in SLO -->
+						<!--
+						<specs:Metric
+                                name="Data Integrity"
+                                referenceId="DATA_INTEGRITY_LEVEL">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -331,8 +360,12 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-						
-						<specs:Metric name="Data Confidentiality" referenceId="DATA_CONFIDENTIALITY_LEVEL">
+					-->				
+						<!-- Example of high-level data confidentiality metric, not used in SLO -->
+						<!--
+						<specs:Metric
+                                name="Data Confidentiality"
+                                referenceId="DATA_CONFIDENTIALITY_LEVEL">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -363,8 +396,12 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-
-						<specs:Metric name="Cipher suite strength" referenceId="CIPHER_SUITE_STRENGTH">
+					-->
+						<!-- Example of high-level cipher suite strength metric, not used in SLO -->
+						<!--
+						<specs:Metric
+                                name="Cipher suite strength"
+                                referenceId="CIPHER_SUITE_STRENGTH">
                             <specs:MetricDefinition>
                                 <specs:unit name="">
                                     <specs:enumUnit>
@@ -395,31 +432,225 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-
+					-->
+						<!-- Example of low-level data confidentiality protection metric (encryption algorithm spec) -->
+						<specs:Metric
+                                name="Data Encryption Algorithm"
+                                referenceId="DATA_ENCRYPTION_ALGORITHM_METRIC">
+                            <specs:MetricDefinition>
+                                <specs:unit name="n/a">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>string</specs:enumItemsType>
+                                        <specs:enumItems>
+											<specs:enumItem>
+												<specs:value>NULL</specs:value>
+												<specs:description>Encryption disabled / no encryption</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>AES_128_CBC</specs:value>
+												<specs:description>AES 128 bit in CBC mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>AES_192_CBC</specs:value>
+												<specs:description>AES 192 bit in CBC mode</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>AES_256_CBC</specs:value>
+												<specs:description>AES 256 bit in CBC mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>AES_128_CCM</specs:value>
+												<specs:description>AES 128 bit in CCM mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>AES_192_CCM</specs:value>
+												<specs:description>AES 192 bit in CCM mode</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>AES_256_CCM</specs:value>
+												<specs:description>AES 256 bit in CCM mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>AES_128_GCM</specs:value>
+												<specs:description>AES 128 bit in GCM mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>AES_192_GCM</specs:value>
+												<specs:description>AES 192 bit in GCM mode</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>AES_256_GCM</specs:value>
+												<specs:description>AES 256 bit in GCM mode</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>CHACHA20_POLY1305</specs:value>
+												<specs:description>ChaCha20 stream cipher with Poly1305 MAC</specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Qualitative>Nominal</specs:Qualitative>
+                                </specs:scale>
+                                <specs:expression>
+                                </specs:expression>
+                                <specs:definition>Encryption algorithm suite specification</specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+						<specs:Metric
+                                name="Data Integrity Protection Algorithm"
+                                referenceId="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
+                            <specs:MetricDefinition>
+                                <specs:unit name="n/a">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>string</specs:enumItemsType>
+                                        <specs:enumItems>
+											<specs:enumItem>
+												<specs:value>NULL</specs:value>
+												<specs:description>No specific integrity protection; may be provided by an authenticated encryption algorithm already (AEAD), e.g. CCM, GCM, Poly1305... See DATA_ENCRYPTION_ALGORITHM metric.</specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>SHA256</specs:value>
+												<specs:description></specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>SHA384</specs:value>
+												<specs:description></specs:description>
+											</specs:enumItem>
+                                            <specs:enumItem>
+												<specs:value>SHA512</specs:value>
+												<specs:description></specs:description>
+											</specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Qualitative>Nominal</specs:Qualitative>
+                                </specs:scale>
+                                <specs:expression>
+                                </specs:expression>
+                                <specs:definition>Data integrity protection algorithm specification</specs:definition>
+                                <specs:note></specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+						<!-- TODO: to be clarified by UMU. Only 3 SLOs in the E2E MSPL example, assuming this is about Channel Protection, anti-DDoS and Network traffic analysis (mining detection) -->
+						<!--
+                        <specs:Metric name="Proof of Transit Throughput" referenceId="PROOF_OF_TRANSIT_THROUGHPUT_METRIC">
+							<specs:MetricDefinition>
+								<specs:unit name="B/s">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Throughput of traffic handled by the PoT agent (bytes per second). Related to MSPL monitoringConfigurationCondition/maxCount element. To be clarified by UMU.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+					-->
+						<specs:Metric name="Network Traffic Analysis Throughput" referenceId="NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT_METRIC">
+							<specs:MetricDefinition>
+								<specs:unit name="B/s">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Throughput of traffic handled by the Network Traffic Analysis enabler (bytes per second). Related to MSPL monitoringConfigurationCondition/maxCount element. To be clarified by UMU</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						<specs:Metric name="Anti-DDoS Protection - Traffic Throughput" referenceId="ANTI_DDOS_PROTECTION_THROUGHPUT_METRIC">
+							<specs:MetricDefinition>
+								<specs:unit name="MB/s">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Throughput of traffic handled by the Network Traffic Analysis enabler (bytes per second). Related to MSPL monitoringConfigurationCondition/maxCount element. To be clarified by UMU</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
                     </specs:security_metrics>
 				</specs:serviceDescription>
 			</wsag:ServiceDescriptionTerm>
 
-			<wsag:ServiceReference wsag:Name="Secure_5G_Core_Endpoint" wsag:ServiceName="SECURE_5G_MOBILE_COMM_SYSTEM">
-				<specs:endpoint>5G_CORE_ENDPOINT_TO_BE_DEFINED</specs:endpoint>
-			</wsag:ServiceReference>
-			
-			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION']" wsag:ServiceName="SECURE_5G_MOBILE_COMM_SYSTEM">
+			<wsag:ServiceReference wsag:Name="5G_SERVICE_ENDPOINT" wsag:ServiceName="5G_SERVICE">
+				<specs:endpoint>5G_SERVICE_ENDPOINT_TO_BE_DEFINED_BY_THE_SERVICE_PROVIDER</specs:endpoint>
+			</wsag:ServiceReference>			
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='Channel_Protection']" wsag:ServiceName="5G_SERVICE">
 				<wsag:VariableSet>
-					<wsag:Variable wsag:Name="5G_traffic_integrity_level" wsag:Metric="DATA_INTEGRITY_LEVEL">
+					<wsag:Variable wsag:Name="5G_TRAFFIC_ENCRYPTION_ALGORITHM" wsag:Metric="DATA_ENCRYPTION_ALGORITHM_METRIC">
 						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_8']</wsag:Location>
 					</wsag:Variable>
-					<wsag:Variable wsag:Name="5G_traffic_confidentiality_level" wsag:Metric="DATA_CONFIDENTIALITY_LEVEL">
+					<wsag:Variable wsag:Name="5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM" wsag:Metric="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
 						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_8']</wsag:Location>
 					</wsag:Variable>
+					<!--
 					<wsag:Variable wsag:Name="5G_traffic_protect_cipher_suite_strength" wsag:Metric="CIPHER_SUITE_STRENGTH">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_12'] | //specs:NISTsecurityControl[@id='NIST_SC_13']</wsag:Location>
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_12']
+						| //specs:NISTsecurityControl[@id='NIST_SC_13']</wsag:Location>
+					</wsag:Variable>
+					-->
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+			<!--
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='Proof_of_Transit']" wsag:ServiceName="5G_SERVICE">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="PROOF_OF_TRANSIT_MAX_COUNT" wsag:Metric="PROOF_OF_TRANSIT_MAX_COUNT_METRIC">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
 					</wsag:Variable>
 				</wsag:VariableSet>
 			</wsag:ServiceProperties>
-
-			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='5G_SYSTEM_ANTI_DDOS_PROTECTION']" wsag:ServiceName="SECURE_5G_MOBILE_COMM_SYSTEM">
+			-->
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='Network_traffic_analysis']" wsag:ServiceName="5G_SERVICE">
 				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT" wsag:Metric="NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT_METRIC">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13'] | //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+					</wsag:Variable>
+					<!-- 
+						<wsag:Variable wsag:Name="mining_detection_acc" wsag:Metric="DETECTION_ACC_HOURLY">
+							<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
+							| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+						</wsag:Variable>
+						<wsag:Variable wsag:Name="mining_detection_ppv" wsag:Metric="DETECTION_PPV_HOURLY">
+							<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
+							| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+						</wsag:Variable>
+						<wsag:Variable wsag:Name="mining_detection_tpr" wsag:Metric="DETECTION_TPR_HOURLY">
+							<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
+							| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+						</wsag:Variable>
+						<wsag:Variable wsag:Name="mining_detection_fpr" wsag:Metric="DETECTION_FPR_HOURLY">
+							<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
+							| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+						</wsag:Variable>
+					-->
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='DDos_attack_protection']" wsag:ServiceName="5G_SERVICE">
+				<wsag:VariableSet>
+					<!--
 					<wsag:Variable wsag:Name="ddos_protect_service_uptime" wsag:Metric="SERVICE_UPTIME">
 						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_SC_5']</wsag:Location>
 					</wsag:Variable>
@@ -441,46 +672,22 @@
 					<wsag:Variable wsag:Name="ddos_detection_fpr" wsag:Metric="DETECTION_FPR_HOURLY">
 						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
 					</wsag:Variable>
-				</wsag:VariableSet>
-			</wsag:ServiceProperties>
-
-			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='DETECTION_OF_CRYPTOCURRENCY_MINING_IN_5G_TRAFFIC']" wsag:ServiceName="SECURE_5G_MOBILE_COMM_SYSTEM">
-				<wsag:VariableSet>
-					<wsag:Variable wsag:Name="mining_detection_acc" wsag:Metric="DETECTION_ACC_HOURLY">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
-						| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
+				-->
+					<wsag:Variable wsag:Name="ANTI_DDOS_PROTECTION_THROUGHPUT" wsag:Metric="ANTI_DDOS_PROTECTION_THROUGHPUT_METRIC">
+						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
 					</wsag:Variable>
-					<wsag:Variable wsag:Name="mining_detection_ppv" wsag:Metric="DETECTION_PPV_HOURLY">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
-						| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
-					</wsag:Variable>
-					<wsag:Variable wsag:Name="mining_detection_tpr" wsag:Metric="DETECTION_TPR_HOURLY">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
-						| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
-					</wsag:Variable>
-					<wsag:Variable wsag:Name="mining_detection_fpr" wsag:Metric="DETECTION_FPR_HOURLY">
-						<wsag:Location>//specs:NISTsecurityControl[@id='NIST_IR_4_13']
-						| //specs:NISTsecurityControl[@id='NIST_CA_7'] | //specs:NISTsecurityControl[@id='NIST_SI_4']</wsag:Location>
-					</wsag:Variable>
+				
 				</wsag:VariableSet>
 			</wsag:ServiceProperties>
 
 			<!-- -related SLOs -->
-			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_E2E_TRAFFIC_CONFIDENTIALITY_AND_INTEGRITY_PROTECTION']" wsag:Obligated="ServiceProvider">
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Channel_Protection']" wsag:Obligated="ServiceProvider">
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
-							<specs:SLO SLO_ID="5G_traffic_integrity_level_slo">
-                                <specs:MetricREF>5G_traffic_integrity_level</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>1</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="5G_traffic_confidentiality_level_slo">
+							<!-- Example for high-level SLOs -->
+							<!--
+							<specs:SLO SLO_ID="11">
                                 <specs:MetricREF>5G_traffic_confidentiality_level</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -490,7 +697,17 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="5G_traffic_protect_cipher_suite_strength_slo">
+							<specs:SLO SLO_ID="12">
+                                <specs:MetricREF>5G_traffic_integrity_level</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="13">
                                 <specs:MetricREF>5G_traffic_protect_cipher_suite_strength</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -500,17 +717,121 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
+							-->
+							<specs:SLO SLO_ID="1">
+                                <specs:MetricREF>5G_TRAFFIC_ENCRYPTION_ALGORITHM</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>AES_128_GCM</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="2">
+                                <specs:MetricREF>5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>SHA256</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
 						</specs:objectiveList>
 					</wsag:CustomServiceLevel>
 				</wsag:ServiceLevelObjective>
 				<wsag:BusinessValueList></wsag:BusinessValueList>
 			</wsag:GuaranteeTerm>
-			
-			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='5G_SYSTEM_ANTI_DDOS_PROTECTION']" wsag:Obligated="ServiceProvider">
+			<!--
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Proof_of_Transit']" wsag:Obligated="ServiceProvider">
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
-							<specs:SLO SLO_ID="ddos_protect_service_uptime_slo">
+							<specs:SLO SLO_ID="5">
+                                <specs:MetricREF>PROOF_OF_TRANSIT_THROUGHPUT</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>leq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+			-->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Network_traffic_analysis']" wsag:Obligated="ServiceProvider">
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<!--
+							<specs:SLO SLO_ID="21">
+                                <specs:MetricREF>ddos_detection_acc</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>0.90</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="22">
+                                <specs:MetricREF>ddos_detection_ppv</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>0.90</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="23">
+                                <specs:MetricREF>ddos_detection_tpr</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>geq</specs:operator>
+                                        <specs:operand>0.90</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+							<specs:SLO SLO_ID="24">
+                                <specs:MetricREF>ddos_detection_fpr</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>leq</specs:operator>
+                                        <specs:operand>0.10</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+						-->
+							<specs:SLO SLO_ID="3">
+                                <specs:MetricREF>NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>leq</specs:operator>
+                                        <specs:operand>1</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>	
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='DDos_attack_protection']" wsag:Obligated="ServiceProvider">
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<!--
+							<specs:SLO SLO_ID="3">
                                 <specs:MetricREF>ddos_protect_service_uptime</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -520,7 +841,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_scan_freq_slo">
+							<specs:SLO SLO_ID="5">
                                 <specs:MetricREF>ddos_scan_freq</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -530,7 +851,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_scan_report_age_slo">
+							<specs:SLO SLO_ID="6">
                                 <specs:MetricREF>ddos_scan_report_age</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -540,7 +861,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_detection_acc_slo">
+							<specs:SLO SLO_ID="7">
                                 <specs:MetricREF>ddos_detection_acc</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -550,7 +871,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_detection_ppv_slo">
+							<specs:SLO SLO_ID="8">
                                 <specs:MetricREF>ddos_detection_ppv</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -560,7 +881,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_detection_tpr_slo">
+							<specs:SLO SLO_ID="9">
                                 <specs:MetricREF>ddos_detection_tpr</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -570,7 +891,7 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
-							<specs:SLO SLO_ID="ddos_detection_fpr_slo">
+							<specs:SLO SLO_ID="10">
                                 <specs:MetricREF>ddos_detection_fpr</specs:MetricREF>
                                 <specs:SLOexpression>
                                     <specs:oneOpExpression>
@@ -580,62 +901,22 @@
                                 </specs:SLOexpression>	
                                 <specs:importance_weight>HIGH</specs:importance_weight>
                             </specs:SLO>
+						-->
+							<specs:SLO SLO_ID="4">
+								<specs:MetricREF>ANTI_DDOS_PROTECTION_THROUGHPUT</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>leq</specs:operator>
+										<specs:operand>500</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>HIGH</specs:importance_weight>
+							</specs:SLO>
 						</specs:objectiveList>
 					</wsag:CustomServiceLevel>
 				</wsag:ServiceLevelObjective>
 				<wsag:BusinessValueList></wsag:BusinessValueList>
 			</wsag:GuaranteeTerm>
-
-			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='DETECTION_OF_CRYPTOCURRENCY_MINING_IN_5G_TRAFFIC']" wsag:Obligated="ServiceProvider">
-				<wsag:ServiceLevelObjective>
-					<wsag:CustomServiceLevel>
-						<specs:objectiveList>
-							<specs:SLO SLO_ID="mining_detection_acc_slo">
-                                <specs:MetricREF>ddos_detection_acc</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="mining_detection_ppv_slo">
-                                <specs:MetricREF>ddos_detection_ppv</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="mining_detection_tpr_slo">
-                                <specs:MetricREF>ddos_detection_tpr</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="mining_detection_fpr_slo">
-                                <specs:MetricREF>ddos_detection_fpr</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>leq</specs:operator>
-                                        <specs:operand>0.10</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-						</specs:objectiveList>
-					</wsag:CustomServiceLevel>
-				</wsag:ServiceLevelObjective>
-				<wsag:BusinessValueList></wsag:BusinessValueList>
-			</wsag:GuaranteeTerm>
-
 		</wsag:All>
 	</wsag:Terms>
 </wsag:AgreementOffer>
