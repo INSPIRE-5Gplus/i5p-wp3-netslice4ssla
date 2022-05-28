@@ -121,7 +121,7 @@ policies_list = [
                                 "isCNF": "false",
                                 "count": {
                                     "measureUnit": "BYTE",
-                                    "value": 1,
+                                    "value": "1",
                                     "per": "SECOND"
                                 }
                             }
@@ -133,13 +133,10 @@ policies_list = [
                     }
                 }
             },
-            "priority":"0",
             "dependencies":[
                 {
                     "type": "PolicyDependency",
-                    "eventID": "",
-                    "configurationCondition":
-                    {
+                    "configurationCondition":{
                         "type": "PolicyDependencyCondition",
                         "isCNF": "false",
                         "policyID": "Channel_Protection",
@@ -185,7 +182,7 @@ policies_list = [
                                 "isCNF": "false",
                                 "count": {
                                     "measureUnit": "MBYTE",
-                                    "value": 500,
+                                    "value": "500",
                                     "per": "SECOND"
                                 }
                             }
@@ -196,9 +193,7 @@ policies_list = [
                         "value": "500"
                     }
                 }
-            },
-            "priority":"0",
-            "dependencies":[]
+            }
         }
     }
 ]

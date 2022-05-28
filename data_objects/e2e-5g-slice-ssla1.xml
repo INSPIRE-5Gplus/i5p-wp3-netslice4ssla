@@ -1,10 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<ITResourceOrchestration id="omspl_43a2ce61f85c4c4faf0acc30a84516a9"
-	xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd mspl.xsd"
-    sliceID="1548"
-    tenantID="1">
+<ITResourceOrchestration id="omspl_43a2ce61f85c4c4faf0acc30a84516a9"	xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd mspl.xsd" sliceID="1548" tenantID="1">
    <!-- Network Slice witht he 5G Service -->
    <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc2" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9" tenantID="1">
       <configuration xsi:type="RuleSetConfiguration">
@@ -13,33 +8,33 @@
             <sliceID>1548</sliceID>
          </capability>
          <configurationRule>
-             <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
+            <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
                <fiveGSecuritySliceActionType>DEPLOY</fiveGSecuritySliceActionType>
                <securedService>
-                   <service id="62">
-                          <name>5GCore</name>
-                          <type>5GCore</type>
-                          <domainID>3</domainID>
-                    </service>
-                    <securityRequirements id="asb6723bdqw87hd">
-                        <sloID>1</sloID>
-                        <sloID>2</sloID>
-                        <sloID>3</sloID>
-                    </securityRequirements>
-                    <securityPolicies>
-                        <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fp3</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fr9</msplID>
-                    </securityPolicies>
-                </securedService>
-             </configurationRuleAction>
-             <configurationCondition>
-                <isCNF>false</isCNF>
-             </configurationCondition>
-             <Name>Rule0</Name>
-             <isCNF>false</isCNF>
+                  <service id="62">
+                     <name>5GCore</name>
+                     <type>5GCore</type>
+                     <domainID>3</domainID>
+                  </service>
+                  <securityRequirements id="asb6723bdqw87hd">
+                     <sloID>1</sloID>
+                     <sloID>2</sloID>
+                     <sloID>3</sloID>
+                  </securityRequirements>
+                  <securityPolicies>
+                     <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fp3</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fr9</msplID>
+                  </securityPolicies>
+               </securedService>
+            </configurationRuleAction>
+            <configurationCondition>
+               <isCNF>false</isCNF>
+            </configurationCondition>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
          </configurationRule>
          <Name>Conf0</Name>
       </configuration>
@@ -51,33 +46,33 @@
               <Name>Channel_Protection</Name>
           </capability>
           <configurationRule>
-              <configurationRuleAction xsi:type='DataProtectionAction'>
-                  <technology>None</technology>
-                  <technologyActionParameters>
-                      <technologyParameter xsi:type='GenericChannelProtectionTechnologyParameter'>
-                            <localEndpoint>[UE]</localEndpoint>
-                            <remoteEndpoint>[5GService]</remoteEndpoint>
-                      </technologyParameter>
-                  </technologyActionParameters>
-                  <technologyActionSecurityProperty xsi:type='Confidentiality'>
+            <configurationRuleAction xsi:type='DataProtectionAction'>
+               <technology>None</technology>
+               <technologyActionParameters>
+                  <technologyParameter xsi:type='GenericChannelProtectionTechnologyParameter'>
+                     <localEndpoint>[UE]</localEndpoint>
+                     <remoteEndpoint>[5GService]</remoteEndpoint>
+                  </technologyParameter>
+               </technologyActionParameters>
+               <technologyActionSecurityProperty xsi:type='Confidentiality'>
                   <!--To fill with specific cypher suite for 5G -->
-                      <encryptionAlgorithm>AES-CBC</encryptionAlgorithm>
-                      <keySize>128</keySize>
-                      <mode>GCM</mode>
-                  </technologyActionSecurityProperty>
-                  <technologyActionSecurityProperty xsi:type='Integrity'>
-                      <integrityAlgorithm>SHA256</integrityAlgorithm>
-                  </technologyActionSecurityProperty>
-              </configurationRuleAction>
-              <configurationCondition xsi:type='DataProtectionCondition'>
-              <!-- here we could specify specific subet of traffic-->
-                  <isCNF>false</isCNF>
-              </configurationCondition>
-              <externalData xsi:type='Priority'>
-                  <value>0</value>
-              </externalData>
-              <Name>Rule0</Name>
-              <isCNF>false</isCNF>
+                  <encryptionAlgorithm>AES-CBC</encryptionAlgorithm>
+                  <keySize>128</keySize>
+                  <mode>GCM</mode>
+               </technologyActionSecurityProperty>
+               <technologyActionSecurityProperty xsi:type='Integrity'>
+                  <integrityAlgorithm>SHA256</integrityAlgorithm>
+               </technologyActionSecurityProperty>
+            </configurationRuleAction>
+            <configurationCondition xsi:type='DataProtectionCondition'>
+               <!-- here we could specify specific subet of traffic-->
+               <isCNF>false</isCNF>
+            </configurationCondition>
+            <externalData xsi:type='Priority'>
+               <value>0</value>
+            </externalData>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
           </configurationRule>
           <Name>Conf0</Name>
       </configuration>
