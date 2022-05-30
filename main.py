@@ -147,4 +147,4 @@ if __name__ == '__main__':
 
   # Run main server thread
   config_sys.logger.info('Secure Network Slcies 4 SSLA service READY.')
-  app.run(debug=False, host='localhost', port=os.environ.get("SERVICE_PORT"))
+  app.run(debug=False, host='0.0.0.0', port=os.environ.get("SERVICE_PORT"))
