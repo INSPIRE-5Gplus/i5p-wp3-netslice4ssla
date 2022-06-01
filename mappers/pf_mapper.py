@@ -17,12 +17,14 @@ policies_list = [
             {
                 "SLO_ID": 1,
                 "metric": "5G_TRAFFIC_ENCRYPTION_ALGORITHM",
-                "SLO": "AES_128_GCM"
+                "SLO": "AES_128_GCM",
+                "capability": "DTLS_protocol"
             },
             {
                 "SLO_ID": 2,
                 "metric": "5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM",
-                "SLO": "SHA256"
+                "SLO": "SHA256",
+                "capability": "IPSec_protocol"
             }
         ],
         "policy":{
@@ -88,7 +90,8 @@ policies_list = [
             {
                 "SLO_ID": 3,
                 "metric": "NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT",
-                "SLO": "1 BYTE/SECOND"
+                "SLO": "1 BYTE/SECOND",
+                "capability": "Network_traffic_analysis"
             }
         ],
         "policy":{
@@ -153,7 +156,8 @@ policies_list = [
             {
                 "SLO_ID": 4,
                 "metric": "ANTI_DDOS_PROTECTION_THROUGHPUT",
-                "SLO": "500"
+                "SLO": "500",
+                "capability": "DDos_attack_protection"
             }
         ],
         "policy":{
@@ -197,19 +201,6 @@ policies_list = [
         }
     }
 ]
-
-"""
-    pf_mngr_ip = os.environ.get("PF_IP")
-    pf_mngr_port = os.environ.get("PF_PORT")
-    url = "http://"+ str(pf_mngr_ip) + ":" + str(pf_mngr_port) +"/policy/"+str(policy_id)
-    response = requests.get(url, headers=CONTENT_HEADER)
-    if response.status_code != 200:
-        return [], response.status_code
-    else:
-        #TODO: process the response.text from XML to JSON
-        policy = []
-    return policy, 201
-"""
 
 # Retrieve policies based on the ssla capabilities
 # NOTE if two capabilities have the same policy associated, that policy is returned once associated to both cpabilities

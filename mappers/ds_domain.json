@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "E2E Management Domain 1",
+        "description": "INSPIRE-5G+ E2E Managament Domain CTTC PoC",
+        "d_type": "e2e",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 2,
+        "name": "Management Domain 2",
+        "description": "INSPIRE-5G+ Managament Domain 1 UMU PoC",
+        "d_type": "md",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 3,
+        "name": "Management Domain 3",
+        "description": "INSPIRE-5G+ E2E Managament Domain TID PoC",
+        "d_type": "md",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 4,
+        "name": "Management Domain 4",
+        "description": "INSPIRE-5G+ Managament Domain 1 CTTC PoC",
+        "d_type": "md",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 5,
+        "name": "Management Domain 5",
+        "description": "INSPIRE-5G+ Managament Domain 1 AALTO PoC",
+        "d_type": "md",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    }
+]

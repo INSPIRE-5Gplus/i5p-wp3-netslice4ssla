@@ -1,0 +1,678 @@
+[
+    {
+    "id": 1,
+    "apis": [
+        {
+            "id": 1,
+            "name": "ONOS NB-API",
+            "description": "ONOS Northbound API",
+            "protocol": "HTTP",
+            "uri": "http://10.0.2.15:8181/onos/v1/",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 1
+        }
+    ],
+    "credentials": [
+        {
+            "id": 1,
+            "name": "onos credential",
+            "user": "karaf",
+            "password": "karaf",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 1
+        }
+    ],
+    "enablers": [
+        {
+            "id": 1,
+            "name": "onos_nb",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                1,
+                2
+            ]
+        },
+        {
+            "id": 2,
+            "name": "onos_nb_i",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                2
+            ]
+        }
+    ],
+    "name": "ONOS",
+    "s_type": "sdn-c",
+    "available": true,
+    "version": "xxxx1",
+    "role": "master",
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 17,
+    "apis": [
+        {
+            "id": 17,
+            "name": "Security Orchestrator API",
+            "description": "CTTC Management Domain Orchestrator API",
+            "protocol": "HTTP",
+            "uri": "http://security-orchestrator-cttc:8002/meservice",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 17
+        }
+    ],
+    "credentials": [],
+    "enablers": [],
+    "name": "Security Orchestrator CTTC",
+    "s_type": "sec-orch",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 4
+    },
+    {
+    "id": 16,
+    "apis": [
+        {
+            "id": 16,
+            "name": "Security Orchestrator API",
+            "description": "TID Management Domain Orchestrator API",
+            "protocol": "HTTP",
+            "uri": "http://security-orchestrator.tid.cttc.es:8085/meservice",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 16
+        }
+    ],
+    "credentials": [],
+    "enablers": [],
+    "name": "Security Orchestrator TID",
+    "s_type": "sec-orch",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 3
+    },
+    {
+    "id": 15,
+    "apis": [
+        {
+            "id": 15,
+            "name": "E2E Security Orchestrator API",
+            "description": "Management Domain Orchestrator API",
+            "protocol": "HTTP",
+            "uri": "http://e2e-security-orchestrator:8007/e2emeservice",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 15
+        }
+    ],
+    "credentials": [],
+    "enablers": [],
+    "name": "E2E Security Orchestrator",
+    "s_type": "sec-orch",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 14,
+    "apis": [
+        {
+            "id": 14,
+            "name": "cttc v2x_ddos agent API",
+            "description": "cttc v2x_ddos agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.204.4.69",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 14
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 14,
+            "name": "v2x_ddos",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                9
+            ]
+        }
+    ],
+    "name": "v2x_ddos",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 13,
+    "apis": [
+        {
+            "id": 13,
+            "name": "fiveg core agent API",
+            "description": "fiveg core agent API",
+            "protocol": "HTTP",
+            "uri": "http://FIVEGCOREAGENTIP",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 13
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 13,
+            "name": "fivegcore_agent",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                2
+            ]
+        }
+    ],
+    "name": "fivegcore_agent",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 12,
+    "apis": [
+        {
+            "id": 12,
+            "name": "pot agent API",
+            "description": "pot agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.204.4.168:8080/opot_api/path",
+            "controller_api": true,
+            "driver": "PoTControllerDriver",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 12
+        }
+    ],
+    "credentials": [
+        {
+            "id": 7,
+            "name": "pot credential",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 12
+        }
+    ],
+    "enablers": [
+        {
+            "id": 12,
+            "name": "pot_agent",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                8
+            ]
+        }
+    ],
+    "name": "pot_agent",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 11,
+    "apis": [
+        {
+            "id": 11,
+            "name": "sta API",
+            "description": "sta API",
+            "protocol": "HTTP",
+            "uri": "http://IP:8020/",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 11
+        }
+    ],
+    "credentials": [
+        {
+            "id": 6,
+            "name": "sta credential",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 11
+        }
+    ],
+    "enablers": [
+        {
+            "id": 10,
+            "name": "sta",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                6
+            ]
+        }
+    ],
+    "name": "sta",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 10,
+    "apis": [
+        {
+            "id": 10,
+            "name": "i2nsf API",
+            "description": "i2nsf_agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.204.4.168:5000/i2nsf",
+            "controller_api": true,
+            "driver": "I2NSFControllerDriver",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 10
+        }
+    ],
+    "credentials": [
+        {
+            "id": 5,
+            "name": "i2nsf credential",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 10
+        }
+    ],
+    "enablers": [
+        {
+            "id": 9,
+            "name": "i2nsf_agent",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                5
+            ]
+        }
+    ],
+    "name": "i2nsf_agent",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 9,
+    "apis": [
+        {
+            "id": 9,
+            "name": "free5gc API",
+            "description": "free5gc API",
+            "protocol": "HTTP",
+            "uri": "http://IP:8020",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 9
+        }
+    ],
+    "credentials": [
+        {
+            "id": 4,
+            "name": "free5gc cred",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 9
+        }
+    ],
+    "enablers": [
+        {
+            "id": 11,
+            "name": "free5gc",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                7
+            ]
+        }
+    ],
+    "name": "free5gc",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 8,
+    "apis": [
+        {
+            "id": 8,
+            "name": "TRM API",
+            "description": "Management Domain TRM API",
+            "protocol": "HTTP",
+            "uri": "http://trmapi:9191/trm/",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 8
+        }
+    ],
+    "credentials": [
+        {
+            "id": 3,
+            "name": "onos credential",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 8
+        }
+    ],
+    "enablers": [],
+    "name": "TRM",
+    "s_type": "trm",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 7,
+    "apis": [
+        {
+            "id": 7,
+            "name": "Security Orchestrator API",
+            "description": "Management Domain Orchestrator API",
+            "protocol": "HTTP",
+            "uri": "http://security-orchestrator.k8s.gaialab/meservice",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 7
+        }
+    ],
+    "credentials": [],
+    "enablers": [],
+    "name": "Security Orchestrator",
+    "s_type": "sec-orch",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 2
+    },
+    {
+    "id": 6,
+    "apis": [
+        {
+            "id": 6,
+            "name": "MMT Agent API",
+            "description": "MMT Agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.208.88.30:8080/auto/inspire/closed-loop/reaction/forwarding",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 6
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 8,
+            "name": "mmt_forwarder",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                2
+            ]
+        }
+    ],
+    "name": "MMT Forwarder",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 5,
+    "apis": [
+        {
+            "id": 5,
+            "name": "Snort",
+            "description": "UMU Agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.0.2.15:8011/agent-manager",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 5
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 7,
+            "name": "snort_agent",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                6
+            ]
+        }
+    ],
+    "name": "Snort",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 4,
+    "apis": [
+        {
+            "id": 4,
+            "name": "MMT Agent API",
+            "description": "MMT Agent API",
+            "protocol": "HTTP",
+            "uri": "http://10.208.88.30:8080/auto/inspire/closed-loop/monitoring",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 4
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 6,
+            "name": "mmt_agent",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                6
+            ]
+        }
+    ],
+    "name": "MMT Agent",
+    "s_type": "enabler",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 3,
+    "apis": [
+        {
+            "id": 3,
+            "name": "OSM NB-API",
+            "description": "OSM Northbound API",
+            "protocol": "HTTP",
+            "uri": "10.204.4.16",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 3
+        }
+    ],
+    "credentials": [
+        {
+            "id": 2,
+            "name": "osm credential",
+            "user": "admin",
+            "password": "admin",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 3
+        }
+    ],
+    "enablers": [],
+    "name": "OSM",
+    "s_type": "five-g-slice-mano",
+    "available": true,
+    "version": "xxxx1",
+    "role": "master",
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 2,
+    "apis": [
+        {
+            "id": 2,
+            "name": "IoTC NB-API",
+            "description": "IoT Controller Northbound API",
+            "protocol": "HTTP",
+            "uri": "http://10.0.2.15:8003/api/v1/resource/",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 2
+        }
+    ],
+    "credentials": [],
+    "enablers": [
+        {
+            "id": 3,
+            "name": "iot_controller",
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "capabilities": [
+                3
+            ]
+        }
+    ],
+    "name": "IoT Controller",
+    "s_type": "iot-c",
+    "available": true,
+    "version": "0.1",
+    "role": "master",
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 1
+    },
+    {
+    "id": 18,
+    "apis": [
+        {
+            "id": 18,
+            "name": "Security Orchestrator API",
+            "description": "AALTO Management Domain Orchestrator API",
+            "protocol": "HTTP",
+            "uri": "http://security-orchestrator-aalto:8002/meservice",
+            "controller_api": false,
+            "driver": null,
+            "creation_date": "2022-05-04T14:31:08Z",
+            "last_update": "2022-05-04T14:31:08Z",
+            "software": 18
+        }
+    ],
+    "credentials": [],
+    "enablers": [],
+    "name": "Security Orchestrator AALTO",
+    "s_type": "sec-orch",
+    "available": true,
+    "version": "0.1",
+    "role": null,
+    "creation_date": "2022-05-04T14:31:08Z",
+    "last_update": "2022-05-04T14:31:08Z",
+    "device": 5
+    }
+]

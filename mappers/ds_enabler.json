@@ -1,0 +1,138 @@
+[
+    {
+        "id": 1,
+        "name": "onos_nb",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            1,
+            2
+        ]
+    },
+    {
+        "id": 14,
+        "name": "v2x_ddos",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            9
+        ]
+    },
+    {
+        "id": 13,
+        "name": "fivegcore_agent",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            2
+        ]
+    },
+    {
+        "id": 12,
+        "name": "pot_agent",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            8
+        ]
+    },
+    {
+        "id": 11,
+        "name": "free5gc",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            7
+        ]
+    },
+    {
+        "id": 10,
+        "name": "sta",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            6
+        ]
+    },
+    {
+        "id": 9,
+        "name": "i2nsf_agent",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            5
+        ]
+    },
+    {
+        "id": 8,
+        "name": "mmt_forwarder",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            2
+        ]
+    },
+    {
+        "id": 7,
+        "name": "snort_agent",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            6
+        ]
+    },
+    {
+        "id": 6,
+        "name": "mmt_agent",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            6
+        ]
+    },
+    {
+        "id": 5,
+        "name": "ipsec_netconf",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            5
+        ]
+    },
+    {
+        "id": 4,
+        "name": "dtls_server",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            4
+        ]
+    },
+    {
+        "id": 3,
+        "name": "iot_controller",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            3
+        ]
+    },
+    {
+        "id": 2,
+        "name": "onos_nb_i",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            2
+        ]
+    },
+    {
+        "id": 15,
+        "name": "aalto_ddos",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z",
+        "capabilities": [
+            9
+        ]
+    }
+]

@@ -1,6 +1,6 @@
 {
-  "id": "4c483430-8c65-49ae-a599-80db74b2990a",
-  "name": "5g_voip_service_nst",
+  "id": "ee37e0bd-dd43-4060-96d0-9c231e59e958",
+  "name": "5g_core_service_nst",
   "description": "E2E NST Description service",
   "nst-ref": "ca15d4fa-2bdc-41fb-9e25-82aaaf8c9e67",
   "quality-of-service": {
@@ -9,12 +9,15 @@
   "netslice-subnets": [
     {
       "id": "64c4b6a6-d395-46ed-b3ae-a3351e515ee7",
-      "name": "5GService",
-      "type": "5GVoIP",
+      "name": "5GCore",
+      "type": "5GCore",
       "version": 0.2,
       "vendor": "inspire5gplus",
       "shared": "False",
-      "deployment-policy": "mspl_62ab08c8e76f4071bbd01892a83315cb"
+      "deployment-policy": "mspl_28e61f1b125f4e27aeaef8aa5cb17c90",
+      "domains": [
+        1
+      ]
     }
   ],
   "security-sla": {
@@ -28,15 +31,20 @@
           {
             "SLO_ID": 1,
             "metric": "5G_TRAFFIC_ENCRYPTION_ALGORITHM",
-            "SLO": "AES_128_GCM"
+            "SLO": "AES_128_GCM",
+            "capability": "DTLS_protocol"
           },
           {
             "SLO_ID": 2,
             "metric": "5G_TRAFFIC_INTEGRITY_PROTECTION_ALGORITHM",
-            "SLO": "SHA256"
+            "SLO": "SHA256",
+            "capability": "IPSec_protocol"
           }
         ],
-        "mspl_id": "mspl_1822125273354f098c8ed88b57a8849b"
+        "mspl_id": "mspl_ccd91c145a9e47c1b500e1674bac2958",
+        "domains": [
+          
+        ]
       },
       {
         "capability-ssla": "Network_traffic_analysis",
@@ -45,10 +53,14 @@
           {
             "SLO_ID": 3,
             "metric": "NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT",
-            "SLO": "1 BYTE/SECOND"
+            "SLO": "1 BYTE/SECOND",
+            "capability": "Network_traffic_analysis"
           }
         ],
-        "mspl_id": "mspl_35404dbc1992465cbcb4e3129218b2bf"
+        "mspl_id": "mspl_b4d1cc653ba040f891fe061588acc326",
+        "domains": [
+          1
+        ]
       },
       {
         "capability-ssla": "DDos_attack_protection",
@@ -57,10 +69,14 @@
           {
             "SLO_ID": 4,
             "metric": "ANTI_DDOS_PROTECTION_THROUGHPUT",
-            "SLO": "500"
+            "SLO": "500",
+            "capability": "DDos_attack_protection"
           }
         ],
-        "mspl_id": "mspl_3f2e8ebaad1a4185bdff5b947c4b0ada"
+        "mspl_id": "mspl_42b42881b11d402ca76dc40ba066ea19",
+        "domains": [
+          1
+        ]
       }
     ]
   },

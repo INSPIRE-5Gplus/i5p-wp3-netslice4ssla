@@ -8,8 +8,41 @@ from databases import nst_db_mngr
 from databases import secnsi_db_mngr
 from sec_slice_mngr import slice2mspl
 from mappers import pf_mapper as e2e_pf
+from mappers import so_mapper as e2e_so
+from mappers import ssla_mngr_mapper as e2e_ssla
+from mappers import data_services_mapper as e2e_ds
 
 # manages the process to stro the received NST, generate the NSI and MSPL objects associated.
+def deploy_sec_nsi_test():
+  config_sys.logger.info("Getting the XML")
+  ssla_doc = "./data_objects/e2e-5g-slice-atenas.xml"
+  config_sys.logger.info("This is the XML: " + str(ssla_doc))
+
+  # Sends MSPL to the E2E SO
+  so_ip = os.environ.get("SO_IP")
+  config_sys.logger.info("so_ip: " + str(so_ip))
+  so_port = os.environ.get("SO_PORT")
+  config_sys.logger.info("so_port: " + str(so_port))
+  url = "http://"+ str(so_ip) + ":" + str(so_port) +"/e2emeservice"
+  config_sys.logger.info("url: " + str(url))
+  header = {'Content-Type': 'application/xml; charset=UTF-8', 'Cache-Control': 'no-cache', 'Accept': 'application/json',}
+  config_sys.logger.info("header: " + str(header))
+  with open(ssla_doc) as xml:
+    response = requests.post(url, data=xml, headers=header)
+    config_sys.logger.info("______________________________________________________________________________")
+    config_sys.logger.info("This is the response: " + str(response))
+    config_sys.logger.info("******************************************************************************")
+    config_sys.logger.info("This is the response.text: " + str(response.text))
+    config_sys.logger.info("This is the response.status_code: " + str(response.status_code))
+    if response.status_code != 200:
+      config_sys.logger.info('NSI-MNGR: E2E_SO STATUS:' + str(response.status_code))
+      config_sys.logger.info('NSI-MNGR: E2E_SO RESPONSE:' + str(response.text))
+      return response.text, response.status_code
+    else:
+      #TODO: process the response.text from the E2E SO
+      config_sys.logger.info('NSI-MNGR: E2E_SO RESPONSE:' + str(response.text))
+      return response.text, response.status_code
+
 def deploy_sec_nsi(request_json, ssla_object):
   config_sys.logger.info('NSI-MNGR: Deploying E2E NST: ' + str(request_json["nst"]["name"])+ ' with SSLA ID: '+ str(request_json['ssla_id']))
 
@@ -26,8 +59,6 @@ def deploy_sec_nsi(request_json, ssla_object):
   sec_nsi["quality-of-service"] = request_json["nst"]["quality-of-service"]
 
   # Copies the slice-subnets information
-  #response = nst_db_mngr.get_nst(request_json["id"])
-  #sec_nsi["netslice-subnets"] = response[0]["msg"]["netslice-subnets"]
   sec_nsi["netslice-subnets"] = request_json["nst"]["netslice-subnets"]
   for subnet_item in sec_nsi["netslice-subnets"]:
     # obtain the deployment MSPL policy ID
@@ -35,24 +66,21 @@ def deploy_sec_nsi(request_json, ssla_object):
     mspl_id = mspl_id.replace('-', '')
     mspl_id = "mspl_"+mspl_id
     subnet_item["deployment-policy"] = mspl_id
+    
+    # gets the domain where to deploy the slice-subnet
+    response = e2e_ds.get_domains_subnet(subnet_item)
+    if response[1] != 200:
+      pass
+    else:
+      subnet_item = response[0]
   
+  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT DOMAIN:' + str(sec_nsi))
   #add all the policies associated to the SSLA.
   ssla_info = {}
   ssla_info["id"] = request_json['ssla_id']
   ssla_name = ssla_object.getElementsByTagName("wsag:Name")[0]
   ssla_info["name"] = str(ssla_name.firstChild.data)
   
-  #to process and obtain the sloIDs for the security-requirements
-  """
-  slo_list = ssla_object.getElementsByTagName("specs:SLO")
-  sec_req = []
-  for slo_item in slo_list:
-    slo_json = {}
-    slo_json["sloID"] = slo_item.getAttribute("SLO_ID")
-    sec_req.append(slo_json)
-  ssla_info["security-requirements"] = sec_req
-  """
-
   # obtains the policies to apply based on the SSLA capabilites requested
   capabilities_list = ssla_object.getElementsByTagName("specs:capability")
   caps_list = []
@@ -75,6 +103,14 @@ def deploy_sec_nsi(request_json, ssla_object):
     temp_pol["mspl_id"] = mspl_id
     temp_pol.pop("policy", None)
     capabilities.append(temp_pol)
+  
+  # obtains the SMDs where to deploy the security elements
+  response = e2e_ds.get_domains_security_capability(capabilities)
+  if response[1] != 200:
+    pass
+  else:
+    capabilities = response[0]
+  
   ssla_info["capabilities"] = capabilities
   sec_nsi["security-sla"] = ssla_info
 
@@ -83,32 +119,22 @@ def deploy_sec_nsi(request_json, ssla_object):
   if response[1] != 200:
     config_sys.logger.error(response[0])
 
-  # TODO: obtain the SMDs where to deploy the subnets&SLOs (from Data Services)
   location_smd = []
   sec_nsi["location-smd"] = location_smd
   
   config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
-  # TODO: Prepares MSPL (XML format) data request to deploy
+  # Prepares MSPL (XML format) data request to deploy
   xml_tree = slice2mspl.generateMSPL(sec_nsi, policies_list)
-  config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
+  #config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
   
-  # TODO: MISSING COMAND TO SEND TOWARDS E2E SO
-  so_response = 200
-  """
-    so_ip = os.environ.get("SO_IP")
-    so_port = os.environ.get("SO_PORT")
-    url = "http://"+ str(so_ip) + ":" + str(so_port) +"/sla/"+str(ssla_id)
-    response = requests.get(url, headers=CONTENT_HEADER)
-    if response.status_code != 200:
-        return [], response.status_code
-    else:
-        #TODO: process the response.text from the E2E SO
-        so_response = []
-    return so_response, 201
-  """
+  # Sends MSPL to the E2E SO
+  #response = e2e_so.request_deployment(xml_tree)   # TODO: Once the XML is complete (domain enforcement), uncomment and remove the following lines.
+  response = []
+  response.append("hi")
+  response.append(200)
 
-  # TODO: Validates policy is applied = Sec_NSI is deployed
-  if so_response == 200:
+  # Validates policy is applied = Sec_NSI is deployed
+  if response[1] == 200:
     sec_nsi["status"] = "INSTANTIATING"
   else:
     sec_nsi["status"] = "ERROR"

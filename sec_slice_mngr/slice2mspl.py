@@ -89,8 +89,10 @@ def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids
     serv_name.text = subnet_item['name']
     serv_type = ET.SubElement(service, 'type')
     serv_type.text = subnet_item['type']
-    serv_domain = ET.SubElement(service, 'domainID')
-    serv_domain.text = '3'                #NOTE: update with the domain infor from the Data Services.
+    
+    for domain_item in subnet_item['domains']:
+        serv_domain = ET.SubElement(service, 'domainID')
+        serv_domain.text = str(domain_item)
     
     securityRequirements = ET.SubElement(securedService, 'securityRequirements', {'id':ssla_id}) #TODO: WHERE DOES THIS ID COME FROM? For now, we use the slice-id
     for sloid_item in slo_ids:
@@ -218,7 +220,10 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id):
     #### Level 2 - enforcementRequirements tag
     enforcementRequirements = ET.SubElement(ITResource, 'enforcementRequirements')
     enforcementDomains = ET.SubElement(enforcementRequirements, 'enforcementDomains')
-    domainID = ET.SubElement(enforcementDomains, 'domainID')
+    if capability_item['domains'] != []:
+        for domain_item in capability_item['domains']:
+            domainID = ET.SubElement(enforcementDomains, 'domainID')
+            domainID.text = str(domain_item)
 
     return root_mspl
 

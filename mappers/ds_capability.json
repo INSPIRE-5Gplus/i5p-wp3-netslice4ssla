@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "Filtering_L4",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 2,
+        "name": "Traffic_Divert",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 3,
+        "name": "IoT_control",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 4,
+        "name": "DTLS_protocol",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 5,
+        "name": "IPSec_protocol",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 6,
+        "name": "Network_traffic_analysis",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 7,
+        "name": "5GCore",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 8,
+        "name": "Proof_of_Transit",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    },
+    {
+        "id": 9,
+        "name": "DDos_attack_protection",
+        "creation_date": "2022-05-04T14:31:08Z",
+        "last_update": "2022-05-04T14:31:08Z"
+    }
+]

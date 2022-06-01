@@ -84,11 +84,20 @@ def nst_remove(nst_uuid):
 
 ########################################### NSI API #################################################
 # Triggers a Sec_NSI deployment
+@app.route('/sec_nsi/test', methods=['POST'])
+def deploy_sec_nsi_test():
+  config_sys.logger.info('MAIN: Request to deploy Sec NSI received.')
+  response = nsi_mngr.deploy_sec_nsi_test()
+  config_sys.logger.info('MAIN: Response from E2E SO')
+
+  return response[0], response[1]
+
+# Triggers a Sec_NSI deployment
 @app.route('/sec_nsi', methods=['POST'])
 def deploy_sec_nsi():
   config_sys.logger.info('MAIN: Request to deploy Sec NSI received.')
   incoming_request =  request.json
-  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])
+  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])    # TODO: integrate with the real SSLA MNGR
   request_response = {}
   if response[1] == 201:
     config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))
@@ -130,6 +139,7 @@ def terminate_sec_nsi(sec_nsi_uuid):
   response = {}
   response['log'] = "Request accepted, terminating the E2E Network Slice."
   return response, 200
+
 
 
 ################################### MAIN SERVER FUNCTION ###################################
