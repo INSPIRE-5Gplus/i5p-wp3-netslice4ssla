@@ -11,9 +11,9 @@ WORKDIR /e2e_slicer
 EXPOSE 6998
 
 #runing the python script to prepare the docker environment
+RUN apt-get update
+RUN apt-get install -y nano
 RUN python setup.py install
-RUN apt-get update && \
-    apt-get install -y nano
 
 #starting the slice-server/service
 #CMD echo "10.0.37.11 e2e-security-orchestrator.k8s.gaialab" >> /etc/hosts
