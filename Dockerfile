@@ -12,7 +12,7 @@ EXPOSE 6998
 
 #runing the python script to prepare the docker environment
 RUN apt-get update
-RUN apt-get install -y nano
+#RUN apt-get install -y nano
 RUN python setup.py install
 
 #starting the slice-server/service
