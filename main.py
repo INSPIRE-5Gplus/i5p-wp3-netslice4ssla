@@ -97,10 +97,12 @@ def deploy_sec_nsi_test():
 def deploy_sec_nsi():
   config_sys.logger.info('MAIN: Request to deploy Sec NSI received.')
   incoming_request =  request.json
-  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])    # TODO: integrate with the real SSLA MNGR
+  #response = ssla_mngr.get_ssla(incoming_request['ssla_id'])    # TODO: integrate with the real SSLA MNGR
+  response = ssla_mngr.get_ssla_list()    # TODO: integrate with the real SSLA MNGR
+  config_sys.logger.info('MAIN: ssla_response: ' + str(response))
   request_response = {}
   if response[1] == 201:
-    config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))
+    #config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))
     request_response['log'] = "Request accepted, setting up the E2E Network Slice."
     code = 200
   else:

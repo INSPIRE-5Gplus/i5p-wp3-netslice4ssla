@@ -12,7 +12,7 @@ from mappers import so_mapper as e2e_so
 from mappers import ssla_mngr_mapper as e2e_ssla
 from mappers import data_services_mapper as e2e_ds
 
-# manages the process to stro the received NST, generate the NSI and MSPL objects associated.
+# manages the process to store the received NST, generate the NSI and MSPL objects associated.
 def deploy_sec_nsi_test():
   config_sys.logger.info("Getting the XML")
   ssla_doc = "./data_objects/e2e-5g-slice-atenas.xml"
