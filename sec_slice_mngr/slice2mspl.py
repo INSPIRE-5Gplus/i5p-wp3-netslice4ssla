@@ -8,15 +8,19 @@ from config_files import config_system as config_sys
 def generateMSPL(e2e_nsi_json, policies_list):
     config_sys.logger.info('MSPL-GENERATOR: Generating the MSPL objct for the E2E SO.')
     # Level 0 (root): ITResourceOrchestration element
-    omspl_id = str(uuid.uuid4())            #NOTE: where does this osmpl_id come from? DataServices?
+    omspl_id = str(uuid.uuid4())
     omspl_id = omspl_id.replace('-', '')
-    omspl_id = "mspl_"+omspl_id
+    omspl_id = "omspl_"+omspl_id
+
+    #remove - from the slice uuid to have a base10 id for the E2E SO
+    base10_e2e_nsi_id = e2e_nsi_json['base10_id']
+
     ITResourceOrchestration_info = {
         'id':omspl_id,
         'xmlns':'http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd',
 	    'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
 	    'xsi:schemaLocation':'http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd scheme\mspl.xsd',
-        'sliceID':e2e_nsi_json['id'],             #NOTE why is this sliceID here???? is it necessary?
+        'sliceID':base10_e2e_nsi_id,
         'tenantID':'1'
     }
     root_mspl = ET.Element('ITResourceOrchestration', ITResourceOrchestration_info)
@@ -31,22 +35,26 @@ def generateMSPL(e2e_nsi_json, policies_list):
 
     # prepares the deployment policies items for the MSPL
     for subnet_item in e2e_nsi_json['netslice-subnets']:
-        root_mspl = deployment_mspl(root_mspl, subnet_item, omspl_id, e2e_nsi_json['id'], e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
+        root_mspl = deployment_mspl(e2e_nsi_json['name'], root_mspl, subnet_item, omspl_id, base10_e2e_nsi_id, e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
     
     # prepares the security policies items for the MSPL
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
         for policy_item in policies_list:
             if capability_item['capability-ssla'] == policy_item['capability-ssla']:
-                root_mspl = security_mspl(root_mspl, capability_item, policy_item, omspl_id)
+                root_mspl = security_mspl(root_mspl, capability_item, policy_item, omspl_id, base10_e2e_nsi_id)
     
     #write to file
     tree = ET.ElementTree(indent(root_mspl))
     tree.write('MSPL_test.xml', xml_declaration=True, encoding='utf-8')
 
+    #root= tree.getroot()
+    #data = ET.tostring(root, encoding='UTF-8', method='xml')
+    #config_sys.logger.info('MSPL-GENERATOR: data: ' + str(data))
+
     return tree
 
-def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids, policies_ids):
-    #Level 1: ITResource sub-element
+def deployment_mspl(slice_name, root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids, policies_ids):
+    # Level 2
     ITResource_info = {
         'id':subnet_item['deployment-policy'],
         'orchestrationID':omspl_id,
@@ -54,87 +62,102 @@ def deployment_mspl(root_mspl, subnet_item, omspl_id, slice_id, ssla_id, slo_ids
     }
     ITResource = ET.SubElement(root_mspl, 'ITResource', ITResource_info)
 
-    # Level 2: configuration sub-element
+    # Level 3
     configuration = ET.SubElement(ITResource, 'configuration', {'xsi:type':'RuleSetConfiguration'})
 
-    # Level 3: name sub-element
+    # Level 4
+    capability = ET.SubElement(configuration, 'capability', {'xsi:type':'FiveGSecuritySlice'})
+    configurationRule = ET.SubElement(configuration, 'configurationRule')
     conf_name = ET.SubElement(configuration, 'Name')
     conf_name.text = 'Conf0'
-    
-    # Level 3: capability sub-element
-    capability = ET.SubElement(configuration, 'capability', {'xsi:type':'FiveGSecuritySlice'})
-    # Level 4: capability information
-    cap_name = ET.SubElement(capability, 'Name')
-    cap_name.text = subnet_item['name']
-    sliceID = ET.SubElement(capability, 'sliceID')
-    sliceID.text = slice_id
 
-    # Level 3: configurationRule sub-element
-    configurationRule = ET.SubElement(configuration, 'configurationRule')
-    # Level 4: configurationRule information and sub-elements
+    # Level 5
+    # capability information
+    cap_name = ET.SubElement(capability, 'Name')
+    cap_name.text = slice_name
+    sliceID = ET.SubElement(capability, 'sliceID')
+    sliceID.text = slice_id    
+    # configurationRule information
+    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':'FiveGSecuritySliceAction'})
+    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition')
     rule_name = ET.SubElement(configurationRule, 'Name')
     rule_name.text = "Rule0"
     isCNF = ET.SubElement(configurationRule, 'isCNF')
     isCNF.text = 'false'
-    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition')
-    isCNF = ET.SubElement(configurationCondition, 'isCNF')
-    isCNF.text = 'false'
-    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':'FiveGSecuritySliceAction'})
+
+    # Level 6
+    # configurationRuleAction information
     fiveGSecuritySliceActionType = ET.SubElement(configurationRuleAction, 'fiveGSecuritySliceActionType')
     fiveGSecuritySliceActionType.text = 'DEPLOY'
-    # Level 5: securedService information and sub-elements
     securedService = ET.SubElement(configurationRuleAction, 'securedService')
+    
+    # configurationCondition information
+    isCNF = ET.SubElement(configurationCondition, 'isCNF')
+    isCNF.text = 'false'
+    
+    # Level 7
+    # securedService information
     service = ET.SubElement(securedService, 'service', {'id':subnet_item['id']})
+    securityRequirements = ET.SubElement(securedService, 'securityRequirements', {'id':ssla_id})
+    securityPolicies = ET.SubElement(securedService, 'securityPolicies')
+
+    # Level 8
+    # service information
     serv_name = ET.SubElement(service, 'name')
     serv_name.text = subnet_item['name']
     serv_type = ET.SubElement(service, 'type')
     serv_type.text = subnet_item['type']
-    
     for domain_item in subnet_item['domains']:
         serv_domain = ET.SubElement(service, 'domainID')
         serv_domain.text = str(domain_item)
     
-    securityRequirements = ET.SubElement(securedService, 'securityRequirements', {'id':ssla_id}) #TODO: WHERE DOES THIS ID COME FROM? For now, we use the slice-id
+    # securityRequirements information
     for sloid_item in slo_ids:
         sloID = ET.SubElement(securityRequirements, 'sloID')
         sloID.text = str(sloid_item)
 
-    securityPolicies = ET.SubElement(securedService, 'securityPolicies')
+    # securityPolicies information
     for policyid_item in policies_ids:
         msplID = ET.SubElement(securityPolicies, 'msplID')
         msplID.text = policyid_item
 
     return root_mspl
 
-def security_mspl(root_mspl, capability_item, policy_item, omspl_id):
-    #Level 1: ITResource sub-element
+def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
+    # Level 2
     ITResource_info = {
         'id':capability_item['mspl_id'],
         'orchestrationID':omspl_id,
-        'tenantID':'1'
+        'tenantID':'1',
+        'sliceID':slice_id
     }
     ITResource = ET.SubElement(root_mspl, 'ITResource', ITResource_info)
 
-    #### Level 2 - configuration tag
+    # Level 3 - configuration
     configuration = ET.SubElement(ITResource, 'configuration', {'xsi:type':policy_item['policy']['configuration']['type']})
-    # Level 3 - configuration tag
+    
+    # Level 4 - configuration inforation
+    capability = ET.SubElement(configuration, 'capability')
+    configurationRule = ET.SubElement(configuration, 'configurationRule')
     conf_name = ET.SubElement(configuration, 'Name')
     conf_name.text = 'Conf0'
-    capability = ET.SubElement(configuration, 'capability')
+
+    # Level 5
+    # capability information
     cap_name = ET.SubElement(capability, 'Name')
     cap_name.text = policy_item['capability-ssla']
-    configurationRule = ET.SubElement(configuration, 'configurationRule')
-    # Level 4+ - configuration tag
+    
+    # configurationRule information 
+    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type']})
+    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationCondition']['type']})
+    externalData = ET.SubElement(configurationRule, 'externalData', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['externalData']['type']})
     configurationRule_name = ET.SubElement(configurationRule, 'Name')
     configurationRule_name.text = "Rule0"
     configurationRule_isCNF = ET.SubElement(configurationRule, 'isCNF')
     configurationRule_isCNF.text = 'false'
-    
-    externalData = ET.SubElement(configurationRule, 'externalData', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['externalData']['type']})
-    externalData_value = ET.SubElement(externalData, 'value')
-    externalData_value.text = policy_item['policy']['configuration']['configurationRule']['externalData']['value']
-    
-    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type']})
+
+    # Level 6 +
+    # configurationRuleAction information
     if policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type'] == 'DataProtectionAction':
         technology = ET.SubElement(configurationRuleAction, 'technology')
         technology.text = policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['technology']
@@ -164,7 +187,7 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id):
     else:
         config_sys.logger.info('MSPL (Security): ERROR WITH A configurationRuleAction TYPE')
 
-    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationCondition']['type']})
+    # configurationCondition information
     configurationCondition_isCNF = ET.SubElement(configurationCondition, 'isCNF')
     configurationCondition_isCNF.text = "false"
     if policy_item['policy']['configuration']['configurationRule']['configurationCondition']['type'] == 'MonitoringConfigurationConditions':
@@ -182,23 +205,28 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id):
             channelProtected.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['channelProtected']
         
         maxCount = ET.SubElement(monitoringConfigurationCondition, 'maxCount')     
-        isCNF =    ET.SubElement(maxCount, 'isCNF')
+        isCNF = ET.SubElement(maxCount, 'isCNF')
         isCNF.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['isCNF']
-        count =    ET.SubElement(maxCount, 'count')
+        count = ET.SubElement(maxCount, 'count')
         for key_item in policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'].keys():
             if key_item != 'type':
                 count_element = ET.SubElement(count, key_item)
                 count_element.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'][key_item]
+    
+    externalData_value = ET.SubElement(externalData, 'value')
+    externalData_value.text = policy_item['policy']['configuration']['configurationRule']['externalData']['value']
 
-    #### Level 2 - priority tag
+    # Level 3
+    # priority information (if there is)
     if 'priority' in policy_item['policy']:
         priority = ET.SubElement(ITResource, 'priority')
         priority.text = policy_item['policy']['priority']
     
-    #### Level 2 - dependencies tag
+    """
+    # dependencies information (if there is)
     if 'dependencies' in policy_item['policy'].keys():
         dependencies = ET.SubElement(ITResource, 'dependencies')
-        # Level 3 - dependencies tag
+        # Level 4
         for dependency_item in policy_item['policy']['dependencies']:
             dependency = ET.SubElement(dependencies, 'dependency', {'xsi:type':dependency_item['type']})
             if 'eventID' in dependency_item.keys():
@@ -215,9 +243,8 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id):
                     else:
                         configCond_element = ET.SubElement(configurationCondition, key_item)
                         configCond_element.text = dependency_item['configurationCondition'][key_item]
-
-
-    #### Level 2 - enforcementRequirements tag
+    """
+    # enforcementRequirements information
     enforcementRequirements = ET.SubElement(ITResource, 'enforcementRequirements')
     enforcementDomains = ET.SubElement(enforcementRequirements, 'enforcementDomains')
     if capability_item['domains'] != []:

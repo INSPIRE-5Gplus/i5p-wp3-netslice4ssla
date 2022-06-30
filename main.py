@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3.4
 
-import os, sys, logging, json, argparse, time, datetime, uuid, requests, uuid
+import os, sys, logging, json, argparse, time, uuid, requests, uuid
+from datetime import datetime
 from flask.wrappers import Response
 from flask import Flask, request, jsonify
 from configparser import ConfigParser
@@ -95,11 +96,13 @@ def deploy_sec_nsi_test():
 # Triggers a Sec_NSI deployment
 @app.route('/sec_nsi', methods=['POST'])
 def deploy_sec_nsi():
+  config_sys.logger_kpi.info('INITIAL DEPLOYMENT TIME ->' + str(datetime.now()))
   config_sys.logger.info('MAIN: Request to deploy Sec NSI received.')
   incoming_request =  request.json
-  #response = ssla_mngr.get_ssla(incoming_request['ssla_id'])    # TODO: integrate with the real SSLA MNGR
-  response = ssla_mngr.get_ssla_list()    # TODO: integrate with the real SSLA MNGR
+  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])
+  #response = ssla_mngr.get_ssla_list()
   config_sys.logger.info('MAIN: ssla_response: ' + str(response))
+  config_sys.logger_kpi.info('FINAL DEPLOYMENT TIME ->' + str(datetime.now()))
   request_response = {}
   if response[1] == 201:
     #config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))
@@ -160,3 +163,4 @@ if __name__ == '__main__':
   # Run main server thread
   config_sys.logger.info('Secure Network Slcies 4 SSLA service READY.')
   app.run(debug=False, host='0.0.0.0', port=os.environ.get("SERVICE_PORT"))
+  #app.run(debug=False, host='localhost', port="7998")

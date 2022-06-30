@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<ITResourceOrchestration id="omspl_43a2ce61f85c4c4faf0acc30a84516a9"	xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd mspl.xsd" sliceID="1548" tenantID="1">
-   <!-- Network Slice witht he 5G Service -->
+<ITResourceOrchestration id="omspl_43a2ce61f85c4c4faf0acc30a84516a9"
+	xmlns="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://modeliosoft/xsddesigner/a22bd60b-ee3d-425c-8618-beb6a854051a/ITResource.xsd mspl.xsd"
+    sliceID="1548"
+    tenantID="1">
    <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc2" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9" tenantID="1">
       <configuration xsi:type="RuleSetConfiguration">
          <capability xsi:type="FiveGSecuritySlice">
@@ -41,61 +45,61 @@
    </ITResource>
    <!-- E2E Channel protection -->
    <ITResource id="mspl_9f1a88b4fc67421b98de270d5a63d35a" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9" tenantID="1" sliceID="1548">
-      <configuration xsi:type='RuleSetConfiguration'>
-          <capability>
-              <Name>Channel_Protection</Name>
-          </capability>
-          <configurationRule>
-            <configurationRuleAction xsi:type='DataProtectionAction'>
-               <technology>None</technology>
-               <technologyActionParameters>
-                  <technologyParameter xsi:type='GenericChannelProtectionTechnologyParameter'>
-                     <localEndpoint>[UE]</localEndpoint>
-                     <remoteEndpoint>[5GService]</remoteEndpoint>
-                  </technologyParameter>
-               </technologyActionParameters>
-               <technologyActionSecurityProperty xsi:type='Confidentiality'>
-                  <!--To fill with specific cypher suite for 5G -->
-                  <encryptionAlgorithm>AES-CBC</encryptionAlgorithm>
-                  <keySize>128</keySize>
-                  <mode>GCM</mode>
-               </technologyActionSecurityProperty>
-               <technologyActionSecurityProperty xsi:type='Integrity'>
-                  <integrityAlgorithm>SHA256</integrityAlgorithm>
-               </technologyActionSecurityProperty>
-            </configurationRuleAction>
-            <configurationCondition xsi:type='DataProtectionCondition'>
-               <!-- here we could specify specific subet of traffic-->
+         <configuration xsi:type='RuleSetConfiguration'>
+            <capability>
+               <Name>Channel_Protection</Name>
+            </capability>
+            <configurationRule>
+               <configurationRuleAction xsi:type='DataProtectionAction'>
+                  <technology>None</technology>
+                  <technologyActionParameters>
+                     <technologyParameter xsi:type='GenericChannelProtectionTechnologyParameter'>
+                        <localEndpoint>[UE]</localEndpoint>
+                        <remoteEndpoint>[5GService]</remoteEndpoint>
+                     </technologyParameter>
+                  </technologyActionParameters>
+                  <technologyActionSecurityProperty xsi:type='Confidentiality'>
+                     <!--To fill with specific cypher suite for 5G -->
+                     <encryptionAlgorithm>AES-CBC</encryptionAlgorithm>
+                     <keySize>128</keySize>
+                     <mode>GCM</mode>
+                  </technologyActionSecurityProperty>
+                  <technologyActionSecurityProperty xsi:type='Integrity'>
+                     <integrityAlgorithm>SHA256</integrityAlgorithm>
+                  </technologyActionSecurityProperty>
+               </configurationRuleAction>
+               <configurationCondition xsi:type='DataProtectionCondition'>
+                  <!-- here we could specify specific subet of traffic-->
+                  <isCNF>false</isCNF>
+               </configurationCondition>
+               <externalData xsi:type='Priority'>
+                  <value>0</value>
+               </externalData>
+               <Name>Rule0</Name>
                <isCNF>false</isCNF>
-            </configurationCondition>
-            <externalData xsi:type='Priority'>
-               <value>0</value>
-            </externalData>
-            <Name>Rule0</Name>
-            <isCNF>false</isCNF>
-          </configurationRule>
-          <Name>Conf0</Name>
-      </configuration>
-      <priority>1000</priority>
-      <dependencies>
-         <dependency xsi:type='EventDependency'>
-            <eventID>VNF-READY</eventID>
-            <configurationCondition xsi:type='FilteringConfigurationCondition'>
-               <isCNF>false</isCNF>
-               <packetFilterCondition>
-                  <SourceAddress>[5GService]</SourceAddress>
-               </packetFilterCondition>
-            </configurationCondition>
-         </dependency>
-      </dependencies>
-      <enforcementRequirements>
-          <enforcementDomains>
+            </configurationRule>
+            <Name>Conf0</Name>
+         </configuration>
+         <priority>1000</priority>
+         <dependencies>
+            <dependency xsi:type='EventDependency'>
+               <eventID>VNF-READY</eventID>
+               <configurationCondition xsi:type='FilteringConfigurationCondition'>
+                  <isCNF>false</isCNF>
+                  <packetFilterCondition>
+                     <SourceAddress>[5GService]</SourceAddress>
+                  </packetFilterCondition>
+               </configurationCondition>
+            </dependency>
+         </dependencies>
+         <enforcementRequirements>
+            <enforcementDomains>
                <!-- RAN domain -->
                <domainID>2</domainID>
                <!-- 5G core domain -->
                <domainID>3</domainID>
-          </enforcementDomains>
-      </enforcementRequirements>
+            </enforcementDomains>
+         </enforcementRequirements>
    </ITResource>
    <!-- Proof Of Transit-->
    <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc9" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9" sliceID="1548" tenantID="1">
@@ -137,22 +141,22 @@
       <dependencies>
          <dependency xsi:type='PolicyDependency'>
             <configurationCondition xsi:type='PolicyDependencyCondition'>
-               <isCNF>false</isCNF>
-               <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
-               <status>ENFORCED</status>
+              <isCNF>false</isCNF>
+              <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
+              <status>ENFORCED</status>
             </configurationCondition>
          </dependency>
       </dependencies>
       <enforcementRequirements>
-         <enforcementDomains>
-            <!-- 5G RAN domain -->
-            <domainID>2</domainID>
-            <!-- 5G core domain -->
-            <domainID>3</domainID>
-         </enforcementDomains>
+          <enforcementDomains>
+              <!-- 5G RAN domain -->
+              <domainID>2</domainID>
+               <!-- 5G core domain -->
+              <domainID>3</domainID>
+          </enforcementDomains>
       </enforcementRequirements>
    </ITResource>
-   <!-- 5G Service abnormal behaviour protection- STA (Network_traffic_analysis)-->
+   <!-- 5G Service abnormal behaviour protection- STA-->
    <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fc7" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9" sliceID="1548" tenantID="1">
       <configuration xsi:type="RuleSetConfiguration">
          <capability>
@@ -195,9 +199,9 @@
       <dependencies>
          <dependency xsi:type='PolicyDependency'>
             <configurationCondition xsi:type='PolicyDependencyCondition'>
-               <isCNF>false</isCNF>
-               <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
-               <status>ENFORCED</status>
+              <isCNF>false</isCNF>
+              <policyID>mspl_9f1a88b4fc67421b98de270d5a63d35a</policyID>
+              <status>ENFORCED</status>
             </configurationCondition>
          </dependency>
       </dependencies>
@@ -252,49 +256,4 @@
          </enforcementDomains>
       </enforcementRequirements>
    </ITResource>
-   <!-- Monitoring DDoS 5g Service Protection AALTO-->
-   <ITResource id="mspl_eef61525d1594412bdcef34a4bfb7fp3" orchestrationID="omspl_43a2ce61f85c4c4faf0acc30a84516a9">
-      <configuration xsi:type="RuleSetConfiguration">
-         <capability>
-            <Name>DDos_attack_protection</Name>
-         </capability>
-         <configurationRule>
-            <configurationRuleAction xsi:type="MonitoringAction">
-               <monitoringActionType>SECURITY_ANALYSIS</monitoringActionType>
-            </configurationRuleAction>
-            <configurationCondition xsi:type="MonitoringConfigurationConditions">
-               <isCNF>false</isCNF>
-               <monitoringConfigurationCondition>
-                  <isCNF>true</isCNF>
-                  <packetFilterCondition>
-                     <SourceAddress>[UE]</SourceAddress>
-                     <DestinationAddress>[5GService]</DestinationAddress>
-                  </packetFilterCondition>
-                  <channelProtected>false</channelProtected>
-                  <maxCount>
-                     <isCNF>false</isCNF>
-                     <count>
-                        <measureUnit>MBYTE</measureUnit>
-                        <value>500</value>
-                        <per>SECOND</per>
-                     </count>
-                  </maxCount>
-               </monitoringConfigurationCondition>
-            </configurationCondition>
-            <externalData xsi:type="Priority">
-               <value>500</value>
-            </externalData>
-            <Name>Rule0</Name>
-            <isCNF>false</isCNF>
-         </configurationRule>
-         <Name>Conf0</Name>
-      </configuration>
-      <enforcementRequirements>
-         <enforcementDomains>
-            <!-- AALTO domain -->
-            <domainID>5</domainID>
-         </enforcementDomains>
-      </enforcementRequirements>
-   </ITResource>
-
 </ITResourceOrchestration>

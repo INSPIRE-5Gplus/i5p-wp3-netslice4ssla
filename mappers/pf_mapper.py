@@ -18,7 +18,7 @@ policies_list = [
                 "SLO_ID": 1,
                 "metric": "5G_TRAFFIC_ENCRYPTION_ALGORITHM",
                 "SLO": "AES_128_GCM",
-                "capability": "DTLS_protocol"
+                "capability": "Channel_Protection"
             },
             {
                 "SLO_ID": 2,
@@ -78,6 +78,68 @@ policies_list = [
                         "packetFilterCondition":{
                             "SourceAddress": "[5GService]"
                         }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "capability-ssla":"Proof_of_Transit",
+        "capability-name": "Proof of Transit",
+        "slos":[
+            {
+                "SLO_ID": 5,
+                "metric": "PROOF_OF_TRANSIT_THROUGHPUT",
+                "SLO": "1",
+                "capability": "Proof_of_Transit"
+            }
+        ],
+        "policy":{
+            "configuration":{
+                "type": "RuleSetConfiguration",
+                "name": "Conf0",
+                "configurationRule":{
+                    "name": "Rule0",
+                    "isCNF": "false",
+                    "configurationRuleAction": {
+                        "type": "MonitoringAction",
+                        "monitoringActionType": "SECURITY_ANALYSIS",
+                        "aditionalMonitoringParameters":[]
+                    },
+                    "configurationCondition":{
+                        "type": "MonitoringConfigurationConditions",
+                        "isCNF": "false",
+                        "monitoringConfigurationCondition":{
+                            "isCNF": "true",
+                            "packetFilterCondition": {
+                                "SourceAddress": "[UE]",
+                                "DestinationAddress": "[5GService]",
+                            },
+                            "channelProtected": "false",
+                            "maxCount":{
+                                "isCNF": "false",
+                                "count": {
+                                    "measureUnit": "BYTE",
+                                    "value": "1",
+                                    "per": "SECOND"
+                                }
+                            }
+                        }
+                    },
+                    "externalData":{
+                        "type": "Priority",
+                        "value": "500"
+                    }
+                }
+            },
+            "dependencies":[
+                {
+                    "type": "PolicyDependency",
+                    "configurationCondition":{
+                        "type": "PolicyDependencyCondition",
+                        "isCNF": "false",
+                        "policyID": "Channel_Protection",
+                        "status": "ENFORCED"
                     }
                 }
             ]

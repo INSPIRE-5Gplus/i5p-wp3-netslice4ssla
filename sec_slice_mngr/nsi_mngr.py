@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3.4
 
-import os, sys, logging, json, argparse, time, datetime, requests, uuid
+import os, sys, logging, json, argparse, time, requests, uuid
+from datetime import datetime
 from xml.dom import minidom 
 
 from config_files import config_system as config_sys
@@ -15,7 +16,7 @@ from mappers import data_services_mapper as e2e_ds
 # manages the process to store the received NST, generate the NSI and MSPL objects associated.
 def deploy_sec_nsi_test():
   config_sys.logger.info("Getting the XML")
-  ssla_doc = "./data_objects/e2e-5g-slice-atenas.xml"
+  ssla_doc = "./data_objects/e2e-5g-slice-ssla1_v2.xml"
   config_sys.logger.info("This is the XML: " + str(ssla_doc))
 
   # Sends MSPL to the E2E SO
@@ -52,6 +53,10 @@ def deploy_sec_nsi(request_json, ssla_object):
   # Prepares Sec_NSI data object structure
   sec_nsi = {}
   sec_nsi["id"] = str(uuid.uuid4())
+  #prepares a id base 10 based on timestamp for the E2E SO
+  dt = datetime.now()
+  ts = str(round(dt.timestamp()))
+  sec_nsi['base10_id'] = ts
   sec_nsi["name"] = request_json["nst"]["name"]
   sec_nsi["description"] = request_json["nst"]["description"]
   sec_nsi["nst-ref"] = request_json["nst"]["id"]
@@ -60,6 +65,7 @@ def deploy_sec_nsi(request_json, ssla_object):
 
   # Copies the slice-subnets information
   sec_nsi["netslice-subnets"] = request_json["nst"]["netslice-subnets"]
+  config_sys.logger.info('NSI-MNGR: sec_nsi[netslice-subnets]:' + str(sec_nsi["netslice-subnets"]))
   for subnet_item in sec_nsi["netslice-subnets"]:
     # obtain the deployment MSPL policy ID
     mspl_id = str(uuid.uuid4())
@@ -69,6 +75,7 @@ def deploy_sec_nsi(request_json, ssla_object):
     
     # gets the domain where to deploy the slice-subnet
     response = e2e_ds.get_domains_subnet(subnet_item)
+    config_sys.logger.info('NSI-MNGR: Domains obtained from data services:' + str(response[0]))
     if response[1] != 200:
       pass
     else:
@@ -105,6 +112,7 @@ def deploy_sec_nsi(request_json, ssla_object):
     capabilities.append(temp_pol)
   
   # obtains the SMDs where to deploy the security elements
+  config_sys.logger.info('NSI-MNGR: capabilities:' + str(capabilities))
   response = e2e_ds.get_domains_security_capability(capabilities)
   if response[1] != 200:
     pass
@@ -119,19 +127,18 @@ def deploy_sec_nsi(request_json, ssla_object):
   if response[1] != 200:
     config_sys.logger.error(response[0])
 
+  #NOTE: TO REMOVE??? Each subnet has its domain info
   location_smd = []
   sec_nsi["location-smd"] = location_smd
   
   config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
   # Prepares MSPL (XML format) data request to deploy
   xml_tree = slice2mspl.generateMSPL(sec_nsi, policies_list)
-  #config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
+  config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
   
   # Sends MSPL to the E2E SO
-  #response = e2e_so.request_deployment(xml_tree)   # TODO: Once the XML is complete (domain enforcement), uncomment and remove the following lines.
-  response = []
-  response.append("hi")
-  response.append(200)
+  #response = e2e_so.request_deployment(xml_tree)
+  response= ["msg", 200]
 
   # Validates policy is applied = Sec_NSI is deployed
   if response[1] == 200:

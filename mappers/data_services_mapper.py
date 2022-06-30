@@ -12,10 +12,23 @@ CONTENT_HEADER_JSON = {'Content-Type':'application/json'}
 
 
 # GETS DATA SERVICES CAPABILITIES INFO
+def get_ds_domains():
+    ds_ip = os.environ.get("DATASERV_IP")
+    ds_port = os.environ.get("DATASERV_PORT")
+    url = "http://"+ str(ds_ip) + ":" + str(ds_port) +"/domain"
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV url --> ' + str(url))
+    response = requests.get(url, headers=CONTENT_HEADER_JSON, auth=HTTPBasicAuth('admin', 'admin'))
+    if response.status_code != 200:
+        return [], response.status_code
+    else:
+        return response.text, response.status_code
+
+# GETS DATA SERVICES CAPABILITIES INFO
 def get_ds_capabilities():
     ds_ip = os.environ.get("DATASERV_IP")
     ds_port = os.environ.get("DATASERV_PORT")
     url = "http://"+ str(ds_ip) + ":" + str(ds_port) +"/capability"
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV url --> ' + str(url))
     response = requests.get(url, headers=CONTENT_HEADER_JSON, auth=HTTPBasicAuth('admin', 'admin'))
     if response.status_code != 200:
         return [], response.status_code
@@ -27,6 +40,7 @@ def get_ds_enablers():
     ds_ip = os.environ.get("DATASERV_IP")
     ds_port = os.environ.get("DATASERV_PORT")
     url = "http://"+ str(ds_ip) + ":" + str(ds_port) +"/enabler"
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV url --> ' + str(url))
     response = requests.get(url, headers=CONTENT_HEADER_JSON, auth=HTTPBasicAuth('admin', 'admin'))
     if response.status_code != 200:
         return [], response.status_code
@@ -38,6 +52,7 @@ def get_ds_softwares():
     ds_ip = os.environ.get("DATASERV_IP")
     ds_port = os.environ.get("DATASERV_PORT")
     url = "http://"+ str(ds_ip) + ":" + str(ds_port) +"/software"
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV url --> ' + str(url))
     response = requests.get(url, headers=CONTENT_HEADER_JSON, auth=HTTPBasicAuth('admin', 'admin'))
     if response.status_code != 200:
         return [], response.status_code
@@ -49,6 +64,7 @@ def get_ds_devices():
     ds_ip = os.environ.get("DATASERV_IP")
     ds_port = os.environ.get("DATASERV_PORT")
     url = "http://"+ str(ds_ip) + ":" + str(ds_port) +"/device"
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV url --> ' + str(url))
     response = requests.get(url, headers=CONTENT_HEADER_JSON, auth=HTTPBasicAuth('admin', 'admin'))
     if response.status_code != 200:
         return [], response.status_code
@@ -125,7 +141,10 @@ def get_domains_subnet(subnet_item):
             if soft_item['id'] in softwares_list:
                 domains_list.append(device_item['domain'])
 
+    domains_list = [3] #NOTE: hardcoded requested by UMU until they say to erase it.
+    config_sys.logger.info('DATA-SERVICES: domains_list --> ' + str(domains_list))
     subnet_item['domains'] = domains_list
+    config_sys.logger.info('NSI-MNGR: E2E_DATASERV subnet_item --> ' + str(subnet_item))
     return subnet_item, 200
 
 #Input
@@ -150,50 +169,20 @@ def get_domains_subnet(subnet_item):
 def get_domains_security_capability(capabilities):
     config_sys.logger.info('DATA-SERVICES: Retrieving Security Capabilities information.')
     # GETS DATA SERVICES CAPABILITIES INFO
-    response = get_ds_capabilities()
-    ds_capabilities = json.loads(response[0])
+    response = get_ds_domains()
+    ds_domains = json.loads(response[0])
+    config_sys.logger.info('DATA-SERVICES: ds_domains --> ' + str(ds_domains))
     
-    # GETS DATA SERVICES ENABLERS INFO
-    response = get_ds_enablers()
-    ds_enablers = json.loads(response[0])
-
-    # GETS DATA SERVICES SOFTWARE INFO
-    response = get_ds_softwares()
-    ds_softwares = json.loads(response[0])
-
-    # GETS DATA SERVICES DEVICE INFO
-    response = get_ds_devices()
-    ds_devices = json.loads(response[0])
-
-    # processes the received data to add the right domain into each capability  
+    # processes the received data to add the right domain into each capability
     for capability_item in capabilities:
-        for slo_item in capability_item['slos']:
-            # getting the id of the capability
-            for ds_cap_item in ds_capabilities:
-                if ds_cap_item['name'] == slo_item['capability']:
-                    cap_id = ds_cap_item['id']
-                    break
-            
-            # getting the enablers ids having the capability
-            enablers_list = []
-            for enabler_item in ds_enablers:
-                if cap_id in enabler_item['capabilities']:
-                    enablers_list.append(cap_id)
-            
-            # getting the software ids having the enablers
-            softwares_list = []
-            for software_item in ds_softwares:
-                for ena_item in software_item['enablers']:
-                    if ena_item['id'] in enablers_list:
-                        softwares_list.append(software_item['id'])
-            
-            # getting the domain ids having the softwares
-            domains_list = []
-            for device_item in ds_devices:
-                for soft_item in device_item['softwares']:
-                    if soft_item['id'] in softwares_list:
-                        domains_list.append(device_item['domain'])
-        
-            capability_item['domains'] = domains_list
-  
+        domains_list = []
+        for domain_item in ds_domains:
+            for dom_cap_item in domain_item['capabilities']:
+                if capability_item['capability-ssla'] == dom_cap_item:
+                    config_sys.logger.info('DATA-SERVICES: capability_item[capability-ssla] --> ' + str(capability_item['capability-ssla']))
+                    config_sys.logger.info('DATA-SERVICES: dom_cap_item --> ' + str(dom_cap_item))
+                    domains_list.append(domain_item['id'])
+        capability_item['domains'] = domains_list
+
+    config_sys.logger.info('DATA-SERVICES: capabilities --> ' + str(capabilities))
     return capabilities, 200

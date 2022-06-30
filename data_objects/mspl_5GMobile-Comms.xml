@@ -12,34 +12,34 @@
             <sliceID>1548</sliceID>
          </capability>
          <configurationRule>
-             <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
+            <configurationRuleAction xsi:type="FiveGSecuritySliceAction">
                <fiveGSecuritySliceActionType>DEPLOY</fiveGSecuritySliceActionType>
                <securedService>
-                   <service id="62"> <!-- ESTE ID A QUE CORRESPONDE? -->
-                          <name>[5GService]</name>
-                          <type>5GCore</type>
-                          <domainID>3</domainID>
-                    </service>
-                    <securityRequirements id="asb6723bdqw87hd">   <!-- ESTE ID A QUE CORRESPONDE? SSLA? -->
-                        <sloID>1</sloID>
-                        <sloID>2</sloID>
-                        <sloID>3</sloID>
-                    </securityRequirements>
-                    <securityPolicies>
-                        <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc3</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fp3</msplID>
-                        <msplID>mspl_eef61525d1594412bdcef34a4bfb7fr9</msplID>
-                    </securityPolicies>
-                </securedService>
-             </configurationRuleAction>
-             <configurationCondition>
-                <isCNF>false</isCNF>
-             </configurationCondition>
-             <Name>Rule0</Name>
-             <isCNF>false</isCNF>
+                  <service id="62"> <!-- ESTE ID A QUE CORRESPONDE? -->
+                     <name>[5GService]</name>
+                     <type>5GCore</type>
+                     <domainID>3</domainID>
+                  </service>
+                  <securityRequirements id="asb6723bdqw87hd">   <!-- ESTE ID A QUE CORRESPONDE? SSLA? -->
+                     <sloID>1</sloID>
+                     <sloID>2</sloID>
+                     <sloID>3</sloID>
+                  </securityRequirements>
+                  <securityPolicies>
+                     <msplID>mspl_9f1a88b4fc67421b98de270d5a63d35a</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc9</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc7</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fc3</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fp3</msplID>
+                     <msplID>mspl_eef61525d1594412bdcef34a4bfb7fr9</msplID>
+                  </securityPolicies>
+               </securedService>
+            </configurationRuleAction>
+            <configurationCondition>
+               <isCNF>false</isCNF>
+            </configurationCondition>
+            <Name>Rule0</Name>
+            <isCNF>false</isCNF>
          </configurationRule>
          <Name>Conf0</Name>
       </configuration>
@@ -299,5 +299,4 @@
           </enforcementDomains>
       </enforcementRequirements>
    </ITResource>
-
 </ITResourceOrchestration>
