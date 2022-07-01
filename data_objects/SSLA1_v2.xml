@@ -12,6 +12,7 @@
     wsag:AgreementId="5G_SERVICE_SSLA">
 	
 	<wsag:Name>5G_SERVICE_SSLA</wsag:Name>
+	
 	<wsag:Context>
 		<wsag:AgreementInitiator>INSPIRE_5G_plus_SERVICE_CUSTOMER</wsag:AgreementInitiator>
 		<wsag:AgreementResponder>INSPIRE_5G_plus_SERVICE_PROVIDER</wsag:AgreementResponder>
@@ -24,7 +25,6 @@
 		<wsag:All>
 			<!-- MSPL securedService/service/name expected to use this ServiceName -->
 			<wsag:ServiceDescriptionTerm wsag:Name="5G_SERVICE_TERM" wsag:ServiceName="5G_SERVICE">
-				
 				<specs:serviceDescription>
 					<!-- SPECS serviceResources definition is ignored in INSPIRE-5Gplus Demo1. -->
 					<!--

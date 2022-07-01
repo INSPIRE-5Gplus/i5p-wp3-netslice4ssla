@@ -3,6 +3,7 @@
 import os, sys, logging, json, argparse, time, requests, uuid
 from datetime import datetime
 from xml.dom import minidom 
+import xml.etree.ElementTree as ET
 
 from config_files import config_system as config_sys
 from databases import nst_db_mngr
@@ -44,7 +45,7 @@ def deploy_sec_nsi_test():
       config_sys.logger.info('NSI-MNGR: E2E_SO RESPONSE:' + str(response.text))
       return response.text, response.status_code
 
-def deploy_sec_nsi(request_json, ssla_object):
+def deploy_sec_nsi(request_json, ssla_string):
   config_sys.logger.info('NSI-MNGR: Deploying E2E NST: ' + str(request_json["nst"]["name"])+ ' with SSLA ID: '+ str(request_json['ssla_id']))
 
   # Stores received E2E NST
@@ -65,7 +66,6 @@ def deploy_sec_nsi(request_json, ssla_object):
 
   # Copies the slice-subnets information
   sec_nsi["netslice-subnets"] = request_json["nst"]["netslice-subnets"]
-  config_sys.logger.info('NSI-MNGR: sec_nsi[netslice-subnets]:' + str(sec_nsi["netslice-subnets"]))
   for subnet_item in sec_nsi["netslice-subnets"]:
     # obtain the deployment MSPL policy ID
     mspl_id = str(uuid.uuid4())
@@ -81,20 +81,25 @@ def deploy_sec_nsi(request_json, ssla_object):
     else:
       subnet_item = response[0]
   
-  config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT DOMAIN:' + str(sec_nsi))
-  #add all the policies associated to the SSLA.
+  # Parses the received SSLA from string to XML (minidom library)
   ssla_info = {}
   ssla_info["id"] = request_json['ssla_id']
-  ssla_name = ssla_object.getElementsByTagName("wsag:Name")[0]
-  ssla_info["name"] = str(ssla_name.firstChild.data)
+  ssla_xml = minidom.parseString(ssla_string)
   
-  # obtains the policies to apply based on the SSLA capabilites requested
-  capabilities_list = ssla_object.getElementsByTagName("specs:capability")
+  # obtains the SSLA name
+  ssla_name2 = ssla_xml.getElementsByTagName("wsag:Name")[0]
+  ssla_info["name"] = str(ssla_name2.firstChild.data)
+  config_sys.logger.info('NSI-MNGR: ssla_info[name]:' + ssla_info["name"])
+  
+  # obtains the SSLA capabilities and the policies to apply based on them
+  capabilities_list = ssla_xml.getElementsByTagName("specs:capability")
   caps_list = []
   for capability in capabilities_list:
+    config_sys.logger.info('NSI-MNGR: capability:' + str(capability))
     cap_id = capability.getAttribute("id")
     caps_list.append(cap_id)
     config_sys.logger.info('NSI-MNGR: CAPABILITY ID FROM SSLA:' + str(cap_id))
+  
   response = e2e_pf.get_policies_sla_capability(caps_list)
   policies_list = response[0]
   

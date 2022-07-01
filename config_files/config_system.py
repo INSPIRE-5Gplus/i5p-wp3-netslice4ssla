@@ -16,8 +16,8 @@ def init_logging():
     # Create handlers
     date = datetime.date.today()
     c_handler = logging.StreamHandler()
-    f_handler = logging.FileHandler('SNS4SSLA_log'+str(date)+'.log')
-    kpi_handler = logging.FileHandler('KPI_InitialTime_log'+str(date)+'.log')
+    f_handler = logging.FileHandler('log_SNS4SSLA'+str(date)+'.log')
+    kpi_handler = logging.FileHandler('log_KPI_InitialTime'+str(date)+'.log')
     c_handler.setLevel(logging.DEBUG)
     f_handler.setLevel(logging.INFO)
     kpi_handler.setLevel(logging.INFO)
