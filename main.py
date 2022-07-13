@@ -100,26 +100,18 @@ def deploy_sec_nsi():
   config_sys.logger.info('MAIN: Request to deploy Sec NSI received. - ' + str(request.json))
   
   incoming_request =  request.json
-  response = ssla_mngr.get_ssla(incoming_request['ssla_id'])
+  response = ssla_mngr.get_ssla(incoming_request['ssla_id']) 
   #response = ssla_mngr.get_ssla_list()
   
   request_response = {}
   if response[1] == 201:
-    config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0]))
+    config_sys.executor.submit(nsi_mngr.deploy_sec_nsi(incoming_request, response[0], start_ts))
     request_response['log'] = "Request accepted, setting up the E2E Network Slice."
     code = 200
   else:
     request_response['log'] = "Request NOT ACCEPTED, there is NO SSLA with this ID."
     code = 404
-  
-  end_ts = datetime.now()
-  delta = end_ts - start_ts
-  tsecs = delta.total_seconds()
-  config_sys.logger_kpi.info('***********************************************************')
-  config_sys.logger_kpi.info('START DEPLOYMENT TIME ->' + str(start_ts))
-  config_sys.logger_kpi.info('FINAL DEPLOYMENT TIME ->' + str(end_ts))
-  config_sys.logger_kpi.info('TOTAL DEPLOYMENT TIME (sec) ->' + str(delta))
-  
+    
   return request_response, code
 
 # GETS all the Sec_NSI
@@ -171,5 +163,5 @@ if __name__ == '__main__':
 
   # Run main server thread
   config_sys.logger.info('Secure Network Slcies 4 SSLA service READY.')
-  app.run(debug=False, host='0.0.0.0', port=os.environ.get("SERVICE_PORT"))
-  #app.run(debug=False, host='localhost', port="6998")
+  #app.run(debug=False, host='0.0.0.0', port=os.environ.get("SERVICE_PORT"))
+  app.run(debug=False, host='localhost', port="7998")

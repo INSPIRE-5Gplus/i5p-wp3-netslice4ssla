@@ -24,7 +24,6 @@
 		<wsag:All>
 			<!-- MSPL securedService/service/name expected to use this ServiceName -->
 			<wsag:ServiceDescriptionTerm wsag:Name="5G_IOT_BROKER_TERM" wsag:ServiceName="5G_IOT_BROKER">
-				
 				<specs:serviceDescription>
 					<!-- SPECS serviceResources definition is ignored in INSPIRE-5Gplus Demo1. -->
 					<!--
@@ -61,7 +60,6 @@
 							</specs:controlFramework>
 						</specs:capability>
 
-						
 						<specs:capability id="Network_traffic_analysis" name="CRYPTOCURRENCY MINING DETECTION IN 5G NETWORK TRAFFIC" description="Capability of detecting cryptocurrency mining in 5G network traffic" mandatory="yes">
 							<specs:controlFramework id="NIST_800_53_r5" frameworkName="NIST Control framework 800-53 rev. 5">
 								<specs:NISTsecurityControl id="NIST_IR_4_13" name="BEHAVIOR ANALYSIS - IR-4(13)" control_family="IR" securityControl="4" control_enhancement="13">
@@ -79,11 +77,9 @@
 								</specs:NISTsecurityControl>
 							</specs:controlFramework>
 						</specs:capability>	
-
 					</specs:capabilities>
 					
 					<specs:security_metrics>
-
 						<!-- Example metrics for NETWORK TRAFFIC ANALYSIS, not used in SLO -->
 						<!--
 						<specs:Metric name="Intrusion (Malicious Traffic) Detection Accuracy" referenceId="DETECTION_ACC_HOURLY">
@@ -169,7 +165,7 @@
 								<specs:note></specs:note>
 							</specs:MetricDefinition>
 						</specs:Metric>
-					-->
+						-->
 
 						<!-- Example of high-level data integrity metric, not used in SLO -->
 						<!--
@@ -205,7 +201,7 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-					-->
+						-->
 						
 						<!-- Example of high-level data confidentiality metric, not used in SLO -->
 						<!--
@@ -242,7 +238,7 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-					-->
+						-->
 
 						<!-- Example of high-level cipher suite strength metric, not used in SLO -->
 						<!--
@@ -279,11 +275,9 @@
                                 <specs:note></specs:note>
                             </specs:MetricDefinition>
                         </specs:Metric>
-					-->
+						-->
 
-						<specs:Metric
-                                name="Data Origin Authentication Method"
-                                referenceId="DATA_ORIGIN_AUTHENTICATION_MECHANISM_METRIC">
+						<specs:Metric name="Data Origin Authentication Method" referenceId="DATA_ORIGIN_AUTHENTICATION_MECHANISM_METRIC">
                             <specs:MetricDefinition>
                                 <specs:unit name="n/a">
                                     <specs:enumUnit>
@@ -314,9 +308,7 @@
                         </specs:Metric>
 
 						<!-- Example of low-level data confidentiality protection metric (encryption algorithm spec) -->
-						<specs:Metric
-                                name="Data Encryption Algorithm"
-                                referenceId="DATA_ENCRYPTION_ALGORITHM_METRIC">
+						<specs:Metric name="Data Encryption Algorithm" referenceId="DATA_ENCRYPTION_ALGORITHM_METRIC">
                             <specs:MetricDefinition>
                                 <specs:unit name="n/a">
                                     <specs:enumUnit>
@@ -379,9 +371,7 @@
                             </specs:MetricDefinition>
                         </specs:Metric>
 
-						<specs:Metric
-                                name="Data Integrity Protection Algorithm"
-                                referenceId="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
+						<specs:Metric name="Data Integrity Protection Algorithm" referenceId="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
                             <specs:MetricDefinition>
                                 <specs:unit name="n/a">
                                     <specs:enumUnit>
@@ -436,25 +426,25 @@
 								<specs:note></specs:note>
 							</specs:MetricDefinition>
 						</specs:Metric>
-					-->
-					<specs:Metric name="Network Traffic Analysis Throughput" referenceId="NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT_METRIC">
-						<specs:MetricDefinition>
-							<specs:unit name="B/s">
-								<specs:intervalUnit>
-									<specs:intervalItemsType>integer</specs:intervalItemsType>
-									<specs:intervalItemStart>1</specs:intervalItemStart>
-									<specs:intervalItemStop></specs:intervalItemStop>
-									<specs:intervalItemStep>1</specs:intervalItemStep>
-								</specs:intervalUnit>
-							</specs:unit>
-							<specs:scale>
-								<specs:Quantitative>Ratio</specs:Quantitative>
-							</specs:scale>
-							<specs:expression></specs:expression>
-							<specs:definition>Throughput of traffic handled by the Network Traffic Analysis enabler (bytes per second). Related to MSPL monitoringConfigurationCondition/maxCount element. To be clarified by UMU</specs:definition>
-							<specs:note></specs:note>
-						</specs:MetricDefinition>
-					</specs:Metric>
+						-->
+						<specs:Metric name="Network Traffic Analysis Throughput" referenceId="NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT_METRIC">
+							<specs:MetricDefinition>
+								<specs:unit name="B/s">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Throughput of traffic handled by the Network Traffic Analysis enabler (bytes per second). Related to MSPL monitoringConfigurationCondition/maxCount element. To be clarified by UMU</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
 
                     </specs:security_metrics>
 				</specs:serviceDescription>
@@ -512,7 +502,6 @@
 
 			<!-- -related SLOs -->
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Channel_Protection']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
@@ -587,7 +576,6 @@
 
 			<!--
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Proof_of_Transit']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
@@ -607,55 +595,54 @@
 				
 				<wsag:BusinessValueList></wsag:BusinessValueList>
 			</wsag:GuaranteeTerm>
-		-->
+			-->
 			
 			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='Network_traffic_analysis']" wsag:Obligated="ServiceProvider">
-
 				<wsag:ServiceLevelObjective>
 					<wsag:CustomServiceLevel>
 						<specs:objectiveList>
 							<!--
-							<specs:SLO SLO_ID="21">
-                                <specs:MetricREF>ddos_detection_acc</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="22">
-                                <specs:MetricREF>ddos_detection_ppv</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="23">
-                                <specs:MetricREF>ddos_detection_tpr</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>geq</specs:operator>
-                                        <specs:operand>0.90</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-							<specs:SLO SLO_ID="24">
-                                <specs:MetricREF>ddos_detection_fpr</specs:MetricREF>
-                                <specs:SLOexpression>
-                                    <specs:oneOpExpression>
-                                        <specs:operator>leq</specs:operator>
-                                        <specs:operand>0.10</specs:operand>
-                                    </specs:oneOpExpression>
-                                </specs:SLOexpression>	
-                                <specs:importance_weight>HIGH</specs:importance_weight>
-                            </specs:SLO>
-						-->
+								<specs:SLO SLO_ID="21">
+									<specs:MetricREF>ddos_detection_acc</specs:MetricREF>
+									<specs:SLOexpression>
+										<specs:oneOpExpression>
+											<specs:operator>geq</specs:operator>
+											<specs:operand>0.90</specs:operand>
+										</specs:oneOpExpression>
+									</specs:SLOexpression>	
+									<specs:importance_weight>HIGH</specs:importance_weight>
+								</specs:SLO>
+								<specs:SLO SLO_ID="22">
+									<specs:MetricREF>ddos_detection_ppv</specs:MetricREF>
+									<specs:SLOexpression>
+										<specs:oneOpExpression>
+											<specs:operator>geq</specs:operator>
+											<specs:operand>0.90</specs:operand>
+										</specs:oneOpExpression>
+									</specs:SLOexpression>	
+									<specs:importance_weight>HIGH</specs:importance_weight>
+								</specs:SLO>
+								<specs:SLO SLO_ID="23">
+									<specs:MetricREF>ddos_detection_tpr</specs:MetricREF>
+									<specs:SLOexpression>
+										<specs:oneOpExpression>
+											<specs:operator>geq</specs:operator>
+											<specs:operand>0.90</specs:operand>
+										</specs:oneOpExpression>
+									</specs:SLOexpression>	
+									<specs:importance_weight>HIGH</specs:importance_weight>
+								</specs:SLO>
+								<specs:SLO SLO_ID="24">
+									<specs:MetricREF>ddos_detection_fpr</specs:MetricREF>
+									<specs:SLOexpression>
+										<specs:oneOpExpression>
+											<specs:operator>leq</specs:operator>
+											<specs:operand>0.10</specs:operand>
+										</specs:oneOpExpression>
+									</specs:SLOexpression>	
+									<specs:importance_weight>HIGH</specs:importance_weight>
+								</specs:SLO>
+							-->
 							<specs:SLO SLO_ID="3">
                                 <specs:MetricREF>NETWORK_TRAFFIC_ANALYSIS_THROUGHPUT</specs:MetricREF>
                                 <specs:SLOexpression>

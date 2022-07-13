@@ -27,21 +27,31 @@ def generateMSPL(e2e_nsi_json, policies_list):
 
     # extracts specific information requried for the policies items
     slo_ids = []
+    for policy_item in policies_list:
+        config_sys.logger.info('MSPL-GENERATOR:policy_item - ' + str(policy_item))
+        for pol_option_item in policy_item['policy']:
+            for slo_item in pol_option_item ['slos']:
+                config_sys.logger.info('MSPL-GENERATOR:pol_item - ' + str(slo_item))
+                config_sys.logger.info('MSPL-GENERATOR:pol_item - ' + str(type(slo_item)))
+                slo_ids.append(slo_item)
+    config_sys.logger.info('MSPL-GENERATOR:slo_ids - ' + str(slo_ids))
     policies_ids = []
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
         policies_ids.append(capability_item['mspl_id'])
-        for slo_item in capability_item['slos']:
-            slo_ids.append(slo_item['SLO_ID'])      
+        #for slo_item in capability_item['slos']:
+        #    slo_ids.append(slo_item['SLO_ID'])      
 
     # prepares the deployment policies items for the MSPL
     for subnet_item in e2e_nsi_json['netslice-subnets']:
-        root_mspl = deployment_mspl(e2e_nsi_json['name'], root_mspl, subnet_item, omspl_id, base10_e2e_nsi_id, e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
+        if subnet_item['domain'] != '':
+            root_mspl = deployment_mspl(e2e_nsi_json['name'], root_mspl, subnet_item, omspl_id, base10_e2e_nsi_id, e2e_nsi_json['security-sla']['id'], slo_ids, policies_ids)
     
     # prepares the security policies items for the MSPL
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
         for policy_item in policies_list:
             if capability_item['capability-ssla'] == policy_item['capability-ssla']:
-                root_mspl = security_mspl(root_mspl, capability_item, policy_item, omspl_id, base10_e2e_nsi_id)
+                for pol_option_item in policy_item['policy']:
+                    root_mspl = security_mspl(root_mspl, capability_item, pol_option_item, omspl_id, base10_e2e_nsi_id)
     
     #write to file
     tree = ET.ElementTree(indent(root_mspl))
@@ -107,9 +117,9 @@ def deployment_mspl(slice_name, root_mspl, subnet_item, omspl_id, slice_id, ssla
     serv_name.text = subnet_item['name']
     serv_type = ET.SubElement(service, 'type')
     serv_type.text = subnet_item['type']
-    for domain_item in subnet_item['domains']:
-        serv_domain = ET.SubElement(service, 'domainID')
-        serv_domain.text = str(domain_item)
+    config_sys.logger.info('MSPL-GENERATOR: subnet_item - ' + str(subnet_item))
+    serv_domain = ET.SubElement(service, 'domainID')
+    serv_domain.text = str(subnet_item['domain'])
     
     # securityRequirements information
     for sloid_item in slo_ids:
@@ -134,7 +144,8 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
     ITResource = ET.SubElement(root_mspl, 'ITResource', ITResource_info)
 
     # Level 3 - configuration
-    configuration = ET.SubElement(ITResource, 'configuration', {'xsi:type':policy_item['policy']['configuration']['type']})
+    config_sys.logger.info('MSPL-GENERATOR: policy_item - ' + str(policy_item))
+    configuration = ET.SubElement(ITResource, 'configuration', {'xsi:type':policy_item['configuration']['type']})
     
     # Level 4 - configuration inforation
     capability = ET.SubElement(configuration, 'capability')
@@ -145,12 +156,12 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
     # Level 5
     # capability information
     cap_name = ET.SubElement(capability, 'Name')
-    cap_name.text = policy_item['capability-ssla']
+    cap_name.text = capability_item['capability-ssla']
     
     # configurationRule information 
-    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type']})
-    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['configurationCondition']['type']})
-    externalData = ET.SubElement(configurationRule, 'externalData', {'xsi:type':policy_item['policy']['configuration']['configurationRule']['externalData']['type']})
+    configurationRuleAction = ET.SubElement(configurationRule, 'configurationRuleAction', {'xsi:type':policy_item['configuration']['configurationRule']['configurationRuleAction']['type']})
+    configurationCondition = ET.SubElement(configurationRule, 'configurationCondition', {'xsi:type':policy_item['configuration']['configurationRule']['configurationCondition']['type']})
+    externalData = ET.SubElement(configurationRule, 'externalData', {'xsi:type':policy_item['configuration']['configurationRule']['externalData']['type']})
     configurationRule_name = ET.SubElement(configurationRule, 'Name')
     configurationRule_name.text = "Rule0"
     configurationRule_isCNF = ET.SubElement(configurationRule, 'isCNF')
@@ -158,28 +169,36 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
 
     # Level 6 +
     # configurationRuleAction information
-    if policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type'] == 'DataProtectionAction':
+    if policy_item['configuration']['configurationRule']['configurationRuleAction']['type'] == 'DataProtectionAction':
         technology = ET.SubElement(configurationRuleAction, 'technology')
-        technology.text = policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['technology']
+        technology.text = policy_item['configuration']['configurationRule']['configurationRuleAction']['technology']
         technologyActionParameters = ET.SubElement(configurationRuleAction, 'technologyActionParameters')
-        for techActionParam_item in policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['technologyActionParameters']:
-            technologyParameter = ET.SubElement(technologyActionParameters, 'technologyParameter', {'xsi:type':techActionParam_item['type']})
-            localEndpoint = ET.SubElement(technologyParameter, 'localEndpoint')
-            localEndpoint.text = techActionParam_item['localEndpoint']
-            remoteEndpoint = ET.SubElement(technologyParameter, 'remoteEndpoint')
-            remoteEndpoint.text = techActionParam_item['remoteEndpoint']
-        for techActionSecProp_item in policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['technologyActionSecurityProperty']:
+        for techActionParam_item in policy_item['configuration']['configurationRule']['configurationRuleAction']['technologyActionParameters']:
+            #technologyParameter = ET.SubElement(technologyActionParameters, 'technologyParameter', {'xsi:type':techActionParam_item['type']})
+            #localEndpoint = ET.SubElement(technologyParameter, 'localEndpoint')
+            #localEndpoint.text = techActionParam_item['localEndpoint']
+            #remoteEndpoint = ET.SubElement(technologyParameter, 'remoteEndpoint')
+            #remoteEndpoint.text = techActionParam_item['remoteEndpoint']
+            if 'type' in techActionParam_item.keys():
+                technologyParameter = ET.SubElement(technologyActionParameters, techActionParam_item['key_TAP'], {'xsi:type':techActionParam_item['type']})
+            else:
+                technologyParameter = ET.SubElement(technologyActionParameters, techActionParam_item['key_TAP'])
+            for key_item in techActionParam_item.keys():
+                if key_item != 'key_TAP' and key_item != 'type':
+                    packetFilterCondition_element = ET.SubElement(technologyParameter, key_item)
+                    packetFilterCondition_element.text = techActionParam_item[key_item]
+        for techActionSecProp_item in policy_item['configuration']['configurationRule']['configurationRuleAction']['technologyActionSecurityProperty']:
             technologyActionSecurityProperty = ET.SubElement(configurationRuleAction, 'technologyActionSecurityProperty', {'xsi:type':techActionSecProp_item['type']})
             for key_item in techActionSecProp_item.keys():
                 if key_item != 'type':
                     techActionSecProp_element = ET.SubElement(technologyActionSecurityProperty, key_item)
                     techActionSecProp_element.text = techActionSecProp_item[key_item]
-    elif policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['type'] == 'MonitoringAction':
+    elif policy_item['configuration']['configurationRule']['configurationRuleAction']['type'] == 'MonitoringAction':
         monitoringActionType = ET.SubElement(configurationRuleAction, 'monitoringActionType')
-        monitoringActionType.text = policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['monitoringActionType']
-        if policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['aditionalMonitoringParameters'] != []:
+        monitoringActionType.text = policy_item['configuration']['configurationRule']['configurationRuleAction']['monitoringActionType']
+        if policy_item['configuration']['configurationRule']['configurationRuleAction']['aditionalMonitoringParameters'] != []:
             aditionalMonitoringParameters = ET.SubElement(configurationRuleAction, 'aditionalMonitoringParameters')
-            for adMoniParam_item in policy_item['policy']['configuration']['configurationRule']['configurationRuleAction']['aditionalMonitoringParameters']:
+            for adMoniParam_item in policy_item['configuration']['configurationRule']['configurationRuleAction']['aditionalMonitoringParameters']:
                 for key_item in adMoniParam_item.keys():
                     if key_item != 'type':
                         adMoniParam_item_element = ET.SubElement(aditionalMonitoringParameters, key_item)
@@ -190,44 +209,44 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
     # configurationCondition information
     configurationCondition_isCNF = ET.SubElement(configurationCondition, 'isCNF')
     configurationCondition_isCNF.text = "false"
-    if policy_item['policy']['configuration']['configurationRule']['configurationCondition']['type'] == 'MonitoringConfigurationConditions':
+    if policy_item['configuration']['configurationRule']['configurationCondition']['type'] == 'MonitoringConfigurationConditions':
         monitoringConfigurationCondition = ET.SubElement(configurationCondition, 'monitoringConfigurationCondition')
         isCNF = ET.SubElement(monitoringConfigurationCondition, 'isCNF')
         isCNF.text = "true"
         packetFilterCondition = ET.SubElement(monitoringConfigurationCondition, 'packetFilterCondition')
-        for key_item in policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['packetFilterCondition'].keys():
+        for key_item in policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['packetFilterCondition'].keys():
             if key_item != 'type':
                 packetFilterCondition_element = ET.SubElement(packetFilterCondition, key_item)
-                packetFilterCondition_element.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['packetFilterCondition'][key_item]
+                packetFilterCondition_element.text = policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['packetFilterCondition'][key_item]
         
-        if 'channelProtected' in policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition'].keys():
+        if 'channelProtected' in policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition'].keys():
             channelProtected = ET.SubElement(monitoringConfigurationCondition, 'channelProtected')
-            channelProtected.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['channelProtected']
+            channelProtected.text = policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['channelProtected']
         
         maxCount = ET.SubElement(monitoringConfigurationCondition, 'maxCount')     
         isCNF = ET.SubElement(maxCount, 'isCNF')
-        isCNF.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['isCNF']
+        isCNF.text = policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['isCNF']
         count = ET.SubElement(maxCount, 'count')
-        for key_item in policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'].keys():
+        for key_item in policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'].keys():
             if key_item != 'type':
                 count_element = ET.SubElement(count, key_item)
-                count_element.text = policy_item['policy']['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'][key_item]
+                count_element.text = policy_item['configuration']['configurationRule']['configurationCondition']['monitoringConfigurationCondition']['maxCount']['count'][key_item]
     
     externalData_value = ET.SubElement(externalData, 'value')
-    externalData_value.text = policy_item['policy']['configuration']['configurationRule']['externalData']['value']
+    externalData_value.text = policy_item['configuration']['configurationRule']['externalData']['value']
 
     # Level 3
     # priority information (if there is)
-    if 'priority' in policy_item['policy']:
+    if 'priority' in policy_item:
         priority = ET.SubElement(ITResource, 'priority')
-        priority.text = policy_item['policy']['priority']
+        priority.text = policy_item['priority']
     
     """
     # dependencies information (if there is)
-    if 'dependencies' in policy_item['policy'].keys():
+    if 'dependencies' in policy_item.keys():
         dependencies = ET.SubElement(ITResource, 'dependencies')
         # Level 4
-        for dependency_item in policy_item['policy']['dependencies']:
+        for dependency_item in policy_item['dependencies']:
             dependency = ET.SubElement(dependencies, 'dependency', {'xsi:type':dependency_item['type']})
             if 'eventID' in dependency_item.keys():
                 eventID = ET.SubElement(dependency, 'eventID')

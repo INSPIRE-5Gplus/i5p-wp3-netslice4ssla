@@ -443,9 +443,7 @@
 						-->
 
 						<!-- Example of low-level data confidentiality protection metric (encryption algorithm spec) -->
-						<specs:Metric
-                                name="Data Encryption Algorithm"
-                                referenceId="DATA_ENCRYPTION_ALGORITHM_METRIC">
+						<specs:Metric name="Data Encryption Algorithm" referenceId="DATA_ENCRYPTION_ALGORITHM_METRIC">
                             <specs:MetricDefinition>
                                 <specs:unit name="n/a">
                                     <specs:enumUnit>
@@ -508,9 +506,7 @@
                             </specs:MetricDefinition>
                         </specs:Metric>
 
-						<specs:Metric
-                                name="Data Integrity Protection Algorithm"
-                                referenceId="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
+						<specs:Metric name="Data Integrity Protection Algorithm" referenceId="DATA_INTEGRITY_PROTECTION_ALGORITHM_METRIC">
                             <specs:MetricDefinition>
                                 <specs:unit name="n/a">
                                     <specs:enumUnit>

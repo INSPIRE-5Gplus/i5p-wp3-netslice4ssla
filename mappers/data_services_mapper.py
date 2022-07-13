@@ -166,21 +166,32 @@ def get_domains_subnet(subnet_item):
    }
  ]
 """
-def get_domains_security_capability(capabilities):
+def get_domains_security_capability(capabilities, service_list):
     config_sys.logger.info('DATA-SERVICES: Retrieving Security Capabilities information.')
     # GETS DATA SERVICES CAPABILITIES INFO
     response = get_ds_domains()
     ds_domains = json.loads(response[0])
     config_sys.logger.info('DATA-SERVICES: ds_domains --> ' + str(ds_domains))
+    #config_sys.logger.info('DATA-SERVICES: capabilities --> ' + str(capabilities))
     
-    # processes the received data to add the right domain into each capability
-    for capability_item in capabilities:
-        domains_list = []
+    # verifies which domains have the services involved in the slice
+    temporal_domain_list = []
+    for service_item in service_list:
         for domain_item in ds_domains:
             for dom_cap_item in domain_item['capabilities']:
+                if service_item == dom_cap_item:
+                    temporal_domain_list.append(domain_item)
+                    break
+    #config_sys.logger.info('DATA-SERVICES: temporal_domain_list --> ' + str(temporal_domain_list))
+
+    # with the first selection of domains that have the services, selects those with the security capabilities
+    for capability_item in capabilities:
+        domains_list = []
+        for domain_item in temporal_domain_list:
+            for dom_cap_item in domain_item['capabilities']:
+                #config_sys.logger.info('DATA-SERVICES: capability_item[capability-ssla] --> ' + str(capability_item['capability-ssla']))
+                #config_sys.logger.info('DATA-SERVICES: dom_cap_item --> ' + str(dom_cap_item))
                 if capability_item['capability-ssla'] == dom_cap_item:
-                    config_sys.logger.info('DATA-SERVICES: capability_item[capability-ssla] --> ' + str(capability_item['capability-ssla']))
-                    config_sys.logger.info('DATA-SERVICES: dom_cap_item --> ' + str(dom_cap_item))
                     domains_list.append(domain_item['id'])
         capability_item['domains'] = domains_list
 
