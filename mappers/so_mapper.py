@@ -23,7 +23,7 @@ def request_deployment(xml_data):
         #data = ET.tostring(root, encoding='UTF-8', method='xml')
         #config_sys.logger.info('E2ESO_MAPPER: data: ' + str(data))
         config_sys.logger.info('E2ESO_MAPPER: xml_data type:' + str(type(xml_data)))
-        response = requests.post(url, data=xml_data, headers=header)
+        response = requests.post(url, data=xml_data, headers=header, timeout=600)
         config_sys.logger.info('E2ESO_MAPPER: E2E_SO RESPONSE:' + str(response))
     
     if response.status_code != 200:

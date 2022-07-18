@@ -8,7 +8,6 @@ from config_files import config_system as config_sys
 
 CONTENT_HEADER = {'Content-Type':'application/xml'}
 
-# TODO: ADD the capabilities-policies for the SSLA 2 
 policies_list = [
     {
         "capability-ssla":"Channel_Protection",
@@ -240,7 +239,7 @@ policies_list = [
         ],
         "policy":[
             {
-                "slice":["5GCore", "5GIoTBroker"],
+                "slice":["5GCore"],
                 "slos": [3],
                 "configuration":{
                     "type": "RuleSetConfiguration",
@@ -265,6 +264,62 @@ policies_list = [
                                 "isCNF": "true",
                                 "packetFilterCondition": {
                                     "SourceAddress": "[5GService]",
+                                    "bidirectional": "true"
+                                },
+                                "maxCount":{
+                                    "isCNF": "false",
+                                    "count": {
+                                        "measureUnit": "BYTE",
+                                        "value": "1",
+                                        "per": "SECOND"
+                                    }
+                                }
+                            }
+                        },
+                        "externalData":{
+                            "type": "Priority",
+                            "value": "500"
+                        }
+                    }
+                },
+                "dependencies":[
+                    {
+                        "type": "PolicyDependency",
+                        "configurationCondition":{
+                            "type": "PolicyDependencyCondition",
+                            "isCNF": "false",
+                            "policyID": "Channel_Protection",
+                            "status": "ENFORCED"
+                        }
+                    }
+                ]
+            },
+            {
+                "slice":["5GIoTBroker"],
+                "slos": [3],
+                "configuration":{
+                    "type": "RuleSetConfiguration",
+                    "name": "Conf0",
+                    "configurationRule":{
+                        "name": "Rule0",
+                        "isCNF": "false",
+                        "configurationRuleAction": {
+                            "type": "MonitoringAction",
+                            "monitoringActionType": "BEHAVIORAL",
+                            "aditionalMonitoringParameters":[
+                                {
+                                    "key": "behaviour",
+                                    "value": "5GControlTraffic"
+                                }
+                            ]
+                        },
+                        "configurationCondition":{
+                            "type": "MonitoringConfigurationConditions",
+                            "isCNF": "false",
+                            "monitoringConfigurationCondition":{
+                                "isCNF": "true",
+                                "packetFilterCondition": {
+                                    "SourceAddress": "[5GCore]",
                                     "bidirectional": "true"
                                 },
                                 "maxCount":{
@@ -364,7 +419,7 @@ def get_policies_sla_capability(ssla_caps):
     for policy_item in policies_list:
         for cap_item in ssla_caps:
             if cap_item == policy_item["capability-ssla"]:
-                selected_policies.append(policy_item)
+                selected_policies.append(policy_item.copy())
 
     #config_sys.logger.info('POLICY-FRAMEWORK: selected_policies' + str(selected_policies))
     return selected_policies, 201

@@ -171,7 +171,7 @@ def get_domains_security_capability(capabilities, service_list):
     # GETS DATA SERVICES CAPABILITIES INFO
     response = get_ds_domains()
     ds_domains = json.loads(response[0])
-    config_sys.logger.info('DATA-SERVICES: ds_domains --> ' + str(ds_domains))
+    #config_sys.logger.info('DATA-SERVICES: ds_domains --> ' + str(ds_domains))
     #config_sys.logger.info('DATA-SERVICES: capabilities --> ' + str(capabilities))
     
     # verifies which domains have the services involved in the slice
@@ -195,5 +195,5 @@ def get_domains_security_capability(capabilities, service_list):
                     domains_list.append(domain_item['id'])
         capability_item['domains'] = domains_list
 
-    config_sys.logger.info('DATA-SERVICES: capabilities --> ' + str(capabilities))
+    #config_sys.logger.info('DATA-SERVICES: capabilities --> ' + str(capabilities))
     return capabilities, 200

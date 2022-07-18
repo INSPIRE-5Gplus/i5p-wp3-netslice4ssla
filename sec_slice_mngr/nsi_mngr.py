@@ -77,13 +77,12 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
   ssla_info = {}
   ssla_info["id"] = request_json['ssla_id']
   
-  #ssla_xml = minidom.parseString(ssla_string) #NOTE: REAL DEMO uncomment & comment below
-  ssla_xml = ssla_string
+  ssla_xml = minidom.parseString(ssla_string) #NOTE: REAL DEMO uncomment & comment below
+  #ssla_xml = ssla_string
   
   # Obtains the SSLA name
   ssla_name2 = ssla_xml.getElementsByTagName("wsag:Name")[0]
   ssla_info["name"] = str(ssla_name2.firstChild.data)
-  config_sys.logger.info('NSI-MNGR: ssla_info[name]:' + ssla_info["name"])
   
   # Obtains the SSLA capabilities and the policies to apply based on them
   capabilities_list = ssla_xml.getElementsByTagName("specs:capability")
@@ -94,25 +93,18 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
   
   response = e2e_pf.get_policies_sla_capability(caps_list)
   policies_list = response[0]
-  config_sys.logger.info('NSI-MNGR: policies_list:' + str(policies_list))
-  
-  # Adds the policies info into the NSI
+
+  # prepare the policies/capabilities info to generate the MSPL and be added into the NSI
   # Prepares the policies info to store it in the slice instance object
   capabilities = []
   for subnet_item in sec_nsi["netslice-subnets"]:
-    config_sys.logger.info('NSI-MNGR: subnet_item:' + str(subnet_item))
     if subnet_item['domain'] != '':
-      config_sys.logger.info('NSI-MNGR: INSIDE!!!!!')
       temp_policies_list = policies_list.copy()
       for pol_item in temp_policies_list:
         selected_pol = False
         temp_pol = pol_item.copy()
         for pol_option in temp_pol['policy']:
-          config_sys.logger.info('NSI-MNGR: pol_option:' + str(pol_option))
           for pol_option_item in pol_option['slice']:
-            config_sys.logger.info('NSI-MNGR: -------------------------------------------------------------------------------------')
-            config_sys.logger.info('NSI-MNGR: subnet_item[name]:' + str(subnet_item['name']))
-            config_sys.logger.info('NSI-MNGR: pol_option_item:' + str(pol_option_item))
             if subnet_item['name'] == pol_option_item:
               config_sys.logger.info('NSI-MNGR: Policy Found for the service!')
               # Reduces and prepares the capabilities info to attach it in the NSI
@@ -126,16 +118,12 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
               # NOTE: this next steps need to be rethink, but for the KPIs we keep just the neede element
               # Modifies the policies_list to have only the right policies to deploy (if below is related)
               selected_pol = True
-              config_sys.logger.info('NSI-MNGR: pol_option:' + str(pol_option))
               temp_pol_option_item = pol_option.copy()
               break
         if selected_pol == True:
           pol_item_policy = []
           pol_item_policy.append(temp_pol_option_item)
           pol_item['policy'] = pol_item_policy
-  
-  config_sys.logger.info('NSI-MNGR: temp_policies_list:' + str(temp_policies_list))
-  config_sys.logger.info('NSI-MNGR: capabilities:' + str(capabilities))
           
   # obtains the SMDs where to deploy the security elements
   service_list = []
@@ -149,6 +137,19 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
   
   ssla_info["capabilities"] = capabilities
   sec_nsi["security-sla"] = ssla_info
+  #config_sys.logger.info('NSI-MNGR: ssla_info:' + str(ssla_info))
+  
+  # NOTE: this piece of code is hardcoded for the SSLA2 due to a problem with the information in the Data Service
+  # ----------
+  if ssla_info['id'] == '5G_IOT_BROKER_SSLA':
+    for capability_item in ssla_info['capabilities']:
+      if capability_item['capability-ssla'] == 'Channel_Protection':
+        capability_item['domains'] = [6,7]
+      if capability_item['capability-ssla'] == 'Network_traffic_analysis':
+        capability_item['domains'] = [6]
+  # ----------
+  
+  config_sys.logger.info('NSI-MNGR: ssla_info:' + str(ssla_info))
 
   # saves NSI into the Database
   response = secnsi_db_mngr.add_sec_nsi(sec_nsi)
@@ -161,8 +162,8 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
   config_sys.logger.info('NSI-MNGR: MSPL READY FOR THE E2E SO:' + str(xml_tree))
   
   # Sends MSPL to the E2E SO
-  #response = e2e_so.request_deployment(xml_tree) #NOTE: REAL DEMO uncomment & comment below
-  response= ["msg", 200]
+  response = e2e_so.request_deployment(xml_tree) #NOTE: REAL DEMO uncomment & comment below
+  #response= ["msg", 200]
 
   # Validates policy is applied = Sec_NSI is deployed
   if response[1] == 200:
@@ -173,7 +174,7 @@ def deploy_sec_nsi(request_json, ssla_string, start_ts):
   config_sys.logger.info('NSI-MNGR: NSI DATA OBJECT READY:' + str(sec_nsi))
   config_sys.logger.info(response[0])
 
-  # Logs the initial (deployment) time KPI
+  # Logs the initial (deployment) time KPI (DO NOT REMOVE)
   end_ts = datetime.now()
   delta = end_ts - start_ts
   tsecs = delta.total_seconds()

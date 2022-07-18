@@ -35,7 +35,7 @@ def get_ssla_list():
 # Retrieve SSLA (GET /sla/{slaId})
 def get_ssla(ssla_id):
     config_sys.logger.info('SSLA-MNGR: Retrieving SSLA information.')
-    """ #NOTE: REAL DEMO uncomment & comment below
+    #NOTE: REAL DEMO uncomment & comment below
     ssla_mngr_ip = os.environ.get("SSLA_IP")
     ssla_mngr_port = os.environ.get("SSLA_PORT")
     url = "http://" + str(ssla_mngr_ip) + ":" + str(ssla_mngr_port) + "/sla/" + str(ssla_id)
@@ -61,6 +61,6 @@ def get_ssla(ssla_id):
         ssla_doc = ""
         code = 404
     return ssla_doc, code
-    
+    """ 
     
 

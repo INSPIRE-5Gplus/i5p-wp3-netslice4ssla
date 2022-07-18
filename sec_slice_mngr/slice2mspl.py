@@ -28,13 +28,9 @@ def generateMSPL(e2e_nsi_json, policies_list):
     # extracts specific information requried for the policies items
     slo_ids = []
     for policy_item in policies_list:
-        config_sys.logger.info('MSPL-GENERATOR:policy_item - ' + str(policy_item))
         for pol_option_item in policy_item['policy']:
             for slo_item in pol_option_item ['slos']:
-                config_sys.logger.info('MSPL-GENERATOR:pol_item - ' + str(slo_item))
-                config_sys.logger.info('MSPL-GENERATOR:pol_item - ' + str(type(slo_item)))
                 slo_ids.append(slo_item)
-    config_sys.logger.info('MSPL-GENERATOR:slo_ids - ' + str(slo_ids))
     policies_ids = []
     for capability_item in e2e_nsi_json['security-sla']['capabilities']:
         policies_ids.append(capability_item['mspl_id'])
@@ -117,7 +113,6 @@ def deployment_mspl(slice_name, root_mspl, subnet_item, omspl_id, slice_id, ssla
     serv_name.text = subnet_item['name']
     serv_type = ET.SubElement(service, 'type')
     serv_type.text = subnet_item['type']
-    config_sys.logger.info('MSPL-GENERATOR: subnet_item - ' + str(subnet_item))
     serv_domain = ET.SubElement(service, 'domainID')
     serv_domain.text = str(subnet_item['domain'])
     
@@ -144,7 +139,6 @@ def security_mspl(root_mspl, capability_item, policy_item, omspl_id, slice_id):
     ITResource = ET.SubElement(root_mspl, 'ITResource', ITResource_info)
 
     # Level 3 - configuration
-    config_sys.logger.info('MSPL-GENERATOR: policy_item - ' + str(policy_item))
     configuration = ET.SubElement(ITResource, 'configuration', {'xsi:type':policy_item['configuration']['type']})
     
     # Level 4 - configuration inforation
